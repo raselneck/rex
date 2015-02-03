@@ -163,6 +163,7 @@
     <ClCompile Include="Image.cxx" />
     <ClCompile Include="Logger.cxx" />
     <ClCompile Include="Main.cxx" />
+    <ClCompile Include="Vector3.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hxx" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Logger.hxx" />
     <ClInclude Include="Math.hxx" />
     <ClInclude Include="Rex.hxx" />
+    <ClInclude Include="Vector3.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

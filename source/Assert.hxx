@@ -5,6 +5,11 @@
 #include "Config.hxx"
 #include "Logger.hxx"
 
+/// <summary>
+/// Custom assert macro for Rex.
+/// </summary>
+/// <param name="cond">The condition to check.</param>
+/// <param name="message">The message to log if the condition fails.</param>
 #define RexAssert(cond, message) { \
         bool __result = ( cond ); \
         if ( !__result ) { \

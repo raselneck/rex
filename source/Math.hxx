@@ -62,7 +62,13 @@ struct Math
     /// <param name="exponent">The exponent to raise to.</param>
     static inline Color Pow( const Color& color, real32 exponent )
     {
-        
+        Color result(
+            pow( color.R, exponent ),
+            pow( color.G, exponent ),
+            pow( color.B, exponent )
+        );
+
+        return result;
     }
 };
 

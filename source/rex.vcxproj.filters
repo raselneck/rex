@@ -35,6 +35,9 @@
     <ClCompile Include="Color.cxx">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Vector3.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hxx">
@@ -57,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="Rex.hxx">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.hxx">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

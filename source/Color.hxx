@@ -6,6 +6,8 @@
 
 REX_NS_BEGIN
 
+struct Vector3;
+
 /// <summary>
 /// Defines a color.
 /// </summary>
@@ -23,7 +25,7 @@ struct Color
     /// <summary>
     /// Creates a new color.
     /// </summary>
-    /// <param name="all"></param>
+    /// <param name="all">The value to use for all components.</param>
     Color( real32 all );
 
     /// <summary>
@@ -38,7 +40,32 @@ struct Color
     /// Destroys this color.
     /// </summary>
     ~Color();
+
+    /// <summary>
+    /// Gets the average of all of the components in this color.
+    /// </summary>
+    real32 GetAverage() const;
+
+    operator Vector3();
+
+    bool operator==( const Color& ) const;
+    bool operator!=( const Color& ) const;
+
+    Color operator+( const Color& ) const;
+    Color operator-( const Color& ) const;
+    Color operator*( const Color& ) const;
+    Color operator/( const Color& ) const;
+
+    Color& operator+=( const Color& );
+    Color& operator-=( const Color& );
+    Color& operator*=( const Color& );
+    Color& operator/=( const Color& );
 };
+
+Color operator*( const Color&, real32 );
+Color operator*( real32, const Color& );
+Color& operator*=( Color&, real32 );
+Color& operator*=( real32, Color& );
 
 REX_NS_END
 

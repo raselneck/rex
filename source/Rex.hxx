@@ -7,5 +7,6 @@
 #include "Image.hxx"
 #include "Logger.hxx"
 #include "Math.hxx"
+#include "Vector3.hxx"
 
 #endif

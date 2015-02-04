@@ -17,10 +17,13 @@ typedef uint64_t uint64;
 typedef float    real32;
 typedef double   real64;
 
+#include <memory>
 #include <string>
+
 REX_NS_BEGIN
 
 typedef std::string String;
+template<class T> using Handle = std::shared_ptr<T>;
 
 REX_NS_END
 

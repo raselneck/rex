@@ -38,12 +38,15 @@
     <ClCompile Include="Vector3.cxx">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Vector2.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Logger.hxx">
@@ -62,6 +65,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector3.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>

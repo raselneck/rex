@@ -163,6 +163,8 @@
     <ClCompile Include="Image.cxx" />
     <ClCompile Include="Logger.cxx" />
     <ClCompile Include="Main.cxx" />
+    <ClCompile Include="Ray.cxx" />
+    <ClCompile Include="Vector2.cxx" />
     <ClCompile Include="Vector3.cxx" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +174,9 @@
     <ClInclude Include="Image.hxx" />
     <ClInclude Include="Logger.hxx" />
     <ClInclude Include="Math.hxx" />
+    <ClInclude Include="Ray.hxx" />
     <ClInclude Include="Rex.hxx" />
+    <ClInclude Include="Vector2.hxx" />
     <ClInclude Include="Vector3.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

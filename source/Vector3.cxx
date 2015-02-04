@@ -31,24 +31,15 @@ Vector3::~Vector3()
 }
 
 // get vector length
-double Vector3::Length() const
+real64 Vector3::Length() const
 {
     return sqrt( LengthSq() );
 }
 
 // get vector length squared
-double Vector3::LengthSq() const
+real64 Vector3::LengthSq() const
 {
     return X * X + Y * Y + Z * Z;
-}
-
-// normalize this vector
-void Vector3::Normalize()
-{
-    real64 invlen = 1.0 / Length();
-    X *= invlen;
-    Y *= invlen;
-    Z *= invlen;
 }
 
 // dot product of two vectors
@@ -69,26 +60,37 @@ Vector3 Vector3::Cross( const Vector3& v1, const Vector3& v2 )
     );
 }
 
-Vector3::operator Color()
+// normalize a vector
+Vector3 Vector3::Normalize( const Vector3& vec )
+{
+    real64 invlen = 1.0 / vec.Length();
+    return Vector3 (
+        vec.X * invlen,
+        vec.Y * invlen,
+        vec.Z * invlen
+    );
+}
+
+Vector3::operator Color() const
 {
     return Color( real32( X ), real32( Y ), real32( Z ) );
 }
 
-bool Vector3::operator==( const Vector3& c )
+bool Vector3::operator==( const Vector3& c ) const
 {
     return X == c.X
         && Y == c.Y
         && Z == c.Z;
 }
 
-bool Vector3::operator!=( const Vector3& c )
+bool Vector3::operator!=( const Vector3& c ) const
 {
     return X != c.X
         && Y != c.Y
         && Z != c.Z;
 }
 
-Vector3 Vector3::operator+( const Vector3& c )
+Vector3 Vector3::operator+( const Vector3& c ) const
 {
     return Vector3(
         X + c.X,
@@ -97,7 +99,7 @@ Vector3 Vector3::operator+( const Vector3& c )
     );
 }
 
-Vector3 Vector3::operator-( const Vector3& c )
+Vector3 Vector3::operator-( const Vector3& c ) const
 {
     return Vector3(
         X - c.X,
@@ -106,7 +108,7 @@ Vector3 Vector3::operator-( const Vector3& c )
     );
 }
 
-Vector3 Vector3::operator-()
+Vector3 Vector3::operator-() const
 {
     return Vector3( -X, -Y, -Z );
 }

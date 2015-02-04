@@ -44,17 +44,12 @@ struct Vector3
     /// <summary>
     /// Gets the length of this 3D vector.
     /// </summary>
-    double Length() const;
+    real64 Length() const;
 
     /// <summary>
     /// Gets the length squared of this 3D vector.
     /// </summary>
-    double LengthSq() const;
-
-    /// <summary>
-    /// Normalizes this 3D vector.
-    /// </summary>
-    void Normalize();
+    real64 LengthSq() const;
 
     /// <summary>
     /// Gets the dot product of two vectors.
@@ -70,14 +65,20 @@ struct Vector3
     /// <param name="v2">The second vector.</param>
     static Vector3 Cross( const Vector3& v1, const Vector3& v2 );
 
-    operator Color();
+    /// <summary>
+    /// Normalizes the given vector.
+    /// </summary>
+    /// <param name="vec">The vector.</param>
+    static Vector3 Normalize( const Vector3& vec );
 
-    bool operator==( const Vector3& );
-    bool operator!=( const Vector3& );
+    operator Color() const;
 
-    Vector3 operator+( const Vector3& );
-    Vector3 operator-( const Vector3& );
-    Vector3 operator-();
+    bool operator==( const Vector3& ) const;
+    bool operator!=( const Vector3& ) const;
+
+    Vector3 operator+( const Vector3& ) const;
+    Vector3 operator-( const Vector3& ) const;
+    Vector3 operator-() const;
 
     Vector3& operator+=( const Vector3& );
     Vector3& operator-=( const Vector3& );

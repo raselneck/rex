@@ -2,6 +2,15 @@
 #define __REX_CONFIG_HXX
 #pragma once
 
+/**
+ * NOTES:
+ * 1. This ray tracer uses a right-handed coordinate system in its calculations.
+ */
+
+
+// PAGE 24
+
+
 #define REX_NS_BEGIN namespace rex {
 #define REX_NS_END   }
 

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Config.hxx"
-#include "Color.hxx"
 #include <math.h>
 
 REX_NS_BEGIN
@@ -13,6 +12,16 @@ REX_NS_BEGIN
 /// </summary>
 struct Math
 {
+    static const real64 PI;
+    static const real64 TWO_PI;
+    static const real64 PI_OVER_180;
+    static const real64 INV_PI;
+    static const real64 INV_TWO_PI;
+
+    static const real64 EPSILON;
+    static const real64 HUGE_VALUE;
+    static const real64 ONE_THIRD;
+
     /// <summary>
     /// Returns the minimum of the two given values.
     /// </summary>
@@ -53,22 +62,6 @@ struct Math
     template<class T> static inline T Lerp( T v0, T v1, T t )
     {
         return ( T( 1 ) - t ) * v0 + t * v1;
-    }
-
-    /// <summary>
-    /// Raises the given color to the given exponent.
-    /// </summary>
-    /// <param name="color">The color to use as a base.</param>
-    /// <param name="exponent">The exponent to raise to.</param>
-    static inline Color Pow( const Color& color, real32 exponent )
-    {
-        Color result(
-            pow( color.R, exponent ),
-            pow( color.G, exponent ),
-            pow( color.B, exponent )
-        );
-
-        return result;
     }
 };
 

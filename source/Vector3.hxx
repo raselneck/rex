@@ -6,8 +6,6 @@
 
 REX_NS_BEGIN
 
-struct Color;
-
 /// <summary>
 /// Defines a 3-dimensional vector.
 /// </summary>
@@ -71,8 +69,6 @@ struct Vector3
     /// <param name="vec">The vector.</param>
     static Vector3 Normalize( const Vector3& vec );
 
-    operator Color() const;
-
     bool operator==( const Vector3& ) const;
     bool operator!=( const Vector3& ) const;
 
@@ -93,4 +89,5 @@ Vector3 operator/( real64, const Vector3& );
 
 REX_NS_END
 
+#include "Vector3.inl"
 #endif

@@ -1,5 +1,4 @@
 #include "Image.hxx"
-#include "Logger.hxx"
 #include "Math.hxx"
 
 // include stb image write header
@@ -130,7 +129,7 @@ void Image::SetPixel( uint32 x, uint32 y, real32 r, real32 g, real32 b )
 // set pixel, unchecked
 void Image::SetPixelUnchecked( uint32 x, uint32 y, const Color& color )
 {
-    _pixels[ x + y*_width ] = color;
+    _pixels[ x + y * _width ] = color;
 }
 
 // set pixel, unchecked

@@ -3,10 +3,9 @@
 #pragma once
 
 #include "Config.hxx"
+#include "Math.hxx"
 
 REX_NS_BEGIN
-
-struct Vector3;
 
 /// <summary>
 /// Defines a color.
@@ -46,7 +45,14 @@ struct Color
     /// </summary>
     real32 GetAverage() const;
 
-    operator Vector3();
+    static const Color Black;
+    static const Color White;
+    static const Color Red;
+    static const Color Green;
+    static const Color Blue;
+    static const Color Yellow;
+    static const Color Cyan;
+    static const Color Magenta;
 
     bool operator==( const Color& ) const;
     bool operator!=( const Color& ) const;
@@ -69,4 +75,5 @@ Color& operator*=( real32, Color& );
 
 REX_NS_END
 
+#include "Color.inl"
 #endif

@@ -74,4 +74,5 @@ Vector2 operator/( real64, const Vector2& );
 
 REX_NS_END
 
+#include "Vector2.inl"
 #endif

@@ -161,23 +161,45 @@
   <ItemGroup>
     <ClCompile Include="Color.cxx" />
     <ClCompile Include="Image.cxx" />
-    <ClCompile Include="Logger.cxx" />
     <ClCompile Include="Main.cxx" />
+    <ClCompile Include="Math.cxx" />
+    <ClCompile Include="Matrix.cxx" />
+    <ClCompile Include="Plane.cxx" />
     <ClCompile Include="Ray.cxx" />
+    <ClCompile Include="RayTracer.cxx" />
+    <ClCompile Include="Scene.cxx" />
+    <ClCompile Include="ShadePoint.cxx" />
+    <ClCompile Include="Sphere.cxx" />
     <ClCompile Include="Vector2.cxx" />
     <ClCompile Include="Vector3.cxx" />
+    <ClCompile Include="ViewPlane.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assert.hxx" />
     <ClInclude Include="Color.hxx" />
     <ClInclude Include="Config.hxx" />
+    <ClInclude Include="Debug.hxx" />
+    <ClInclude Include="Geometry.hxx" />
     <ClInclude Include="Image.hxx" />
-    <ClInclude Include="Logger.hxx" />
     <ClInclude Include="Math.hxx" />
+    <ClInclude Include="Matrix.hxx" />
+    <ClInclude Include="Plane.hxx" />
+    <ClInclude Include="Random.hxx" />
     <ClInclude Include="Ray.hxx" />
+    <ClInclude Include="RayTracer.hxx" />
     <ClInclude Include="Rex.hxx" />
+    <ClInclude Include="Scene.hxx" />
+    <ClInclude Include="ShadePoint.hxx" />
+    <ClInclude Include="Sphere.hxx" />
     <ClInclude Include="Vector2.hxx" />
     <ClInclude Include="Vector3.hxx" />
+    <ClInclude Include="ViewPlane.hxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Color.inl" />
+    <None Include="Matrix.inl" />
+    <None Include="Random.inl" />
+    <None Include="Vector2.inl" />
+    <None Include="Vector3.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

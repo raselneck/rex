@@ -15,25 +15,31 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{bfbed11e-f2c2-4ff2-8a05-bb0cb4bba5f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics">
-      <UniqueIdentifier>{69586696-27c7-4889-a241-bedb2b1962d5}</UniqueIdentifier>
+    <Filter Include="Header Files\Lights">
+      <UniqueIdentifier>{333938f1-71fd-4c5e-8d79-b8a27889d108}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics">
-      <UniqueIdentifier>{63ce3d6b-835e-49e5-92ab-bd3cff9a4a04}</UniqueIdentifier>
+    <Filter Include="Header Files\Geometry">
+      <UniqueIdentifier>{c3ae9b37-5259-4265-b1ac-9cd38f2e980e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{2234da25-4167-408e-a058-4f49ce097809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RayTracers">
+      <UniqueIdentifier>{9034585e-641f-46a9-a3bc-bb66dfd33688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{985b9b8b-1c79-4503-8899-6e48717c74e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RayTracers">
+      <UniqueIdentifier>{29761c55-af06-4d33-8a7a-d7bafd73f7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{523158dc-8e7c-4fde-9679-9c8cac88a45e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cxx">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cxx">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cxx">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Vector3.cxx">
       <Filter>Source Files\Utility</Filter>
@@ -44,20 +50,38 @@
     <ClCompile Include="Ray.cxx">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Matrix.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadePoint.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cxx">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cxx">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer.cxx">
+      <Filter>Source Files\RayTracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cxx">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewPlane.cxx">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assert.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Image.hxx">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Color.hxx">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Math.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -76,5 +100,58 @@
     <ClInclude Include="Ray.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.hxx">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadePoint.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.hxx">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.hxx">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.hxx">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewPlane.hxx">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer.hxx">
+      <Filter>Header Files\RayTracers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vector2.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="Vector3.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="Matrix.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="Random.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="Color.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
   </ItemGroup>
 </Project>

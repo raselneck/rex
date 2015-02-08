@@ -3,10 +3,12 @@
 #pragma once
 
 #include "Config.hxx"
-#include "ViewPlane.hxx"
-#include "RayTracer.hxx"
-#include "Sphere.hxx"
+#include "Geometry.hxx"
 #include "Image.hxx"
+#include "RayTracer.hxx"
+#include "ShadePoint.hxx"
+#include "ViewPlane.hxx"
+#include <vector>
 
 REX_NS_BEGIN
 
@@ -17,9 +19,9 @@ class Scene
 {
     ViewPlane _viewPlane;
     Color _bgColor;
-    Sphere _sphere;
     Handle<RayTracer> _tracer;
     Handle<Image> _image;
+    std::vector<Handle<Geometry>> _objects;
 
 public:
     /// <summary>
@@ -33,21 +35,44 @@ public:
     ~Scene();
 
     /// <summary>
+    /// Gets this scene's background color.
+    /// </summary>
+    const Color& GetBackgroundColor() const;
+
+    /// <summary>
     /// Gets the scene's image.
     /// </summary>
     const Handle<Image>& GetImage() const;
 
     /// <summary>
-    /// Gets the scene's sphere.
+    /// Hits all of the objects in this scene with the given ray.
     /// </summary>
-    const Sphere& GetSphere() const;
+    /// <param name="ray">The ray to hit with.</param>
+    ShadePoint HitObjects( const Ray& ray ) const;
+
+    /// <summary>
+    /// Adds a plane to the scene.
+    /// </summary>
+    /// <param name="point">A point the plane passes through.</param>
+    /// <param name="normal">The plane's normal.</param>
+    /// <param name="color">The plane's color.</param>
+    void AddPlane( const Vector3& point, const Vector3& normal, const Color& color = Color::Black );
+
+    /// <summary>
+    /// Adds a sphere to the scene.
+    /// </summary>
+    /// <param name="center">The center of the sphere.</param>
+    /// <param name="radius">The radius of the sphere.</param>
+    /// <param name="color">The plane's color.</param>
+    void AddSphere( const Vector3& center, real64 radius, const Color& color = Color::Black );
 
     /// <summary>
     /// Builds the scene.
     /// </summary>
     /// <param name="hres">The horizontal resolution.</param>
     /// <param name="vres">The vertical resolution.</param>
-    void Build( int32 hres, int32 vres );
+    /// <param name="ps">The pixel size to use.</param>
+    void Build( int32 hres, int32 vres, real32 ps );
 
     /// <summary>
     /// Renders the scene to the image.

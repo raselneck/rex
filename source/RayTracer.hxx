@@ -16,7 +16,7 @@ class Scene;
 class RayTracer
 {
 protected:
-    Scene* const _scenePtr;
+    Scene* const _pScene;
 
     /// <summary>
     /// Traces the given ray and returns the color it generates.

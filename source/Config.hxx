@@ -7,12 +7,18 @@
  * 1. This ray tracer uses a right-handed coordinate system in its calculations.
  */
 
-
-// PAGE 24
-
-
 #define REX_NS_BEGIN namespace rex {
 #define REX_NS_END   }
+
+#define REX_DEFAULT_GAMMA (2.2f)
+
+#if defined( NDEBUG )
+#  define __RELEASE__ 1
+#  define __DEBUG__   0
+#else
+#  define __RELEASE__ 0
+#  define __DEBUG__   1
+#endif
 
 #include <stdint.h>
 typedef int8_t   int8;

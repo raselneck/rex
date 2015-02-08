@@ -36,6 +36,12 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{523158dc-8e7c-4fde-9679-9c8cac88a45e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Samplers">
+      <UniqueIdentifier>{c6280f2a-4ad5-4f39-9d3f-708405f7df78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Samplers">
+      <UniqueIdentifier>{9cb6dcb8-fd1a-4c02-9f7b-1e47c14953c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cxx">
@@ -79,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="ViewPlane.cxx">
       <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cxx">
+      <Filter>Source Files\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ ViewPlane::ViewPlane()
     memset( this, 0, sizeof( ViewPlane ) );
 
     PixelSize = 1.0f;
-    Gamma     = 2.2f;
+    Gamma     = REX_DEFAULT_GAMMA;
     InvGamma  = 1.0f / Gamma;
 }
 

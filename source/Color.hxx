@@ -45,6 +45,13 @@ struct Color
     /// </summary>
     real32 GetAverage() const;
 
+    /// <summary>
+    /// Raises the given color to the given power.
+    /// </summary>
+    /// <param name="color">The color.</param>
+    /// <param name="exp">The exponent.</param>
+    static Color Pow( const Color& color, real32 exp );
+
     static const Color Black;
     static const Color White;
     static const Color Red;

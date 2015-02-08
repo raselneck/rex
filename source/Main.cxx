@@ -1,5 +1,7 @@
 #include "Rex.hxx"
 #include "Debug.hxx"
+#include <chrono>
+#include <thread>
 
 // Windows includes to open the output image
 #define WIN32_LEAN_AND_MEAN
@@ -10,23 +12,20 @@
 
 
 // a simple ray tracer for drawing a single red sphere
-struct RedSphereRayTracer : public rex::RayTracer
+struct MultiObjectTracer : public rex::RayTracer
 {
-    RedSphereRayTracer( rex::Scene* scene )
+    MultiObjectTracer( rex::Scene* scene )
         : rex::RayTracer( scene )
     {
     }
-
     rex::Color Trace( const rex::Ray& ray ) const
     {
-        rex::ShadePoint sp( _scenePtr );
-        real64 t;
-
-        if ( _scenePtr->GetSphere().Hit( ray, t, sp ) )
+        rex::ShadePoint sp = _pScene->HitObjects( ray );
+        if ( sp.HasHit )
         {
-            return rex::Color::Red;
+            return sp.Color;
         }
-        return rex::Color::Black;
+        return _pScene->GetBackgroundColor();
     }
 };
 
@@ -35,20 +34,14 @@ int main( int argc, char** argv )
 {
     // create the scene
     rex::Scene scene;
-    scene.SetTracerType<RedSphereRayTracer>();
-    scene.Build( 800, 600 );
+    scene.SetTracerType<MultiObjectTracer>();
+    scene.Build( 400, 400, 0.5f );
     scene.Render();
-
 
     // save and open the image
     scene.GetImage()->Save( "output.png" );
     ShellExecute( 0, 0, TEXT( "output.png" ), 0, 0, SW_SHOW );
-
-
-    // wait for key press (and give time for the shell execute)
-    std::string temp;
-    rex::WriteLine( "Press any key to continue. . ." );
-    std::getline( std::cin, temp );
+    std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );
 
     return 0;
 }

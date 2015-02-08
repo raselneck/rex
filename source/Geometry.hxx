@@ -13,21 +13,25 @@ struct ShadePoint;
 /// <summary>
 /// The base class for geometric objects.
 /// </summary>
-class Geometry
+struct Geometry
 {
-protected:
-    Color _color;
+    Color Color;
 
-public:
     /// <summary>
     /// Creates a new geometric object.
     /// </summary>
-    Geometry() { }
+    Geometry();
+
+    /// <summary>
+    /// Creates a new geometric object.
+    /// </summary>
+    /// <param name="color">The geometric object's color.</param>
+    Geometry( const rex::Color& color );
 
     /// <summary>
     /// Destroys this geometric object.
     /// </summary>
-    virtual ~Geometry() { }
+    virtual ~Geometry();
 
     /// <summary>
     /// Checks to see if the given ray hits this geometric object. If it does, the shading

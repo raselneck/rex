@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Color.cxx" />
+    <ClCompile Include="Geometry.cxx" />
     <ClCompile Include="Image.cxx" />
     <ClCompile Include="Main.cxx" />
     <ClCompile Include="Math.cxx" />

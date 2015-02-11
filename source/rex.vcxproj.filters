@@ -24,14 +24,8 @@
     <Filter Include="Source Files\Geometry">
       <UniqueIdentifier>{2234da25-4167-408e-a058-4f49ce097809}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\RayTracers">
-      <UniqueIdentifier>{9034585e-641f-46a9-a3bc-bb66dfd33688}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{985b9b8b-1c79-4503-8899-6e48717c74e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\RayTracers">
-      <UniqueIdentifier>{29761c55-af06-4d33-8a7a-d7bafd73f7f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{523158dc-8e7c-4fde-9679-9c8cac88a45e}</UniqueIdentifier>
@@ -41,6 +35,12 @@
     </Filter>
     <Filter Include="Source Files\Samplers">
       <UniqueIdentifier>{9cb6dcb8-fd1a-4c02-9f7b-1e47c14953c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tracers">
+      <UniqueIdentifier>{9034585e-641f-46a9-a3bc-bb66dfd33688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tracers">
+      <UniqueIdentifier>{29761c55-af06-4d33-8a7a-d7bafd73f7f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,9 +77,6 @@
     <ClCompile Include="Sphere.cxx">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="RayTracer.cxx">
-      <Filter>Source Files\RayTracers</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cxx">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
@@ -88,6 +85,18 @@
     </ClCompile>
     <ClCompile Include="Geometry.cxx">
       <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Tracer.cxx">
+      <Filter>Source Files\Tracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cxx">
+      <Filter>Source Files\Samplers</Filter>
+    </ClCompile>
+    <ClCompile Include="RegularSampler.cxx">
+      <Filter>Source Files\Samplers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,8 +151,17 @@
     <ClInclude Include="ViewPlane.hxx">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="RayTracer.hxx">
-      <Filter>Header Files\RayTracers</Filter>
+    <ClInclude Include="Timer.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tracer.hxx">
+      <Filter>Header Files\Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="RegularSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +178,9 @@
       <Filter>Header Files\Utility</Filter>
     </None>
     <None Include="Color.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="Timer.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
   </ItemGroup>

@@ -10,7 +10,9 @@
 #define REX_NS_BEGIN namespace rex {
 #define REX_NS_END   }
 
-#define REX_DEFAULT_GAMMA (2.2f)
+#define REX_DEFAULT_GAMMA   (2.2f)
+#define REX_DEFAULT_SAMPLES (1)
+#define REX_DEFAULT_SETS    (83)
 
 #if defined( NDEBUG )
 #  define __RELEASE__ 1

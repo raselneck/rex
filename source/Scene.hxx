@@ -5,7 +5,8 @@
 #include "Config.hxx"
 #include "Geometry.hxx"
 #include "Image.hxx"
-#include "RayTracer.hxx"
+#include "Tracer.hxx"
+#include "Sampler.hxx"
 #include "ShadePoint.hxx"
 #include "ViewPlane.hxx"
 #include <vector>
@@ -17,10 +18,11 @@ REX_NS_BEGIN
 /// </summary>
 class Scene
 {
-    ViewPlane _viewPlane;
-    Color _bgColor;
-    Handle<RayTracer> _tracer;
-    Handle<Image> _image;
+    ViewPlane       _viewPlane;
+    Color           _bgColor;
+    Handle<Image>   _image;
+    Handle<Tracer>  _tracer;
+    Handle<Sampler> _sampler;
     std::vector<Handle<Geometry>> _objects;
 
 public:
@@ -80,7 +82,19 @@ public:
     void Render();
 
     /// <summary>
-    /// Sets the ray tracer's type.
+    /// Sets the scene's sampler type.
+    /// </summary>
+    /// <param name="T">The sampler type.</param>
+    /// <param name="samples">The sample count.</param>
+    /// <param name="sets">The set count.</param>
+    template<class T> void SetSamplerType( int32 samples, int32 sets )
+    {
+        _sampler.reset( new T( samples, sets ) );
+        _sampler->GenerateSamples();
+    }
+
+    /// <summary>
+    /// Sets the scene's ray tracer type.
     /// </summary>
     /// <param name="T">The ray tracer type.</param>
     template<class T> void SetTracerType()

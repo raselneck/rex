@@ -1,6 +1,5 @@
-#include "Scene.hxx"
-#include "Plane.hxx"
-#include "Sphere.hxx"
+#include "Rex.hxx"
+#include "RegularSampler.hxx"
 
 REX_NS_BEGIN
 
@@ -8,7 +7,8 @@ REX_NS_BEGIN
 Scene::Scene()
 {
     _image.reset( new Image( 1, 1 ) );
-    _tracer.reset( new RayTracer( this ) ); // "Null" ray tracer
+    SetSamplerType<RegularSampler>( REX_DEFAULT_SAMPLES, REX_DEFAULT_SETS );
+    SetTracerType<Tracer>();
 }
 
 // destroy scene
@@ -74,11 +74,14 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     _bgColor = Color::Black;
 
     // setup view plane
-    _viewPlane.Width = hres;
-    _viewPlane.Height = vres;
-    _viewPlane.PixelSize = ps;
-    _viewPlane.Gamma = 1.0f;
-    _viewPlane.InvGamma = 1.0f;
+    _viewPlane.Width        = hres;
+    _viewPlane.Height       = vres;
+    _viewPlane.PixelSize    = ps;
+    _viewPlane.Gamma        = 1.0f;
+    _viewPlane.InvGamma     = 1.0f;
+
+    // set sampler info
+    SetSamplerType<RegularSampler>( 4, REX_DEFAULT_SETS );
     
     // setup the image
     _image.reset( new Image( hres, vres ) );
@@ -245,50 +248,99 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 // render the scene
 void Scene::Render()
 {
-    Color  color;
-    Ray    ray;
-    real64 zw = 100.0;
-    real64 x, y;
+    const int32  n              = static_cast<int32>( sqrt( static_cast<real32>( _sampler->GetSampleCount() ) ) );
+    const real64 invN           = 1.0  / n;
+    const real32 invSampleCount = 1.0f / _sampler->GetSampleCount();
+    const real64 zw             = 100.0;
+    Vector3 pp( 0.0, 0.0, zw ); // pixel sample point
+    Vector2 sp;                 // sampler sample point
+    Color   color;
+    Ray     ray;
 
     // set the ray's direction
     ray.Direction = Vector3( 0.0, 0.0, -1.0 );
 
-    int32 num = 0;
-
     // go through each pixel and set the color
+    bool gammaCorrect = ( _viewPlane.Gamma != 1.0f );
     for ( int32 py = 0; py < _image->GetHeight(); ++py )
     {
         for ( int32 px = 0; px < _image->GetWidth(); ++px )
         {
-            // calculate the X and Y values for the ray
-            x = _viewPlane.PixelSize * ( px - 0.5 * ( _viewPlane.Width  - 1.0 ) );
-            y = _viewPlane.PixelSize * ( py - 0.5 * ( _viewPlane.Height - 1.0 ) );
+            color = Color::Black;
 
-            // set the ray's origin
-            ray.Origin = Vector3( x, y, zw );
-
-            // calculate the pixel color
-            color = _tracer->Trace( ray );
-            if ( _viewPlane.Gamma != 1.0f )
+#if 1
+            // typical anti-alias sampling (produces moire patterns)
+            for ( int32 sy = 0; sy < n; ++sy )
             {
-                color = Color::Pow( color, _viewPlane.InvGamma );
-            }
+                for ( int32 sx = 0; sx < n; ++sx )
+                {
+                    sp = _sampler->SampleUnitSquare();
 
-            // now set the pixel in the image
-            _image->SetPixelUnchecked( px, py, color );
-
-
-#if __RELEASE__
-            // save a frame for each colored pixel
-            if ( color != _bgColor )
-            {
-                std::string fname = "output/img" + std::to_string( num ) + ".png";
-                _image->Save( fname.c_str() );
-                ++num;
+                    pp.X = _viewPlane.PixelSize * ( px - 0.5 * _viewPlane.Width  + sp.X );
+                    pp.Y = _viewPlane.PixelSize * ( py - 0.5 * _viewPlane.Height + sp.Y );
+            
+                    ray.Origin = pp;
+                    color += _tracer->Trace( ray );
+                }
             }
 #endif
+#if 0
+            // noise anti-alias sampling
+            for ( int32 p = 0; p < _viewPlane.SampleCount; ++p )
+            {
+                sp.X = _viewPlane.PixelSize * ( px + 0.5 * _viewPlane.Width  + Random::RandReal32() );
+                sp.Y = _viewPlane.PixelSize * ( py + 0.5 * _viewPlane.Height + Random::RandReal32() );
+            
+                ray.Origin = sp;
+                color += _tracer->Trace( ray );
+            }
+#endif
+#if 0
+            // jittered anti-alias sampling
+            for ( int32 sy = 0; sy < n; ++sy )
+            {
+                for ( int32 sx = 0; sx < n; ++sx )
+                {
+                    sp.X = _viewPlane.PixelSize * ( px - 0.5 * _viewPlane.Width  + ( sx + ( Random::RandReal32() * 2.0f - 1.0f ) ) * invN );
+                    sp.Y = _viewPlane.PixelSize * ( py - 0.5 * _viewPlane.Height + ( sy + ( Random::RandReal32() * 2.0f - 1.0f ) ) * invN );
+
+                    ray.Origin = sp;
+                    color += _tracer->Trace( ray );
+                }
+            }
+#endif
+
+            // average colors and save color
+            color *= invSampleCount;
+            _image->SetPixelUnchecked( px, py, color );
         }
     }
 }
+
+/**
+ * Variables needed for old code
+
+    const real64 xCorrection    = 0.5 * ( _viewPlane.Width  - 1.0 );
+    const real64 yCorrection    = 0.5 * ( _viewPlane.Height - 1.0 );
+
+ * Old render code for nested loop
+
+    // calculate the X and Y values for the ray
+    x = _viewPlane.PixelSize * ( px - xCorrection );
+    y = _viewPlane.PixelSize * ( py - yCorrection );
+    
+    // set the ray's origin
+    ray.Origin = Vector3( x, y, zw );
+    
+    // calculate the pixel color
+    color = _tracer->Trace( ray );
+    if ( gammaCorrect )
+    {
+    color = Color::Pow( color, _viewPlane.InvGamma );
+    }
+    
+    // now set the pixel in the image
+    _image->SetPixelUnchecked( px, py, color );
+*/
 
 REX_NS_END

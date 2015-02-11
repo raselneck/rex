@@ -1,27 +1,27 @@
-#include "RayTracer.hxx"
+#include "Tracer.hxx"
 
 REX_NS_BEGIN
 
 // new ray tracer
-RayTracer::RayTracer( Scene* scene )
+Tracer::Tracer( Scene* scene )
     : _pScene( scene )
 {
 }
 
 // destroy ray tracer
-RayTracer::~RayTracer()
+Tracer::~Tracer()
 {
     const_cast<Scene*>( _pScene ) = 0;
 }
 
 // trace the ray
-Color RayTracer::Trace( const Ray& ray ) const
+Color Tracer::Trace( const Ray& ray ) const
 {
     return Color::Black;
 }
 
 // trace the ray
-Color RayTracer::Trace( const Ray& ray, int depth ) const
+Color Tracer::Trace( const Ray& ray, int depth ) const
 {
     return Color::Black;
 }

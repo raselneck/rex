@@ -35,4 +35,5 @@ public:
 
 REX_NS_END
 
+#include "Random.inl"
 #endif

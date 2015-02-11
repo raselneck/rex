@@ -89,7 +89,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(OutDir)obj\</IntDir>
+    <IntDir>$(SolutionDir)build\x64\$(Configuration)\obj\</IntDir>
     <IncludePath>$(SolutionDir)include\;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)build\x64\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)lib\x64\;$(LibraryPath)</LibraryPath>
@@ -167,10 +167,13 @@
     <ClCompile Include="Matrix.cxx" />
     <ClCompile Include="Plane.cxx" />
     <ClCompile Include="Ray.cxx" />
-    <ClCompile Include="RayTracer.cxx" />
+    <ClCompile Include="RegularSampler.cxx" />
+    <ClCompile Include="Sampler.cxx" />
+    <ClCompile Include="Tracer.cxx" />
     <ClCompile Include="Scene.cxx" />
     <ClCompile Include="ShadePoint.cxx" />
     <ClCompile Include="Sphere.cxx" />
+    <ClCompile Include="Timer.cxx" />
     <ClCompile Include="Vector2.cxx" />
     <ClCompile Include="Vector3.cxx" />
     <ClCompile Include="ViewPlane.cxx" />
@@ -186,11 +189,14 @@
     <ClInclude Include="Plane.hxx" />
     <ClInclude Include="Random.hxx" />
     <ClInclude Include="Ray.hxx" />
-    <ClInclude Include="RayTracer.hxx" />
+    <ClInclude Include="RegularSampler.hxx" />
+    <ClInclude Include="Tracer.hxx" />
     <ClInclude Include="Rex.hxx" />
+    <ClInclude Include="Sampler.hxx" />
     <ClInclude Include="Scene.hxx" />
     <ClInclude Include="ShadePoint.hxx" />
     <ClInclude Include="Sphere.hxx" />
+    <ClInclude Include="Timer.hxx" />
     <ClInclude Include="Vector2.hxx" />
     <ClInclude Include="Vector3.hxx" />
     <ClInclude Include="ViewPlane.hxx" />
@@ -199,6 +205,7 @@
     <None Include="Color.inl" />
     <None Include="Matrix.inl" />
     <None Include="Random.inl" />
+    <None Include="Timer.inl" />
     <None Include="Vector2.inl" />
     <None Include="Vector3.inl" />
   </ItemGroup>

@@ -40,6 +40,16 @@ template<typename ... Args> inline void WriteLine( const Args& ... args )
     std::cout << stream.str() << std::endl;
 }
 
+/// <summary>
+/// Reads a line of text from the console.
+/// </summary>
+inline String ReadLine()
+{
+    String str;
+    std::getline( std::cin, str );
+    return str;
+}
+
 REX_NS_END
 
 #pragma warning( pop )

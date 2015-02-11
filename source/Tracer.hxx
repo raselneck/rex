@@ -1,5 +1,5 @@
-#ifndef __REX_RAYTRACER_HXX
-#define __REX_RAYTRACER_HXX
+#ifndef __REX_TRACER_HXX
+#define __REX_TRACER_HXX
 #pragma once
 
 #include "Config.hxx"
@@ -11,9 +11,9 @@ REX_NS_BEGIN
 class Scene;
 
 /// <summary>
-/// The base class for ray tracers.
+/// Defines the base for all ray tracers.
 /// </summary>
-class RayTracer
+class Tracer
 {
 protected:
     Scene* const _pScene;
@@ -30,12 +30,12 @@ public:
     /// Creates a new ray tracer.
     /// </summary>
     /// <param name="scene">The scene to be traced.</param>
-    RayTracer( Scene* scene );
+    Tracer( Scene* scene );
 
     /// <summary>
     /// Destroys this ray tracer.
     /// </summary>
-    virtual ~RayTracer();
+    virtual ~Tracer();
 
     /// <summary>
     /// Traces the given ray and returns the color it generates.

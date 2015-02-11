@@ -11,14 +11,14 @@
 #include <shellapi.h>
 
 
-// a simple ray tracer for drawing a single red sphere
-struct MultiObjectTracer : public rex::RayTracer
+// a simple ray tracer for drawing multiple objects
+struct MultiObjectTracer : public rex::Tracer
 {
     MultiObjectTracer( rex::Scene* scene )
-        : rex::RayTracer( scene )
+        : rex::Tracer( scene )
     {
     }
-    rex::Color Trace( const rex::Ray& ray ) const
+    virtual rex::Color Trace( const rex::Ray& ray ) const
     {
         rex::ShadePoint sp = _pScene->HitObjects( ray );
         if ( sp.HasHit )
@@ -29,19 +29,38 @@ struct MultiObjectTracer : public rex::RayTracer
     }
 };
 
-
 int main( int argc, char** argv )
 {
     // create the scene
     rex::Scene scene;
     scene.SetTracerType<MultiObjectTracer>();
     scene.Build( 400, 400, 0.5f );
-    scene.Render();
+
+
+    // render the scene and time it
+    rex::Timer timer;
+    timer.Start();
+    {
+        scene.Render();
+    }
+    timer.Stop();
+
 
     // save and open the image
     scene.GetImage()->Save( "output.png" );
     ShellExecute( 0, 0, TEXT( "output.png" ), 0, 0, SW_SHOW );
-    std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );
+    
 
+    // now write out how long the rendering took
+    rex::WriteLine( "Render stats:" );
+#if __DEBUG__
+    rex::WriteLine( "  Build mode: Debug" );
+#else
+    rex::WriteLine( "  Build mode: Release" );
+#endif
+    rex::WriteLine( "  Image size: ", scene.GetImage()->GetWidth(), "x", scene.GetImage()->GetHeight() );
+    rex::WriteLine( "  Duration:   ", timer.GetElapsed(), " seconds" );
+
+    rex::ReadLine();
     return 0;
 }

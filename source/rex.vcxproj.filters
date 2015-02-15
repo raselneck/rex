@@ -98,6 +98,18 @@
     <ClCompile Include="RegularSampler.cxx">
       <Filter>Source Files\Samplers</Filter>
     </ClCompile>
+    <ClCompile Include="JitteredSampler.cxx">
+      <Filter>Source Files\Samplers</Filter>
+    </ClCompile>
+    <ClCompile Include="NRooksSampler.cxx">
+      <Filter>Source Files\Samplers</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiJitteredSampler.cxx">
+      <Filter>Source Files\Samplers</Filter>
+    </ClCompile>
+    <ClCompile Include="HammersleySampler.cxx">
+      <Filter>Source Files\Samplers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math.hxx">
@@ -163,6 +175,18 @@
     <ClInclude Include="RegularSampler.hxx">
       <Filter>Header Files\Samplers</Filter>
     </ClInclude>
+    <ClInclude Include="JitteredSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="NRooksSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiJitteredSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="HammersleySampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Vector2.inl">
@@ -181,6 +205,9 @@
       <Filter>Header Files\Utility</Filter>
     </None>
     <None Include="Timer.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="Math.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
   </ItemGroup>

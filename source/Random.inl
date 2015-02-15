@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Random.hxx"
+#include "Math.hxx"
 #include <stdlib.h>
 #include <time.h>
 
@@ -19,9 +20,15 @@ inline void Random::Seed( uint32 seed )
 }
 
 // generate random int
-inline int32 Random::RandInt()
+inline int32 Random::RandInt32()
 {
     return rand();
+}
+
+// generate random int
+inline int32 Random::RandInt32( int32 min, int32 max )
+{
+    return static_cast<int32>( RandReal32( 0.0f, static_cast<real32>( max - min + 1 ) ) + min );
 }
 
 // generate random float
@@ -34,6 +41,12 @@ inline real32 Random::RandReal32()
 #endif
 
     return value;
+}
+
+// generate random float
+inline real32 Random::RandReal32( real32 min, real32 max )
+{
+    return RandReal32() * ( max - min ) + min;
 }
 
 REX_NS_END

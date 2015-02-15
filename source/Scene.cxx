@@ -80,9 +80,6 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     _viewPlane.Gamma        = 1.0f;
     _viewPlane.InvGamma     = 1.0f;
 
-    // set sampler info
-    SetSamplerType<RegularSampler>( 4, REX_DEFAULT_SETS );
-    
     // setup the image
     _image.reset( new Image( hres, vres ) );
 
@@ -252,10 +249,12 @@ void Scene::Render()
     const real64 invN           = 1.0  / n;
     const real32 invSampleCount = 1.0f / _sampler->GetSampleCount();
     const real64 zw             = 100.0;
+    const real32 deltaPercent   = 1.0f / ( _image->GetWidth() * _image->GetHeight() ) * _image->GetWidth();
     Vector3 pp( 0.0, 0.0, zw ); // pixel sample point
     Vector2 sp;                 // sampler sample point
     Color   color;
     Ray     ray;
+    real32  percentage          = 0.0f;
 
     // set the ray's direction
     ray.Direction = Vector3( 0.0, 0.0, -1.0 );
@@ -268,8 +267,7 @@ void Scene::Render()
         {
             color = Color::Black;
 
-#if 1
-            // typical anti-alias sampling (produces moire patterns)
+            // use the sampler to provide multi-sampling and (possible) anti-aliasing
             for ( int32 sy = 0; sy < n; ++sy )
             {
                 for ( int32 sx = 0; sx < n; ++sx )
@@ -278,69 +276,22 @@ void Scene::Render()
 
                     pp.X = _viewPlane.PixelSize * ( px - 0.5 * _viewPlane.Width  + sp.X );
                     pp.Y = _viewPlane.PixelSize * ( py - 0.5 * _viewPlane.Height + sp.Y );
-            
+
                     ray.Origin = pp;
                     color += _tracer->Trace( ray );
                 }
             }
-#endif
-#if 0
-            // noise anti-alias sampling
-            for ( int32 p = 0; p < _viewPlane.SampleCount; ++p )
-            {
-                sp.X = _viewPlane.PixelSize * ( px + 0.5 * _viewPlane.Width  + Random::RandReal32() );
-                sp.Y = _viewPlane.PixelSize * ( py + 0.5 * _viewPlane.Height + Random::RandReal32() );
-            
-                ray.Origin = sp;
-                color += _tracer->Trace( ray );
-            }
-#endif
-#if 0
-            // jittered anti-alias sampling
-            for ( int32 sy = 0; sy < n; ++sy )
-            {
-                for ( int32 sx = 0; sx < n; ++sx )
-                {
-                    sp.X = _viewPlane.PixelSize * ( px - 0.5 * _viewPlane.Width  + ( sx + ( Random::RandReal32() * 2.0f - 1.0f ) ) * invN );
-                    sp.Y = _viewPlane.PixelSize * ( py - 0.5 * _viewPlane.Height + ( sy + ( Random::RandReal32() * 2.0f - 1.0f ) ) * invN );
-
-                    ray.Origin = sp;
-                    color += _tracer->Trace( ray );
-                }
-            }
-#endif
 
             // average colors and save color
             color *= invSampleCount;
             _image->SetPixelUnchecked( px, py, color );
         }
+
+        // increase our percentage (if we did this every pixel it would be hella slow)
+        percentage += deltaPercent;
+        rex::Write( "\rRendering... ", ( percentage * 100 ), "%        " );
     }
+    rex::WriteLine( "\rRendering... 100%        " );
 }
-
-/**
- * Variables needed for old code
-
-    const real64 xCorrection    = 0.5 * ( _viewPlane.Width  - 1.0 );
-    const real64 yCorrection    = 0.5 * ( _viewPlane.Height - 1.0 );
-
- * Old render code for nested loop
-
-    // calculate the X and Y values for the ray
-    x = _viewPlane.PixelSize * ( px - xCorrection );
-    y = _viewPlane.PixelSize * ( py - yCorrection );
-    
-    // set the ray's origin
-    ray.Origin = Vector3( x, y, zw );
-    
-    // calculate the pixel color
-    color = _tracer->Trace( ray );
-    if ( gammaCorrect )
-    {
-    color = Color::Pow( color, _viewPlane.InvGamma );
-    }
-    
-    // now set the pixel in the image
-    _image->SetPixelUnchecked( px, py, color );
-*/
 
 REX_NS_END

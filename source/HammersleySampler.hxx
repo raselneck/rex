@@ -1,6 +1,5 @@
-#ifndef __REX_REGULARSAMPLER_HXX
-#define __REX_REGULARSAMPLER_HXX
-#pragma once
+#ifndef __REX_HAMMERSLEYSAMPLER_HXX
+#define __REX_HAMMERSLEYSAMPLER_HXX
 
 #include "Config.hxx"
 #include "Sampler.hxx"
@@ -8,41 +7,41 @@
 REX_NS_BEGIN
 
 /// <summary>
-/// Defines a regular sampler.
+/// Defines a Hammersley sampler.
 /// </summary>
-class RegularSampler : public Sampler
+class HammersleySampler : public Sampler
 {
     friend class Scene;
 
 protected:
     /// <summary>
-    /// Generates the samples for this regular sampler.
+    /// Generates the samples for this Hammersley sampler.
     /// </summary>
     void GenerateSamples();
 
 public:
     /// <summary>
-    /// Creates a new regular sampler.
+    /// Creates a new Hammersley sampler.
     /// </summary>
-    RegularSampler();
+    HammersleySampler();
 
     /// <summary>
-    /// Creates a new regular sampler.
+    /// Creates a new Hammersley sampler.
     /// </summary>
     /// <param name="samples">The initial sample count.</param>
-    RegularSampler( int32 samples );
+    HammersleySampler( int32 samples );
 
     /// <summary>
-    /// Creates a new regular sampler.
+    /// Creates a new Hammersley sampler.
     /// </summary>
     /// <param name="samples">The initial sample count.</param>
     /// <param name="sets">The initial set count.</param>
-    RegularSampler( int32 samples, int32 sets );
+    HammersleySampler( int32 samples, int32 sets );
 
     /// <summary>
-    /// Destroys this regular sampler.
+    /// Destroys this Hammersley sampler.
     /// </summary>
-    virtual ~RegularSampler();
+    virtual ~HammersleySampler();
 };
 
 REX_NS_END

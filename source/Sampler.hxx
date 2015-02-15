@@ -14,21 +14,31 @@ REX_NS_BEGIN
 /// </summary>
 class Sampler
 {
+    friend class Scene;
+
     // having _indexJump and _samplePointCount be mutable
     // allows us to have the sample methods be const
 
 protected:
-    int32  _sampleCount;
-    int32  _setCount;
-    mutable int32  _indexJump;
-    mutable uint32 _samplePointCount;
     std::vector<Vector2> _unitSquareSamples;
+    std::vector<Vector2> _unitDiskSamples;
+    std::vector<Vector3> _unitHemisphereSamples;
+    std::vector<Vector3> _unitSphereSamples;
     std::vector<int32>   _indices;
+    mutable int32        _indexJump;
+    mutable uint32       _samplePointCount;
+    int32                _sampleCount;
+    int32                _setCount;
 
     /// <summary>
     /// Sets up the randomly shuffled indices.
     /// </summary>
     void SetupShuffledIndices();
+    
+    /// <summary>
+    /// Generates the samples in the unit square.
+    /// <summary>
+    virtual void GenerateSamples() = 0;
 
 public:
     /// <summary>
@@ -85,6 +95,22 @@ public:
     Vector3 SampleUnitSphere() const;
 
     /// <summary>
+    /// Maps the samples to the unit disk.
+    /// </summary>
+    void MapSamplesToUnitDisk();
+
+    /// <summary>
+    /// Maps the samples to the unit hemisphere.
+    /// </summary>
+    /// <param name="exponent">The exponent to use in hemisphere conversions.</param>
+    void MapSamplesToUnitHemisphere( real32 exponent );
+
+    /// <summary>
+    /// Maps the samples to the unit sphere.
+    /// </summary>
+    void MapSamplesToUnitSphere();
+
+    /// <summary>
     /// Sets the sample count.
     /// </summary>
     /// <param name="samples">The new sample count.</param>
@@ -95,11 +121,6 @@ public:
     /// </summary>
     /// <param name="sets">The new set count.</param>
     void SetSetCount( int32 sets );
-
-    /// <summary>
-    /// Generates the samples in the unit square.
-    /// <summary>
-    virtual void GenerateSamples() = 0;
 };
 
 REX_NS_END

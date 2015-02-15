@@ -27,11 +27,11 @@ RegularSampler::~RegularSampler()
 // generates samples
 void RegularSampler::GenerateSamples()
 {
-    const int32 n = (int32)sqrt( (real32)_sampleCount );
+    const int32 n = (int32)sqrtf( (real32)_sampleCount );
 
     _unitSquareSamples.clear();
 
-    for ( int32 si = 0; si < _setCount; ++si )
+    for ( int32 set = 0; set < _setCount; ++set )
     {
         for ( int32 y = 0; y < n; ++y )
         {

@@ -29,10 +29,17 @@ struct MultiObjectTracer : public rex::Tracer
     }
 };
 
+
 int main( int argc, char** argv )
 {
+    // seed the random number generator
+    rex::Random::Seed( static_cast<uint32>( time( 0 ) ) );
+
+
     // create the scene
+    rex::WriteLine( "Building scene..." );
     rex::Scene scene;
+    scene.SetSamplerType<rex::RegularSampler>( 4 );
     scene.SetTracerType<MultiObjectTracer>();
     scene.Build( 400, 400, 0.5f );
 
@@ -47,6 +54,7 @@ int main( int argc, char** argv )
 
 
     // save and open the image
+    rex::WriteLine( "Saving image..." );
     scene.GetImage()->Save( "output.png" );
     ShellExecute( 0, 0, TEXT( "output.png" ), 0, 0, SW_SHOW );
     
@@ -60,6 +68,7 @@ int main( int argc, char** argv )
 #endif
     rex::WriteLine( "  Image size: ", scene.GetImage()->GetWidth(), "x", scene.GetImage()->GetHeight() );
     rex::WriteLine( "  Duration:   ", timer.GetElapsed(), " seconds" );
+
 
     rex::ReadLine();
     return 0;

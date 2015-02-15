@@ -1,6 +1,5 @@
-#ifndef __REX_REGULARSAMPLER_HXX
-#define __REX_REGULARSAMPLER_HXX
-#pragma once
+#ifndef __REX_JITTEREDSAMPLER_HXX
+#define __REX_JITTEREDSAMPLER_HXX
 
 #include "Config.hxx"
 #include "Sampler.hxx"
@@ -8,41 +7,41 @@
 REX_NS_BEGIN
 
 /// <summary>
-/// Defines a regular sampler.
+/// Defines a jittered sampler.
 /// </summary>
-class RegularSampler : public Sampler
+class JitteredSampler : public Sampler
 {
     friend class Scene;
 
 protected:
     /// <summary>
-    /// Generates the samples for this regular sampler.
+    /// Generates the samples for this jittered sampler.
     /// </summary>
     void GenerateSamples();
 
 public:
     /// <summary>
-    /// Creates a new regular sampler.
+    /// Creates a new jittered sampler.
     /// </summary>
-    RegularSampler();
+    JitteredSampler();
 
     /// <summary>
-    /// Creates a new regular sampler.
+    /// Creates a new jittered sampler.
     /// </summary>
     /// <param name="samples">The initial sample count.</param>
-    RegularSampler( int32 samples );
+    JitteredSampler( int32 samples );
 
     /// <summary>
-    /// Creates a new regular sampler.
+    /// Creates a new jittered sampler.
     /// </summary>
     /// <param name="samples">The initial sample count.</param>
     /// <param name="sets">The initial set count.</param>
-    RegularSampler( int32 samples, int32 sets );
+    JitteredSampler( int32 samples, int32 sets );
 
     /// <summary>
-    /// Destroys this regular sampler.
+    /// Destroys this jittered sampler.
     /// </summary>
-    virtual ~RegularSampler();
+    virtual ~JitteredSampler();
 };
 
 REX_NS_END

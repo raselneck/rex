@@ -85,6 +85,25 @@ public:
     /// Sets the scene's sampler type.
     /// </summary>
     /// <param name="T">The sampler type.</param>
+    template<class T> void SetSamplerType()
+    {
+        SetSamplerType<T>( REX_DEFAULT_SAMPLES, REX_DEFAULT_SETS );
+    }
+
+    /// <summary>
+    /// Sets the scene's sampler type.
+    /// </summary>
+    /// <param name="T">The sampler type.</param>
+    /// <param name="samples">The sample count.</param>
+    template<class T> void SetSamplerType( int32 samples )
+    {
+        SetSamplerType<T>( samples, REX_DEFAULT_SETS );
+    }
+
+    /// <summary>
+    /// Sets the scene's sampler type.
+    /// </summary>
+    /// <param name="T">The sampler type.</param>
     /// <param name="samples">The sample count.</param>
     /// <param name="sets">The set count.</param>
     template<class T> void SetSamplerType( int32 samples, int32 sets )

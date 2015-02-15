@@ -30,6 +30,20 @@ REX_NS_BEGIN
 /// Logs the given arguments.
 /// </summary>
 /// <param name="args">The arguments to log.</param>
+template<typename ... Args> inline void Write( const Args& ... args )
+{
+    std::stringstream stream;
+
+    using List = int[];
+    (void)List{ 0, ( (void)( stream << args ), 0 ) ... };
+
+    std::cout << stream.str();
+}
+
+/// <summary>
+/// Logs the given arguments.
+/// </summary>
+/// <param name="args">The arguments to log.</param>
 template<typename ... Args> inline void WriteLine( const Args& ... args )
 {
     std::stringstream stream;

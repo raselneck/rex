@@ -161,10 +161,14 @@
   <ItemGroup>
     <ClCompile Include="Color.cxx" />
     <ClCompile Include="Geometry.cxx" />
+    <ClCompile Include="HammersleySampler.cxx" />
     <ClCompile Include="Image.cxx" />
+    <ClCompile Include="JitteredSampler.cxx" />
     <ClCompile Include="Main.cxx" />
     <ClCompile Include="Math.cxx" />
     <ClCompile Include="Matrix.cxx" />
+    <ClCompile Include="MultiJitteredSampler.cxx" />
+    <ClCompile Include="NRooksSampler.cxx" />
     <ClCompile Include="Plane.cxx" />
     <ClCompile Include="Ray.cxx" />
     <ClCompile Include="RegularSampler.cxx" />
@@ -183,9 +187,13 @@
     <ClInclude Include="Config.hxx" />
     <ClInclude Include="Debug.hxx" />
     <ClInclude Include="Geometry.hxx" />
+    <ClInclude Include="HammersleySampler.hxx" />
     <ClInclude Include="Image.hxx" />
+    <ClInclude Include="JitteredSampler.hxx" />
     <ClInclude Include="Math.hxx" />
     <ClInclude Include="Matrix.hxx" />
+    <ClInclude Include="MultiJitteredSampler.hxx" />
+    <ClInclude Include="NRooksSampler.hxx" />
     <ClInclude Include="Plane.hxx" />
     <ClInclude Include="Random.hxx" />
     <ClInclude Include="Ray.hxx" />
@@ -203,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Color.inl" />
+    <None Include="Math.inl" />
     <None Include="Matrix.inl" />
     <None Include="Random.inl" />
     <None Include="Timer.inl" />

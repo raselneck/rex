@@ -4,9 +4,13 @@
 
 #include "Color.hxx"
 #include "Geometry.hxx"
+#include "HammersleySampler.hxx"
 #include "Image.hxx"
+#include "JitteredSampler.hxx"
 #include "Math.hxx"
 #include "Matrix.hxx"
+#include "MultiJitteredSampler.hxx"
+#include "NRooksSampler.hxx"
 #include "Plane.hxx"
 #include "Random.hxx"
 #include "Ray.hxx"

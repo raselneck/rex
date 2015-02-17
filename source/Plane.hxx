@@ -1,6 +1,5 @@
 #ifndef __REX_PLANE_HXX
 #define __REX_PLANE_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Geometry.hxx"

@@ -11,8 +11,6 @@ REX_NS_BEGIN
 /// </summary>
 class NRooksSampler : public Sampler
 {
-    friend class Scene;
-
 protected:
     /// <summary>
     /// Generates the samples for this n-Rooks sampler.

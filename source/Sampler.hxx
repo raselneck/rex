@@ -1,6 +1,5 @@
 #ifndef __REX_SAMPLER_HXX
 #define __REX_SAMPLER_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Vector2.hxx"

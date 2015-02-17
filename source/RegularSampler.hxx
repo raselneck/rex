@@ -1,6 +1,5 @@
 #ifndef __REX_REGULARSAMPLER_HXX
 #define __REX_REGULARSAMPLER_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Sampler.hxx"
@@ -12,8 +11,6 @@ REX_NS_BEGIN
 /// </summary>
 class RegularSampler : public Sampler
 {
-    friend class Scene;
-
 protected:
     /// <summary>
     /// Generates the samples for this regular sampler.

@@ -1,5 +1,6 @@
 #include "Rex.hxx"
 #include "RegularSampler.hxx"
+#include "PerspectiveCamera.hxx"
 
 REX_NS_BEGIN
 
@@ -7,7 +8,8 @@ REX_NS_BEGIN
 Scene::Scene()
 {
     _image.reset( new Image( 1, 1 ) );
-    SetSamplerType<RegularSampler>( REX_DEFAULT_SAMPLES, REX_DEFAULT_SETS );
+    SetCameraType<PerspectiveCamera>();
+    SetSamplerType<RegularSampler>();
     SetTracerType<Tracer>();
 }
 
@@ -22,10 +24,34 @@ const Color& Scene::GetBackgroundColor() const
     return _bgColor;
 }
 
+// get camera
+const Handle<Camera>& Scene::GetCamera() const
+{
+    return _camera;
+}
+
 // get image
 const Handle<Image>& Scene::GetImage() const
 {
     return _image;
+}
+
+// get sampler
+const Handle<Sampler>& Scene::GetSampler() const
+{
+    return _sampler;
+}
+
+// get tracer
+const Handle<Tracer>& Scene::GetTracer() const
+{
+    return _tracer;
+}
+
+// get view plane
+const ViewPlane& Scene::GetViewPlane() const
+{
+    return _viewPlane;
 }
 
 // hit all objects
@@ -51,7 +77,13 @@ ShadePoint Scene::HitObjects( const Ray& ray ) const
     return sp;
 }
 
-// adds a plane
+// add plane
+void Scene::AddPlane( const Vector3& point, const Vector3& normal )
+{
+    AddPlane( point, normal, Color::Black );
+}
+
+// add plane w/ color
 void Scene::AddPlane( const Vector3& point, const Vector3& normal, const Color& color )
 {
     auto plane = Handle<Plane>( new Plane( point, normal ) );
@@ -60,6 +92,12 @@ void Scene::AddPlane( const Vector3& point, const Vector3& normal, const Color& 
 }
 
 // adds a sphere
+void Scene::AddSphere( const Vector3& center, real64 radius )
+{
+    AddSphere( center, radius, Color::Black );
+}
+
+// adds a sphere w/ color
 void Scene::AddSphere( const Vector3& center, real64 radius, const Color& color )
 {
     auto sphere = Handle<Sphere>( new Sphere( center, radius ) );
@@ -242,56 +280,35 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     add_object( sphere_ptr35 );
 }
 
+// get camera
+Handle<Camera>& Scene::GetCamera()
+{
+    return _camera;
+}
+
+// get image
+Handle<Image>& Scene::GetImage()
+{
+    return _image;
+}
+
+// get sampler
+Handle<Sampler>& Scene::GetSampler()
+{
+    return _sampler;
+}
+
+// get tracer
+Handle<Tracer>& Scene::GetTracer()
+{
+    return _tracer;
+}
+
 // render the scene
 void Scene::Render()
 {
-    const int32  n              = static_cast<int32>( sqrt( static_cast<real32>( _sampler->GetSampleCount() ) ) );
-    const real64 invN           = 1.0  / n;
-    const real32 invSampleCount = 1.0f / _sampler->GetSampleCount();
-    const real64 zw             = 100.0;
-    const real32 deltaPercent   = 1.0f / ( _image->GetWidth() * _image->GetHeight() ) * _image->GetWidth();
-    Vector3 pp( 0.0, 0.0, zw ); // pixel sample point
-    Vector2 sp;                 // sampler sample point
-    Color   color;
-    Ray     ray;
-    real32  percentage          = 0.0f;
-
-    // set the ray's direction
-    ray.Direction = Vector3( 0.0, 0.0, -1.0 );
-
-    // go through each pixel and set the color
-    bool gammaCorrect = ( _viewPlane.Gamma != 1.0f );
-    for ( int32 py = 0; py < _image->GetHeight(); ++py )
-    {
-        for ( int32 px = 0; px < _image->GetWidth(); ++px )
-        {
-            color = Color::Black;
-
-            // use the sampler to provide multi-sampling and (possible) anti-aliasing
-            for ( int32 sy = 0; sy < n; ++sy )
-            {
-                for ( int32 sx = 0; sx < n; ++sx )
-                {
-                    sp = _sampler->SampleUnitSquare();
-
-                    pp.X = _viewPlane.PixelSize * ( px - 0.5 * _viewPlane.Width  + sp.X );
-                    pp.Y = _viewPlane.PixelSize * ( py - 0.5 * _viewPlane.Height + sp.Y );
-
-                    ray.Origin = pp;
-                    color += _tracer->Trace( ray );
-                }
-            }
-
-            // average colors and save color
-            color *= invSampleCount;
-            _image->SetPixelUnchecked( px, py, color );
-        }
-
-        // increase our percentage (if we did this every pixel it would be hella slow)
-        percentage += deltaPercent;
-        rex::Write( "\rRendering... ", ( percentage * 100 ), "%        " );
-    }
-    rex::WriteLine( "\rRendering... 100%        " );
+    Scene& me = *this;
+    _camera->Render( me );
 }
 
 REX_NS_END

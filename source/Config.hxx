@@ -1,10 +1,11 @@
 #ifndef __REX_CONFIG_HXX
 #define __REX_CONFIG_HXX
-#pragma once
 
 /**
- * NOTES:
- * 1. This ray tracer uses a right-handed coordinate system in its calculations.
+ | "Trick or bear?"
+ | "Bear??"
+ | "HE HAS CHOSEN THE BEAR!"
+ | *sounds of chains and snarling off in the distance*
  */
 
 #define REX_NS_BEGIN namespace rex {
@@ -39,7 +40,14 @@ typedef double   real64;
 
 REX_NS_BEGIN
 
+/// <summary>
+/// The string type used by Rex.
+/// </summary>
 typedef std::string String;
+
+/// <summary>
+/// The handle type used by Rex for managing pointers.
+/// </summary>
 template<class T> using Handle = std::shared_ptr<T>;
 
 REX_NS_END

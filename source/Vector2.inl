@@ -1,6 +1,5 @@
 #ifndef __REX_VECTOR2_INL
 #define __REX_VECTOR2_INL
-#pragma once
 
 #include "Vector2.hxx"
 

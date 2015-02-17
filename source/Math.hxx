@@ -1,6 +1,5 @@
 #ifndef __REX_MATH_HXX
 #define __REX_MATH_HXX
-#pragma once
 
 #include "Config.hxx"
 #include <math.h>

@@ -1,6 +1,5 @@
 #ifndef __REX_SHADEPOINT_HXX
 #define __REX_SHADEPOINT_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Color.hxx"

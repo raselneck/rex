@@ -1,6 +1,5 @@
 #ifndef __REX_VECTOR3_INL
 #define __REX_VECTOR3_INL
-#pragma once
 
 #include "Vector3.hxx"
 

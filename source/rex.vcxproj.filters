@@ -15,9 +15,6 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{bfbed11e-f2c2-4ff2-8a05-bb0cb4bba5f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Lights">
-      <UniqueIdentifier>{333938f1-71fd-4c5e-8d79-b8a27889d108}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{c3ae9b37-5259-4265-b1ac-9cd38f2e980e}</UniqueIdentifier>
     </Filter>
@@ -41,6 +38,12 @@
     </Filter>
     <Filter Include="Source Files\Tracers">
       <UniqueIdentifier>{29761c55-af06-4d33-8a7a-d7bafd73f7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{0e85f27e-9c28-4ff6-a01d-ce57acdc2ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{ea570b92-7493-4ee8-b588-2c3531e4b512}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="HammersleySampler.cxx">
       <Filter>Source Files\Samplers</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cxx">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="PerspectiveCamera.cxx">
+      <Filter>Source Files\Cameras</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +196,12 @@
     <ClInclude Include="HammersleySampler.hxx">
       <Filter>Header Files\Samplers</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.hxx">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="PerspectiveCamera.hxx">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Vector2.inl">
@@ -209,6 +224,9 @@
     </None>
     <None Include="Math.inl">
       <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="Scene.inl">
+      <Filter>Header Files\Scene</Filter>
     </None>
   </ItemGroup>
 </Project>

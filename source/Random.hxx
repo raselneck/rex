@@ -1,6 +1,5 @@
 #ifndef __REX_RANDOM_HXX
 #define __REX_RANDOM_HXX
-#pragma once
 
 #include "Config.hxx"
 

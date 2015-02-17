@@ -1,7 +1,14 @@
 #ifndef __REX_HXX
 #define __REX_HXX
-#pragma once
 
+/**
+ * POSSIBLY TODO
+ * 1) Ch. 10 explains depth-of-field with a thin lens camera
+ * 2) Ch. 11 explains nonlinear projections with both a fish-eye and spherical panoramic camera
+ * 3) Ch. 12 explains stereoscopy with a stereoscopic camera (for use with an Oculus Rift)
+ */
+
+#include "Camera.hxx"
 #include "Color.hxx"
 #include "Geometry.hxx"
 #include "HammersleySampler.hxx"
@@ -11,6 +18,7 @@
 #include "Matrix.hxx"
 #include "MultiJitteredSampler.hxx"
 #include "NRooksSampler.hxx"
+#include "PerspectiveCamera.hxx"
 #include "Plane.hxx"
 #include "Random.hxx"
 #include "Ray.hxx"

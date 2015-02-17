@@ -1,6 +1,5 @@
 #ifndef __REX_GEOOBJECT_HXX
 #define __REX_GEOOBJECT_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Color.hxx"

@@ -1,6 +1,5 @@
 #ifndef __REX_TIMER_HXX
 #define __REX_TIMER_HXX
-#pragma once
 
 #include "Config.hxx"
 #include <chrono>

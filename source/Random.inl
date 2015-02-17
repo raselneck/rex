@@ -1,6 +1,5 @@
 #ifndef __REX_RANDOM_INL
 #define __REX_RANDOM_INL
-#pragma once
 
 #include "Random.hxx"
 #include "Math.hxx"
@@ -37,7 +36,7 @@ inline real32 Random::RandReal32()
     real32 value = static_cast<real32>( rand() ) / static_cast<real32>( RAND_MAX );
 
 #if __DEBUG__
-    RexAssert( value >= 0.0f && value <= 1.0f, "Random range check value failed" );
+    REX_ASSERT( value >= 0.0f && value <= 1.0f, "Random range check value failed" );
 #endif
 
     return value;

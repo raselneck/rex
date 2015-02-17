@@ -1,6 +1,5 @@
 #ifndef __REX_IMAGE_HXX
 #define __REX_IMAGE_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Color.hxx"

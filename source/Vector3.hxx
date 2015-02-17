@@ -1,6 +1,5 @@
 #ifndef __REX_VECTOR3_HXX
 #define __REX_VECTOR3_HXX
-#pragma once
 
 #include "Config.hxx"
 

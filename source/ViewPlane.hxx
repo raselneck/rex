@@ -1,6 +1,5 @@
 #ifndef __REX_VIEWPLANE_HXX
 #define __REX_VIEWPLANE_HXX
-#pragma once
 
 #include "Config.hxx"
 

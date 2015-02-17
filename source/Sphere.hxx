@@ -1,6 +1,5 @@
 #ifndef __REX_SPHERE_HXX
 #define __REX_SPHERE_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Geometry.hxx"

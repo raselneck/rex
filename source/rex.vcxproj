@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cxx" />
     <ClCompile Include="Color.cxx" />
     <ClCompile Include="Geometry.cxx" />
     <ClCompile Include="HammersleySampler.cxx" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Matrix.cxx" />
     <ClCompile Include="MultiJitteredSampler.cxx" />
     <ClCompile Include="NRooksSampler.cxx" />
+    <ClCompile Include="PerspectiveCamera.cxx" />
     <ClCompile Include="Plane.cxx" />
     <ClCompile Include="Ray.cxx" />
     <ClCompile Include="RegularSampler.cxx" />
@@ -183,6 +185,7 @@
     <ClCompile Include="ViewPlane.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.hxx" />
     <ClInclude Include="Color.hxx" />
     <ClInclude Include="Config.hxx" />
     <ClInclude Include="Debug.hxx" />
@@ -194,6 +197,7 @@
     <ClInclude Include="Matrix.hxx" />
     <ClInclude Include="MultiJitteredSampler.hxx" />
     <ClInclude Include="NRooksSampler.hxx" />
+    <ClInclude Include="PerspectiveCamera.hxx" />
     <ClInclude Include="Plane.hxx" />
     <ClInclude Include="Random.hxx" />
     <ClInclude Include="Ray.hxx" />
@@ -214,6 +218,7 @@
     <None Include="Math.inl" />
     <None Include="Matrix.inl" />
     <None Include="Random.inl" />
+    <None Include="Scene.inl" />
     <None Include="Timer.inl" />
     <None Include="Vector2.inl" />
     <None Include="Vector3.inl" />

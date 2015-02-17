@@ -1,6 +1,5 @@
 #ifndef __REX_TIMER_INL
 #define __REX_TIMER_INL
-#pragma once
 
 #include "Timer.hxx"
 

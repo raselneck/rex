@@ -20,6 +20,10 @@ struct MultiObjectTracer : public rex::Tracer
     }
     virtual rex::Color Trace( const rex::Ray& ray ) const
     {
+        return Trace( ray, 0 );
+    }
+    virtual rex::Color Trace( const rex::Ray& ray, int depth ) const
+    {
         rex::ShadePoint sp = _pScene->HitObjects( ray );
         if ( sp.HasHit )
         {
@@ -32,20 +36,30 @@ struct MultiObjectTracer : public rex::Tracer
 
 int main( int argc, char** argv )
 {
+    using namespace rex;
+
     // seed the random number generator
-    rex::Random::Seed( static_cast<uint32>( time( 0 ) ) );
+    Random::Seed( static_cast<uint32>( time( 0 ) ) );
 
 
     // create the scene
-    rex::WriteLine( "Building scene..." );
-    rex::Scene scene;
-    scene.SetSamplerType<rex::RegularSampler>( 4 );
+    WriteLine( "Building scene..." );
+    Scene scene;
+    scene.SetSamplerType<RegularSampler>( 4 );
     scene.SetTracerType<MultiObjectTracer>();
+    scene.SetCameraType<PerspectiveCamera>();
+    {
+        PerspectiveCamera* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
+        camera->SetPosition( 0.0, 0.0, 750.0 );
+        camera->SetTarget( 0.0, 0.0, 0.0 );
+        camera->SetUp( 0.0, 1.0, 0.0 );
+        camera->SetViewDistance( 1000.0f );
+    }
     scene.Build( 400, 400, 0.5f );
 
 
     // render the scene and time it
-    rex::Timer timer;
+    Timer timer;
     timer.Start();
     {
         scene.Render();

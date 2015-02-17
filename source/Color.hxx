@@ -1,6 +1,5 @@
 #ifndef __REX_COLOR_HXX
 #define __REX_COLOR_HXX
-#pragma once
 
 #include "Config.hxx"
 #include "Math.hxx"

@@ -1,6 +1,5 @@
 #ifndef __REX_MATRIX_INL
 #define __REX_MATRIX_INL
-#pragma once
 
 #include "Matrix.hxx"
 

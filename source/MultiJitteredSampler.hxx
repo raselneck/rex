@@ -11,8 +11,6 @@ REX_NS_BEGIN
 /// </summary>
 class MultiJitteredSampler : public Sampler
 {
-    friend class Scene;
-
 protected:
     /// <summary>
     /// Generates the samples for this multi-jittered sampler.

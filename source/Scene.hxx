@@ -71,7 +71,8 @@ public:
     /// Hits all of the objects in this scene with the given ray.
     /// </summary>
     /// <param name="ray">The ray to hit with.</param>
-    ShadePoint HitObjects( const Ray& ray ) const;
+    /// <param name="sp">The shade point object to fill data with.</param>
+    void HitObjects( const Ray& ray, ShadePoint& sp ) const;
 
     /// <summary>
     /// Adds a plane to the scene.

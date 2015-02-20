@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoundingBox.cxx" />
     <ClCompile Include="BRDF.cxx" />
     <ClCompile Include="Camera.cxx" />
     <ClCompile Include="Color.cxx" />
@@ -187,6 +188,7 @@
     <ClCompile Include="ViewPlane.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingBox.hxx" />
     <ClInclude Include="BRDF.hxx" />
     <ClInclude Include="Camera.hxx" />
     <ClInclude Include="Color.hxx" />

@@ -21,7 +21,9 @@ PerspectiveCamera::~PerspectiveCamera()
 // get ray direction to point
 Vector3 PerspectiveCamera::GetRayDirection( const Vector2& sp ) const
 {
-    Vector3 dir = sp.X * _orthoU + sp.Y * _orthoV - _viewPlaneDistance * _orthoW;
+    Vector3 dir = sp.X * _orthoU                // +x is right
+                - sp.Y * _orthoV                // +y is up
+                - _viewPlaneDistance * _orthoW; // +z is out of screen
     return Vector3::Normalize( dir );
 }
 

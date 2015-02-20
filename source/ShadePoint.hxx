@@ -30,6 +30,11 @@ struct ShadePoint
     /// Destroys this shade point.
     /// </summary>
     ~ShadePoint();
+
+    /// <summary>
+    /// Resets this shade point.
+    /// </summary>
+    void Reset();
 };
 
 REX_NS_END

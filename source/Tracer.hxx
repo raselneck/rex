@@ -15,7 +15,7 @@ class Scene;
 class Tracer
 {
 protected:
-    Scene* const _pScene;
+    Scene* const _scene;
 
 public:
     /// <summary>

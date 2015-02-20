@@ -9,11 +9,12 @@ REX_NS_BEGIN
 /// <summary>
 /// Defines a plane as a geometric object.
 /// </summary>
-struct Plane : public Geometry
+class Plane : public Geometry
 {
-    Vector3 Point;
-    Vector3 Normal;
+    Vector3 _point;
+    Vector3 _normal;
 
+public:
     /// <summary>
     /// Creates a new plane.
     /// </summary>
@@ -27,9 +28,32 @@ struct Plane : public Geometry
     Plane( const Vector3& point, const Vector3& normal );
 
     /// <summary>
+    /// Creates a new plane.
+    /// </summary>
+    /// <param name="point">The point through which the plane passes.</param>
+    /// <param name="normal">The normal representing the plane.</param>
+    /// <param name="color">The color of the plane.</param>
+    Plane( const Vector3& point, const Vector3& normal, const Color& color );
+
+    /// <summary>
     /// Destroys this plane.
     /// </summary>
     ~Plane();
+
+    /// <summary>
+    /// Gets this plane's bounds.
+    /// </summary>
+    virtual BoundingBox GetBounds() const;
+
+    /// <summary>
+    /// Gets a point this plane passes through.
+    /// </summary>
+    const Vector3& GetPoint() const;
+
+    /// <summary>
+    /// Gets the normal that defines this plane.
+    /// </summary>
+    const Vector3& GetNormal() const;
 
     /// <summary>
     /// Checks to see if the given ray hits this plane. If it does, the shading

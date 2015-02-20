@@ -3,15 +3,22 @@
 
 REX_NS_BEGIN
 
-// create plane
+// new plane
 Plane::Plane()
 {
 }
 
-// create plane
+// new plane
 Plane::Plane( const Vector3& point, const Vector3& normal )
-    : Point( point ),
-      Normal( Vector3::Normalize( normal ) ) // ensures it is a normal
+    : Plane( point, normal, Color::Black )
+{
+}
+
+// new plane
+Plane::Plane( const Vector3& point, const Vector3& normal, const Color& color  )
+    : Geometry( color ),
+      _point( point ),
+      _normal( Vector3::Normalize( normal ) ) // ensures it is a normal
 {
 }
 
@@ -20,18 +27,37 @@ Plane::~Plane()
 {
 }
 
+// get plane bounds
+BoundingBox Plane::GetBounds() const
+{
+    // this function will never actually be used constructively for planes
+    return BoundingBox( Vector3(), Vector3() );
+}
+
+// get plane point
+const Vector3& Plane::GetPoint() const
+{
+    return _point;
+}
+
+// get plane normal
+const Vector3& Plane::GetNormal() const
+{
+    return _normal;
+}
+
 // check for ray intersection
 bool Plane::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
 {
-    // from "Ray Tracing from the Ground Up", page 56
+    // from Suffern, 56
 
-    real64 t = Vector3::Dot( Point - ray.Origin, Normal ) / Vector3::Dot( ray.Direction, Normal );
+    real64 t = Vector3::Dot( _point - ray.Origin, _normal ) / Vector3::Dot( ray.Direction, _normal );
 
     // check for intersection
     if ( t > Math::EPSILON )
     {
         tmin = t;
-        sp.Normal = Normal;
+        sp.Normal = _normal;
         sp.HitPoint = ray.Origin + t * ray.Direction;
 
         return true;

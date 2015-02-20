@@ -12,10 +12,13 @@
 
 
 // a simple ray tracer for drawing multiple objects
-struct MultiObjectTracer : public rex::Tracer
+class MultiObjectTracer : public rex::Tracer
 {
+    mutable rex::ShadePoint _sp;
+
+public:
     MultiObjectTracer( rex::Scene* scene )
-        : rex::Tracer( scene )
+        : rex::Tracer( scene ), _sp( scene )
     {
     }
     virtual rex::Color Trace( const rex::Ray& ray ) const
@@ -24,12 +27,13 @@ struct MultiObjectTracer : public rex::Tracer
     }
     virtual rex::Color Trace( const rex::Ray& ray, int depth ) const
     {
-        rex::ShadePoint sp = _pScene->HitObjects( ray );
-        if ( sp.HasHit )
+        _sp.Reset();
+        _scene->HitObjects( ray, _sp );
+        if ( _sp.HasHit )
         {
-            return sp.Color;
+            return _sp.Color;
         }
-        return _pScene->GetBackgroundColor();
+        return _scene->GetBackgroundColor();
     }
 };
 
@@ -40,21 +44,24 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount )
     using namespace rex;
 
     // get the camera and setup some loop variables
-    PerspectiveCamera* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
-    real64 angle = 0.0;
-    uint32 imgNumber = 0;
-    real64 totalTime = 0.0;
-    const real64 dAngle = 360.0 / frameCount;
+    PerspectiveCamera* camera     = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
+    real64             angle      = 0.0;
+    uint32             imgNumber  = 0;
+    real64             totalTime  = 0.0;
+    const real64       dAngle     = 360.0 / frameCount;
+    const real64       eyeHeight  = 50.0;
+    const real64       eyeCorrect = 10.0 * ( 2.0 / 3.0 );
 
     // begin the loop to render!
     Timer timer;
+    camera->SetTarget( 0.0, eyeHeight / eyeCorrect, 0.0 );
     rex::WriteLine( "Beginning animation..." );
     while ( angle < 360.0 )
     {
         // move the camera (I know this is mixed, but I want Z to be the "major" position at angle = 0)
         real64 x = 750.0 * std::sin( angle * Math::PI_OVER_180 );
         real64 z = 750.0 * std::cos( angle * Math::PI_OVER_180 );
-        camera->SetPosition( x, 0.0, z );
+        camera->SetPosition( x, eyeHeight, z );
 
         rex::Write( "Rendering image ", imgNumber + 1, " / ", frameCount, "... " );
 

@@ -63,6 +63,20 @@ struct Vector3
     static Vector3 Cross( const Vector3& v1, const Vector3& v2 );
 
     /// <summary>
+    /// Gets a vector containing the minimum components of each given vector.
+    /// </summary>
+    /// <param name="v1">The first vector.</param>
+    /// <param name="v2">The second vector.</param>
+    static Vector3 Min( const Vector3& v1, const Vector3& v2 );
+
+    /// <summary>
+    /// Gets a vector containing the maximum components of each given vector.
+    /// </summary>
+    /// <param name="v1">The first vector.</param>
+    /// <param name="v2">The second vector.</param>
+    static Vector3 Max( const Vector3& v1, const Vector3& v2 );
+
+    /// <summary>
     /// Normalizes the given vector.
     /// </summary>
     /// <param name="vec">The vector.</param>
@@ -84,7 +98,6 @@ struct Vector3
 Vector3 operator*( const Vector3&, real64 );
 Vector3 operator*( real64, const Vector3& );
 Vector3 operator/( const Vector3&, real64 );
-Vector3 operator/( real64, const Vector3& );
 
 REX_NS_END
 

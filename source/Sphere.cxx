@@ -5,21 +5,48 @@ REX_NS_BEGIN
 
 // new sphere
 Sphere::Sphere()
-    : Radius( 0.0 )
+    : Sphere( Vector3(), 0.0, Color::Black )
 {
 }
 
 // new sphere
 Sphere::Sphere( const Vector3& center, real64 radius )
-    : Center( center ),
-      Radius( radius )
+    : Sphere( center, radius, Color::Black )
 {
+}
+
+// new sphere
+Sphere::Sphere( const Vector3& center, real64 radius, const Color& color )
+    : Geometry( color ),
+      _center( center ),
+      _radius( radius )
+{
+    _invRadius = 1.0 / _radius;
 }
 
 // destroy sphere
 Sphere::~Sphere()
 {
-    Radius = 0.0;
+    _radius = 0.0;
+}
+
+// get sphere's bounds
+BoundingBox Sphere::GetBounds() const
+{
+    Vector3 size( _radius );
+    return BoundingBox( _center - size, _center + size );
+}
+
+// get sphere center
+const Vector3& Sphere::GetCenter() const
+{
+    return _center;
+}
+
+// get sphere radius
+real64 Sphere::GetRadius() const
+{
+    return _radius;
 }
 
 // check for ray intersection
@@ -29,10 +56,10 @@ bool Sphere::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
 
     // this is basically using the quadratic equation solved for x where x = t
     real64  t    = 0.0;
-    Vector3 temp = ray.Origin - Center;
+    Vector3 temp = ray.Origin - _center;
     real64  a    = Vector3::Dot( ray.Direction, ray.Direction );
     real64  b    = 2.0 * Vector3::Dot( temp, ray.Direction );
-    real64  c    = Vector3::Dot( temp, temp ) - Radius * Radius;
+    real64  c    = Vector3::Dot( temp, temp ) - _radius * _radius;
     real64  disc = b * b - 4.0 * a * c; // discriminant
 
     // check if the ray misses completely
@@ -48,7 +75,7 @@ bool Sphere::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
     if ( t > Math::EPSILON )
     {
         tmin = t;
-        sp.Normal = ( temp + t * ray.Direction ) / Radius;
+        sp.Normal = ( temp + t * ray.Direction ) * _invRadius;
         sp.HitPoint = ray.Origin + t * ray.Direction;
 
         return true;
@@ -59,7 +86,7 @@ bool Sphere::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
     if ( t > Math::EPSILON )
     {
         tmin = t;
-        sp.Normal = ( temp + t * ray.Direction ) / Radius;
+        sp.Normal = ( temp + t * ray.Direction ) * _invRadius;
         sp.HitPoint = ray.Origin + t * ray.Direction;
 
         return true;

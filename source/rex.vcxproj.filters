@@ -51,6 +51,12 @@
     <Filter Include="Source Files\BRDFs">
       <UniqueIdentifier>{6f8961e5-23ca-42d0-a347-863c1a731a44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Materials">
+      <UniqueIdentifier>{23834659-88ef-4655-a407-cd7617b7245c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Materials">
+      <UniqueIdentifier>{f50a938a-a147-4082-b938-6da12b1b40ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cxx">
@@ -72,9 +78,6 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Image.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="ShadePoint.cxx">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Plane.cxx">
@@ -131,6 +134,12 @@
     <ClCompile Include="LambertianBRDF.cxx">
       <Filter>Source Files\BRDFs</Filter>
     </ClCompile>
+    <ClCompile Include="ShadePoint.cxx">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cxx">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math.hxx">
@@ -165,9 +174,6 @@
     </ClInclude>
     <ClInclude Include="Geometry.hxx">
       <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadePoint.hxx">
-      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Plane.hxx">
       <Filter>Header Files\Geometry</Filter>
@@ -219,6 +225,12 @@
     </ClInclude>
     <ClInclude Include="LambertianBRDF.hxx">
       <Filter>Header Files\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadePoint.hxx">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.hxx">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #define __REX_GEOOBJECT_HXX
 
 #include "Config.hxx"
+#include "BoundingBox.hxx"
 #include "Color.hxx"
 #include "Ray.hxx"
 
@@ -12,10 +13,12 @@ struct ShadePoint;
 /// <summary>
 /// The base class for geometric objects.
 /// </summary>
-struct Geometry
+class Geometry
 {
-    Color Color;
+protected:
+    Color _color;
 
+public:
     /// <summary>
     /// Creates a new geometric object.
     /// </summary>
@@ -31,6 +34,16 @@ struct Geometry
     /// Destroys this geometric object.
     /// </summary>
     virtual ~Geometry();
+
+    /// <summary>
+    /// Gets this piece of geometry's color.
+    /// </summary>
+    const Color& GetColor() const;
+
+    /// <summary>
+    /// Gets this piece of geometry's bounds.
+    /// </summary>
+    virtual BoundingBox GetBounds() const = 0;
 
     /// <summary>
     /// Checks to see if the given ray hits this geometric object. If it does, the shading

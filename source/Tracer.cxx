@@ -4,14 +4,14 @@ REX_NS_BEGIN
 
 // new ray tracer
 Tracer::Tracer( Scene* scene )
-    : _pScene( scene )
+    : _scene( scene )
 {
 }
 
 // destroy ray tracer
 Tracer::~Tracer()
 {
-    const_cast<Scene*>( _pScene ) = 0;
+    const_cast<Scene*>( _scene ) = 0;
 }
 
 // trace the ray

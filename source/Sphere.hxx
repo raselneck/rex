@@ -9,11 +9,13 @@ REX_NS_BEGIN
 /// <summary>
 /// Defines a sphere as a geometric object.
 /// </summary>
-struct Sphere : public Geometry
+class Sphere : public Geometry
 {
-    Vector3 Center;
-    real64  Radius;
+    Vector3 _center;
+    real64  _radius;
+    real64  _invRadius;
 
+public:
     /// <summary>
     /// Creates a new sphere.
     /// </summary>
@@ -27,9 +29,32 @@ struct Sphere : public Geometry
     Sphere( const Vector3& center, real64 radius );
 
     /// <summary>
+    /// Creates a new sphere.
+    /// </summary>
+    /// <param name="center">The center of the sphere.</param>
+    /// <param name="radius">The radius of the sphere.</param>
+    /// <param name="color">The color of the sphere.</param>
+    Sphere( const Vector3& center, real64 radius, const Color& color );
+
+    /// <summary>
     /// Destroys this sphere.
     /// </summary>
     ~Sphere();
+
+    /// <summary>
+    /// Gets this sphere's center.
+    /// </summary>
+    const Vector3& GetCenter() const;
+
+    /// <summary>
+    /// Gets this sphere's radius.
+    /// </summary>
+    real64 GetRadius() const;
+
+    /// <summary>
+    /// Gets this sphere's bounds.
+    /// </summary>
+    virtual BoundingBox GetBounds() const;
 
     /// <summary>
     /// Checks to see if the given ray hits this sphere. If it does, the shading

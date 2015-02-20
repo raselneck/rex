@@ -7,21 +7,21 @@ REX_NS_BEGIN
 
 // new perspective camera
 PerspectiveCamera::PerspectiveCamera()
-    : _viewDistance( 1000.0f ), _zoomAmount( 1.0f )
+    : _viewPlaneDistance( 1000.0f ), _zoomAmount( 1.0f )
 {
 }
 
 // destroy perspective camera
 PerspectiveCamera::~PerspectiveCamera()
 {
-    _viewDistance = 0.0f;
-    _zoomAmount   = 0.0f;
+    _viewPlaneDistance = 0.0f;
+    _zoomAmount        = 0.0f;
 }
 
 // get ray direction to point
 Vector3 PerspectiveCamera::GetRayDirection( const Vector2& sp ) const
 {
-    Vector3 dir = sp.X * _orthoU + sp.Y * _orthoV - _viewDistance * _orthoW;
+    Vector3 dir = sp.X * _orthoU + sp.Y * _orthoV - _viewPlaneDistance * _orthoW;
     return Vector3::Normalize( dir );
 }
 
@@ -72,9 +72,9 @@ void PerspectiveCamera::Render( Scene& scene )
 }
 
 // set view distance
-void PerspectiveCamera::SetViewDistance( real32 dist )
+void PerspectiveCamera::SetViewPlaneDistance( real32 dist )
 {
-    _viewDistance = dist;
+    _viewPlaneDistance = dist;
 }
 
 // set zoom amount

@@ -12,7 +12,7 @@ REX_NS_BEGIN
 /// </summary>
 class PerspectiveCamera : public Camera
 {
-    real32 _viewDistance;
+    real32 _viewPlaneDistance;
     real32 _zoomAmount;
 
     /// <summary>
@@ -39,10 +39,10 @@ public:
     virtual void Render( Scene& scene );
 
     /// <summary>
-    /// Sets this perspective camera's view distance.
+    /// Sets this perspective camera's view plane distance.
     /// </summary>
-    /// <param name="dist">The new view distance.</param>
-    void SetViewDistance( real32 dist );
+    /// <param name="dist">The new view plane distance.</param>
+    void SetViewPlaneDistance( real32 dist );
 
     /// <summary>
     /// Sets this perspective camera's zoom amount.

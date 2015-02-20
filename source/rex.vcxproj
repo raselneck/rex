@@ -159,12 +159,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BRDF.cxx" />
     <ClCompile Include="Camera.cxx" />
     <ClCompile Include="Color.cxx" />
     <ClCompile Include="Geometry.cxx" />
     <ClCompile Include="HammersleySampler.cxx" />
     <ClCompile Include="Image.cxx" />
     <ClCompile Include="JitteredSampler.cxx" />
+    <ClCompile Include="LambertianBRDF.cxx" />
     <ClCompile Include="Main.cxx" />
     <ClCompile Include="Math.cxx" />
     <ClCompile Include="Matrix.cxx" />
@@ -185,6 +187,7 @@
     <ClCompile Include="ViewPlane.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BRDF.hxx" />
     <ClInclude Include="Camera.hxx" />
     <ClInclude Include="Color.hxx" />
     <ClInclude Include="Config.hxx" />
@@ -193,6 +196,7 @@
     <ClInclude Include="HammersleySampler.hxx" />
     <ClInclude Include="Image.hxx" />
     <ClInclude Include="JitteredSampler.hxx" />
+    <ClInclude Include="LambertianBRDF.hxx" />
     <ClInclude Include="Math.hxx" />
     <ClInclude Include="Matrix.hxx" />
     <ClInclude Include="MultiJitteredSampler.hxx" />

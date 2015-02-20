@@ -8,12 +8,14 @@
  * 3) Ch. 12 explains stereoscopy with a stereoscopic camera (for use with an Oculus Rift)
  */
 
+#include "BRDF.hxx"
 #include "Camera.hxx"
 #include "Color.hxx"
 #include "Geometry.hxx"
 #include "HammersleySampler.hxx"
 #include "Image.hxx"
 #include "JitteredSampler.hxx"
+#include "LambertianBRDF.hxx"
 #include "Math.hxx"
 #include "Matrix.hxx"
 #include "MultiJitteredSampler.hxx"

@@ -4,15 +4,15 @@
 #include "Config.hxx"
 #include <math.h>
 
-#define REX_INT32_MAX  (  2147483647 )
-#define REX_INT32_MIN  ( -2147483648 )
-#define REX_UINT32_MAX (  4294967296 )
-#define REX_UINT32_MIN (           0 )
+#define REX_INT32_MAX  (  2147483647  )
+#define REX_INT32_MIN  ( -2147483648  )
+#define REX_UINT32_MAX (  4294967296U )
+#define REX_UINT32_MIN (           0U )
 
-#define REX_INT64_MAX  (  9223372036854775807 )
-#define REX_INT64_MIN  ( -9223372036854775808 )
-#define REX_UINT64_MAX ( 18446744073709551616 )
-#define REX_UINT64_MIN (                    0 )
+#define REX_INT64_MAX  (  9223372036854775807  )
+#define REX_INT64_MIN  ( -9223372036854775808  )
+#define REX_UINT64_MAX ( 18446744073709551616U )
+#define REX_UINT64_MIN (                    0U )
 
 REX_NS_BEGIN
 

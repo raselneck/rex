@@ -5,8 +5,8 @@
 
 REX_NS_BEGIN
 
-// gets the approximate inverse square root of the given number
-static real64 GetApproxInvSqrt( int32 i )
+// TODO : Suffern explained this as the inverse radical, but that's not what it is...
+static real64 GetPhi( int32 i )
 {
     // NOTE: this function is called "phi" by Suffern
 
@@ -15,7 +15,7 @@ static real64 GetApproxInvSqrt( int32 i )
 
     while ( i )
     {
-        x += f * static_cast<real64>( !i & 1 );
+        x += f * static_cast<real64>( i % 2 );
         i /= 2;
         f *= 0.5;
     }
@@ -57,7 +57,7 @@ void HammersleySampler::GenerateSamples()
         for ( int32 i = 0; i < _sampleCount; ++i )
         {
             vec.X = static_cast<real64>( i ) / _sampleCount;
-            vec.Y = GetApproxInvSqrt( i );
+            vec.Y = GetPhi( i );
 
             _unitSquareSamples.push_back( vec );
         }

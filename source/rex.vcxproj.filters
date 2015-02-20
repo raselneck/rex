@@ -45,6 +45,12 @@
     <Filter Include="Source Files\Cameras">
       <UniqueIdentifier>{ea570b92-7493-4ee8-b588-2c3531e4b512}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\BRDFs">
+      <UniqueIdentifier>{78650a38-5fcb-4439-832e-69d3cb0d6ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\BRDFs">
+      <UniqueIdentifier>{6f8961e5-23ca-42d0-a347-863c1a731a44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cxx">
@@ -64,9 +70,6 @@
     </ClCompile>
     <ClCompile Include="Math.cxx">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cxx">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Image.cxx">
       <Filter>Source Files\Utility</Filter>
@@ -118,6 +121,15 @@
     </ClCompile>
     <ClCompile Include="PerspectiveCamera.cxx">
       <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="BRDF.cxx">
+      <Filter>Source Files\BRDFs</Filter>
+    </ClCompile>
+    <ClCompile Include="LambertianBRDF.cxx">
+      <Filter>Source Files\BRDFs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +213,12 @@
     </ClInclude>
     <ClInclude Include="PerspectiveCamera.hxx">
       <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="BRDF.hxx">
+      <Filter>Header Files\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="LambertianBRDF.hxx">
+      <Filter>Header Files\BRDFs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

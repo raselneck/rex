@@ -5,6 +5,24 @@
 
 REX_NS_BEGIN
 
+// add plane
+template<class T> inline Handle<Plane> Scene::AddPlane( const Vector3& point, const Vector3& normal, const T& material )
+{
+    Handle<Plane> plane( new Plane( point, normal ) );
+    plane->SetMaterial( material );
+    _objects.push_back( plane );
+    return plane;
+}
+
+// add sphere
+template<class T> inline Handle<Sphere> Scene::AddSphere( const Vector3& center, real64 radius, const T& material )
+{
+    Handle<Sphere> sphere( new Sphere( center, radius ) );
+    sphere->SetMaterial( material );
+    _objects.push_back( sphere );
+    return sphere;
+}
+
 // set camera type
 template<class T> inline void Scene::SetCameraType()
 {

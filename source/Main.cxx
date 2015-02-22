@@ -11,28 +11,33 @@
 #include <shellapi.h>
 
 
-// a simple ray tracer for drawing multiple objects
-class MultiObjectTracer : public rex::Tracer
+// the main ray-cast tracer
+class RayCastTracer : public rex::Tracer
 {
     mutable rex::ShadePoint _sp;
 
 public:
-    MultiObjectTracer( rex::Scene* scene )
+    RayCastTracer( rex::Scene* scene )
         : rex::Tracer( scene ), _sp( scene )
     {
     }
+
     virtual rex::Color Trace( const rex::Ray& ray ) const
     {
         return Trace( ray, 0 );
     }
-    virtual rex::Color Trace( const rex::Ray& ray, int depth ) const
+
+    virtual rex::Color Trace( const rex::Ray& ray, int32 depth ) const
     {
         _sp.Reset();
+        
         _scene->HitObjects( ray, _sp );
         if ( _sp.HasHit )
         {
-            return _sp.Color;
+            _sp.Ray = ray;
+            return _sp.Material->Shade( _sp );
         }
+
         return _scene->GetBackgroundColor();
     }
 };
@@ -83,7 +88,10 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount )
 
     rex::WriteLine();
     rex::WriteLine( "Finished rendering animation!" );
-    rex::WriteLine( "Total time: ", totalTime, " seconds" );
+    rex::WriteLine( "    Average time:  ", totalTime / frameCount, " seconds / frame" );
+    rex::WriteLine( "    Total time:    ", totalTime, " seconds" );
+    rex::WriteLine( "    Total lights:  ", scene.GetLightCount() );
+    rex::WriteLine( "    Total objects: ", scene.GetObjectCount() );
 }
 
 
@@ -96,17 +104,16 @@ int main( int argc, char** argv )
 
 
     // create the scene
-    WriteLine( "Building scene..." );
+    rex::WriteLine( "Building scene..." );
     Scene scene;
-    scene.SetSamplerType<HammersleySampler>( 4 );
+    scene.SetTracerType<RayCastTracer>();
     scene.SetSamplerType<RegularSampler>( 4 );
-    scene.SetTracerType<MultiObjectTracer>();
     scene.SetCameraType<PerspectiveCamera>();
     {
         PerspectiveCamera* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
         camera->SetPosition( 0.0, 0.0, 750.0 );
-        camera->SetTarget( 0.0, 0.0, 0.0 );
-        camera->SetUp( 0.0, 1.0, 0.0 );
+        camera->SetTarget  ( 0.0, 0.0,   0.0 );
+        camera->SetUp      ( 0.0, 1.0,   0.0 );
         camera->SetViewPlaneDistance( 1000.0f );
     }
     scene.Build( 400, 400, 0.5f );

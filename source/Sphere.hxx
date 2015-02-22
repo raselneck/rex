@@ -29,17 +29,14 @@ public:
     Sphere( const Vector3& center, real64 radius );
 
     /// <summary>
-    /// Creates a new sphere.
-    /// </summary>
-    /// <param name="center">The center of the sphere.</param>
-    /// <param name="radius">The radius of the sphere.</param>
-    /// <param name="color">The color of the sphere.</param>
-    Sphere( const Vector3& center, real64 radius, const Color& color );
-
-    /// <summary>
     /// Destroys this sphere.
     /// </summary>
     ~Sphere();
+
+    /// <summary>
+    /// Gets this sphere's bounds.
+    /// </summary>
+    virtual BoundingBox GetBounds() const;
 
     /// <summary>
     /// Gets this sphere's center.
@@ -52,9 +49,9 @@ public:
     real64 GetRadius() const;
 
     /// <summary>
-    /// Gets this sphere's bounds.
+    /// Gets the geometry type of this sphere.
     /// </summary>
-    virtual BoundingBox GetBounds() const;
+    virtual GeometryType GetType() const;
 
     /// <summary>
     /// Checks to see if the given ray hits this sphere. If it does, the shading

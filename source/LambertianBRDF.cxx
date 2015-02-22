@@ -3,8 +3,20 @@
 
 REX_NS_BEGIN
 
-// new Lambertian BRDF
-LambertianBRDF::LambertianBRDF( Handle<Sampler>& sampler, real32 kd, const Color& dc )
+// create Lambertian BRDF
+LambertianBRDF::LambertianBRDF()
+    : _kd( 0.0f ), _dc( Color::Black )
+{
+}
+
+// create Lambertian BRDF w/ coefficient, color
+LambertianBRDF::LambertianBRDF( real32 kd, const Color& dc )
+    : _kd( kd ), _dc( dc )
+{
+}
+
+// create Lambertian BRDF w/ coefficient, color, sampler
+LambertianBRDF::LambertianBRDF( real32 kd, const Color& dc, Handle<Sampler>& sampler )
     : BRDF( sampler ), _kd( kd ), _dc( dc )
 {
 }
@@ -16,13 +28,13 @@ LambertianBRDF::~LambertianBRDF()
 }
 
 // get bi-hemispherical reflectance
-Color LambertianBRDF::GetBHR( const ShadePoint& sr, const Vector3& wo ) const
+Color LambertianBRDF::GetBHR( const ShadePoint& sp, const Vector3& wo ) const
 {
     return _kd * _dc;
 }
 
 // get BRDF
-Color LambertianBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wi, const Vector3& wo ) const
+Color LambertianBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const
 {
     return _kd * _dc * real32( Math::INV_PI );
 }
@@ -34,13 +46,13 @@ Color LambertianBRDF::GetDiffuseColor() const
 }
 
 // get diffuse reflection coefficient
-Color LambertianBRDF::GetDiffuseCoefficient() const
+real32 LambertianBRDF::GetDiffuseCoefficient() const
 {
     return _kd;
 }
 
 // sample the BRDF
-Color LambertianBRDF::Sample( const ShadePoint& sp, Vector3& wi, const Vector3& wo ) const
+Color LambertianBRDF::Sample( const ShadePoint& sp, Vector3& wo, const Vector3& wi ) const
 {
     // TODO : Temporary?
     return Color::Black;

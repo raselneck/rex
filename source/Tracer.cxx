@@ -17,13 +17,19 @@ Tracer::~Tracer()
 // trace the ray
 Color Tracer::Trace( const Ray& ray ) const
 {
-    return Color::Black;
+    return Color::Magenta;
 }
 
-// trace the ray
+// trace the ray w/ depth count
 Color Tracer::Trace( const Ray& ray, int depth ) const
 {
-    return Color::Black;
+    return Color::Magenta;
+}
+
+// trace the ray w/ depth count, min object distance
+Color Tracer::Trace( const Ray& ray, int32 depth, real32& tmin ) const
+{
+    return Color::Magenta;
 }
 
 REX_NS_END

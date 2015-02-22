@@ -3,9 +3,11 @@
 REX_NS_BEGIN
 
 // new shade point
-ShadePoint::ShadePoint( Scene* scene )
-    : Color( Color::Black ),
-      ScenePtr( scene ),
+ShadePoint::ShadePoint( rex::Scene* scene )
+    : Scene( scene ),
+      Material( nullptr ),
+      T( 0.0 ),
+      RecursDepth( 0 ),
       HasHit( false )
 {
 }
@@ -13,8 +15,11 @@ ShadePoint::ShadePoint( Scene* scene )
 // destroy shade point
 ShadePoint::~ShadePoint()
 {
-    HasHit  = 0;
-    const_cast<Scene*>( ScenePtr ) = 0;
+    T           = 0.0;
+    HasHit      = 0;
+    RecursDepth = 0;
+    Material    = nullptr;
+    const_cast<rex::Scene*>( Scene ) = 0;
 }
 
 // reset shade point
@@ -22,7 +27,7 @@ void ShadePoint::Reset()
 {
     HitPoint.X = HitPoint.Y = HitPoint.Z = 0.0;
     Normal.X   = Normal.Y   = Normal.Z   = 0.0;
-    Color.R    = Color.G    = Color.B    = 0.0;
+    Material   = nullptr;
     HasHit     = false;
 }
 

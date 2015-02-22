@@ -1,6 +1,7 @@
 #include "Rex.hxx"
-#include "RegularSampler.hxx"
-#include "PerspectiveCamera.hxx"
+#include "Debug.hxx"
+#include "MatteMaterial.hxx"
+#include "ShadePoint.hxx"
 
 REX_NS_BEGIN
 
@@ -8,14 +9,36 @@ REX_NS_BEGIN
 Scene::Scene()
 {
     _image.reset( new Image( 1, 1 ) );
-    SetCameraType<PerspectiveCamera>();
-    SetSamplerType<RegularSampler>();
-    SetTracerType<Tracer>();
+    _ambientLight.reset( new AmbientLight() );
+
+    // no default values for these
+    //SetCameraType<PerspectiveCamera>();
+    //SetSamplerType<RegularSampler>();
+    //SetTracerType<Tracer>();
 }
 
 // destroy scene
 Scene::~Scene()
 {
+}
+
+// get ambient color
+const Color& Scene::GetAmbientColor() const
+{
+    return _ambientLight->GetColor();
+}
+
+// get ambient radiance
+Color Scene::GetAmbientRadiance() const
+{
+    ShadePoint sp( nullptr );
+    return _ambientLight->GetRadiance( sp );
+}
+
+// get ambient radiance scale
+real32 Scene::GetAmbientRadianceScale() const
+{
+    return _ambientLight->GetRadianceScale();
 }
 
 // get background color.
@@ -34,6 +57,30 @@ const Handle<Camera>& Scene::GetCamera() const
 const Handle<Image>& Scene::GetImage() const
 {
     return _image;
+}
+
+// get lights
+const std::vector<Handle<Light>>& Scene::GetLights() const
+{
+    return _lights;
+}
+
+// get light count
+uint32 Scene::GetLightCount() const
+{
+    return static_cast<uint32>( _lights.size() );
+}
+
+// get objects
+const std::vector<Handle<Geometry>>& Scene::GetObjects() const
+{
+    return _objects;
+}
+
+// get object count
+uint32 Scene::GetObjectCount() const
+{
+    return static_cast<uint32>( _objects.size() );
 }
 
 // get sampler
@@ -60,6 +107,8 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
     real64 t     = 0.0;
     real64 tmin  = Math::HUGE_VALUE;
     size_t count = _objects.size();
+    Vector3 normal;
+    Vector3 localHitPoint;
 
     // iterate through all objects
     for ( uint32 i = 0; i < count; ++i )
@@ -67,37 +116,65 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
         auto& obj = _objects[ i ];
         if ( obj->Hit( ray, t, sp ) && ( t < tmin ) )
         {
-            sp.HasHit = true;
-            sp.Color  = obj->GetColor();
-            tmin      = t;
+            sp.HasHit     = true;
+            sp.Material   = const_cast<Material*>( obj->GetMaterial() );
+            sp.HitPoint   = ray.Origin + t * ray.Direction;
+
+            tmin          = t;
+            normal        = sp.Normal;
+            localHitPoint = sp.LocalHitPoint;
         }
+    }
+
+    // restore hit point data from closest object
+    if ( sp.HasHit )
+    {
+        sp.T = tmin;
+        sp.Normal = normal;
+        sp.LocalHitPoint = localHitPoint;
     }
 }
 
-// add plane
-void Scene::AddPlane( const Vector3& point, const Vector3& normal )
+// add sphere
+Handle<Plane> Scene::AddPlane( const Plane& plane )
 {
-    AddPlane( point, normal, Color::Black );
+    return AddPlane( plane.GetPoint(), plane.GetNormal() );
 }
 
-// add plane w/ color
-void Scene::AddPlane( const Vector3& point, const Vector3& normal, const Color& color )
+// add plane
+Handle<Plane> Scene::AddPlane( const Vector3& point, const Vector3& normal )
 {
-    auto plane = Handle<Plane>( new Plane( point, normal, color ) );
+    Handle<Plane> plane( new Plane( point, normal ) );
     _objects.push_back( plane );
+    return plane;
+}
+
+// add point light
+Handle<PointLight> Scene::AddPointLight( const Vector3& position )
+{
+    Handle<PointLight> light( new PointLight( position ) );
+    _lights.push_back( light );
+    return light;
+}
+
+// add point light
+Handle<PointLight> Scene::AddPointLight( real64 x, real64 y, real64 z )
+{
+    return AddPointLight( Vector3( x, y, z ) );
 }
 
 // adds a sphere
-void Scene::AddSphere( const Vector3& center, real64 radius )
+Handle<Sphere> Scene::AddSphere( const Sphere& sphere )
 {
-    AddSphere( center, radius, Color::Black );
+    return AddSphere( sphere.GetCenter(), sphere.GetRadius() );
 }
 
-// adds a sphere w/ color
-void Scene::AddSphere( const Vector3& center, real64 radius, const Color& color )
+// adds a sphere
+Handle<Sphere> Scene::AddSphere( const Vector3& center, real64 radius )
 {
-    auto sphere = Handle<Sphere>( new Sphere( center, radius, color ) );
+    Handle<Sphere> sphere( new Sphere( center, radius ) );
     _objects.push_back( sphere );
+    return sphere;
 }
 
 // build scene
@@ -117,19 +194,19 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     _image.reset( new Image( hres, vres ) );
 
 
-    // I did some MAJOR refactoring from the example...
+    // materials
+    const real32 ka = 0.25f;
+    const real32 kd = 0.75f;
+    MatteMaterial yellow      ( Color( 1.00f, 1.00f, 0.00f ), ka, kd );
+    MatteMaterial brown       ( Color( 0.71f, 0.40f, 0.16f ), ka, kd );
+    MatteMaterial dark_green  ( Color( 0.00f, 0.41f, 0.41f ), ka, kd );
+    MatteMaterial orange      ( Color( 1.00f, 0.75f, 0.00f ), ka, kd );
+    MatteMaterial green       ( Color( 0.00f, 0.60f, 0.30f ), ka, kd );
+    MatteMaterial light_green ( Color( 0.65f, 1.00f, 0.30f ), ka, kd );
+    MatteMaterial dark_yellow ( Color( 0.61f, 0.61f, 0.00f ), ka, kd );
+    MatteMaterial light_purple( Color( 0.65f, 0.30f, 1.00f ), ka, kd );
+    MatteMaterial dark_purple ( Color( 0.50f, 0.00f, 1.00f ), ka, kd );
 
-
-    // colors
-    Color yellow      ( 1.00f, 1.00f, 0.00f );
-    Color brown       ( 0.71f, 0.40f, 0.16f );
-    Color dark_green  ( 0.00f, 0.41f, 0.41f );
-    Color orange      ( 1.00f, 0.75f, 0.00f );
-    Color green       ( 0.00f, 0.60f, 0.30f );
-    Color light_green ( 0.65f, 1.00f, 0.30f );
-    Color dark_yellow ( 0.61f, 0.61f, 0.00f );
-    Color light_purple( 0.65f, 0.30f, 1.00f );
-    Color dark_purple ( 0.50f, 0.00f, 1.00f );
 
     // spheres
     AddSphere( Vector3(   5,   3,    0 ), 30, yellow        );
@@ -196,8 +273,58 @@ Handle<Tracer>& Scene::GetTracer()
 // render the scene
 void Scene::Render()
 {
-    Scene& me = *this;
-    _camera->Render( me );
+    // ensure we can actually render
+    bool canRender = true; // so we can have multiple errors
+    if ( !_ambientLight )
+    {
+        rex::WriteLine( "Cannot render scene without an ambient light" );
+        canRender = false;
+    }
+    if ( !_camera )
+    {
+        rex::WriteLine( "Cannot render scene without a camera" );
+        canRender = false;
+    }
+    if ( !_image )
+    {
+        rex::WriteLine( "Cannot render scene without an image" );
+        canRender = false;
+    }
+    if ( !_sampler )
+    {
+        rex::WriteLine( "Cannot render scene without a sampler" );
+        canRender = false;
+    }
+    if ( !_tracer )
+    {
+        rex::WriteLine( "Cannot render scene without a ray tracer" );
+        canRender = false;
+    }
+
+    // now render if we actually can
+    if ( canRender )
+    {
+        Scene& me = *this;
+        _camera->Render( me );
+    }
+}
+
+// set ambient color
+void Scene::SetAmbientColor( const Color& color )
+{
+    _ambientLight->SetColor( color );
+}
+
+// set ambient color
+void Scene::SetAmbientColor( real32 r, real32 g, real32 b )
+{
+    _ambientLight->SetColor( r, g, b );
+}
+
+// set ambient radiance scale
+void Scene::SetAmbientRadianceScale( real32 ls )
+{
+    _ambientLight->SetRadianceScale( ls );
 }
 
 REX_NS_END

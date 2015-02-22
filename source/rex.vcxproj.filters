@@ -57,6 +57,12 @@
     <Filter Include="Source Files\Materials">
       <UniqueIdentifier>{f50a938a-a147-4082-b938-6da12b1b40ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Lights">
+      <UniqueIdentifier>{22e3e9e1-1730-48ed-9f3d-aef616c0231c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lights">
+      <UniqueIdentifier>{8e46e63b-bfd4-4ff1-a122-352332769245}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cxx">
@@ -139,6 +145,21 @@
     </ClCompile>
     <ClCompile Include="BoundingBox.cxx">
       <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cxx">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="AmbientLight.cxx">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cxx">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cxx">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="MatteMaterial.cxx">
+      <Filter>Source Files\Materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +253,21 @@
     <ClInclude Include="BoundingBox.hxx">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="Light.hxx">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="AmbientLight.hxx">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.hxx">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.hxx">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="MatteMaterial.hxx">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Vector2.inl">
@@ -257,6 +293,9 @@
     </None>
     <None Include="Scene.inl">
       <Filter>Header Files\Scene</Filter>
+    </None>
+    <None Include="Geometry.inl">
+      <Filter>Header Files\Geometry</Filter>
     </None>
   </ItemGroup>
 </Project>

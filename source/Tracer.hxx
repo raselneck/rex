@@ -40,7 +40,15 @@ public:
     /// </summary>
     /// <param name="ray">The ray to trace.</param>
     /// <param name="depth">The current ray depth.</param>
-    virtual Color Trace( const Ray& ray, int depth ) const;
+    virtual Color Trace( const Ray& ray, int32 depth ) const;
+
+    /// <summary>
+    /// Traces the given ray and returns the color it generates.
+    /// </summary>
+    /// <param name="ray">The ray to trace.</param>
+    /// <param name="depth">The current ray depth.</param>
+    /// <param name="tmin">The current minimum object distance.</param>
+    virtual Color Trace( const Ray& ray, int32 depth, real32& tmin ) const;
 };
 
 REX_NS_END

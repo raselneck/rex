@@ -1,16 +1,21 @@
 #include "Geometry.hxx"
+#include "MatteMaterial.hxx"
 
 REX_NS_BEGIN
+
+// gets the default material for geometric objects
+static inline MatteMaterial GetDefaultMaterial()
+{
+    MatteMaterial matte;
+    matte.SetAmbientCoefficient( 0.25f );
+    matte.SetDiffuseCoefficient( 0.75f );
+    return matte;
+}
 
 // new geometry object
 Geometry::Geometry()
 {
-}
-
-// new geometry object
-Geometry::Geometry( const rex::Color& color )
-    : _color( color )
-{
+    SetMaterial( GetDefaultMaterial() );
 }
 
 // destroy geometry object
@@ -18,10 +23,10 @@ Geometry::~Geometry()
 {
 }
 
-// get geometry color
-const Color& Geometry::GetColor() const
+// get geometry material
+const Material* Geometry::GetMaterial() const
 {
-    return _color;
+    return _material.get();
 }
 
 REX_NS_END

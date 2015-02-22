@@ -3,25 +3,16 @@
 
 REX_NS_BEGIN
 
-// new sphere
+// create sphere
 Sphere::Sphere()
-    : Sphere( Vector3(), 0.0, Color::Black )
+    : Sphere( Vector3(), 0.0 )
 {
 }
 
-// new sphere
+// create sphere
 Sphere::Sphere( const Vector3& center, real64 radius )
-    : Sphere( center, radius, Color::Black )
+    : _center( center ), _radius( radius )
 {
-}
-
-// new sphere
-Sphere::Sphere( const Vector3& center, real64 radius, const Color& color )
-    : Geometry( color ),
-      _center( center ),
-      _radius( radius )
-{
-    _invRadius = 1.0 / _radius;
 }
 
 // destroy sphere
@@ -47,6 +38,12 @@ const Vector3& Sphere::GetCenter() const
 real64 Sphere::GetRadius() const
 {
     return _radius;
+}
+
+// get sphere geometry type
+GeometryType Sphere::GetType() const
+{
+    return GeometryType::Sphere;
 }
 
 // check for ray intersection
@@ -76,7 +73,7 @@ bool Sphere::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
     {
         tmin = t;
         sp.Normal = ( temp + t * ray.Direction ) * _invRadius;
-        sp.HitPoint = ray.Origin + t * ray.Direction;
+        sp.LocalHitPoint = ray.Origin + t * ray.Direction;
 
         return true;
     }
@@ -87,7 +84,7 @@ bool Sphere::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
     {
         tmin = t;
         sp.Normal = ( temp + t * ray.Direction ) * _invRadius;
-        sp.HitPoint = ray.Origin + t * ray.Direction;
+        sp.LocalHitPoint = ray.Origin + t * ray.Direction;
 
         return true;
     }

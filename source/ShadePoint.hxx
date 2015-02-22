@@ -3,28 +3,35 @@
 
 #include "Config.hxx"
 #include "Color.hxx"
+#include "Ray.hxx"
 #include "Vector3.hxx"
 
 REX_NS_BEGIN
 
 class Scene;
+class Material;
 
 /// <summary>
 /// Defines shading point information.
 /// </summary>
 struct ShadePoint
 {
-    Vector3      HitPoint;
-    Vector3      Normal;
-    Color        Color;
-    Scene* const ScenePtr;
-    bool         HasHit;
+    rex::Ray            Ray;
+    Vector3             HitPoint;
+    Vector3             LocalHitPoint;
+    Vector3             Normal;
+    Vector3             Direction; // same as ray direction??
+    real64              T;
+    rex::Scene* const   Scene;
+    rex::Material*      Material;
+    int32               RecursDepth;
+    bool                HasHit;
 
     /// <summary>
     /// Creates a new shade point.
     /// </summary>
     /// <param name="scene">The scene this shade point is in.</param>
-    ShadePoint( Scene* scene );
+    ShadePoint( rex::Scene* scene );
 
     /// <summary>
     /// Destroys this shade point.

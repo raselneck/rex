@@ -1,24 +1,17 @@
 #include "Plane.hxx"
+#include "MatteMaterial.hxx"
 #include "ShadePoint.hxx"
 
 REX_NS_BEGIN
 
-// new plane
+// create plane
 Plane::Plane()
 {
 }
 
-// new plane
+// create plane
 Plane::Plane( const Vector3& point, const Vector3& normal )
-    : Plane( point, normal, Color::Black )
-{
-}
-
-// new plane
-Plane::Plane( const Vector3& point, const Vector3& normal, const Color& color  )
-    : Geometry( color ),
-      _point( point ),
-      _normal( Vector3::Normalize( normal ) ) // ensures it is a normal
+    : _point( point ), _normal( normal )
 {
 }
 
@@ -34,16 +27,22 @@ BoundingBox Plane::GetBounds() const
     return BoundingBox( Vector3(), Vector3() );
 }
 
+// get plane normal
+const Vector3& Plane::GetNormal() const
+{
+    return _normal;
+}
+
 // get plane point
 const Vector3& Plane::GetPoint() const
 {
     return _point;
 }
 
-// get plane normal
-const Vector3& Plane::GetNormal() const
+// get sphere geometry type
+GeometryType Plane::GetType() const
 {
-    return _normal;
+    return GeometryType::Plane;
 }
 
 // check for ray intersection
@@ -58,7 +57,7 @@ bool Plane::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
     {
         tmin = t;
         sp.Normal = _normal;
-        sp.HitPoint = ray.Origin + t * ray.Direction;
+        sp.LocalHitPoint = ray.Origin + t * ray.Direction;
 
         return true;
     }

@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AmbientLight.cxx" />
     <ClCompile Include="BoundingBox.cxx" />
     <ClCompile Include="BRDF.cxx" />
     <ClCompile Include="Camera.cxx" />
@@ -168,13 +169,17 @@
     <ClCompile Include="Image.cxx" />
     <ClCompile Include="JitteredSampler.cxx" />
     <ClCompile Include="LambertianBRDF.cxx" />
+    <ClCompile Include="Light.cxx" />
     <ClCompile Include="Main.cxx" />
+    <ClCompile Include="Material.cxx" />
     <ClCompile Include="Math.cxx" />
     <ClCompile Include="Matrix.cxx" />
+    <ClCompile Include="MatteMaterial.cxx" />
     <ClCompile Include="MultiJitteredSampler.cxx" />
     <ClCompile Include="NRooksSampler.cxx" />
     <ClCompile Include="PerspectiveCamera.cxx" />
     <ClCompile Include="Plane.cxx" />
+    <ClCompile Include="PointLight.cxx" />
     <ClCompile Include="Ray.cxx" />
     <ClCompile Include="RegularSampler.cxx" />
     <ClCompile Include="Sampler.cxx" />
@@ -188,6 +193,7 @@
     <ClCompile Include="ViewPlane.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AmbientLight.hxx" />
     <ClInclude Include="BoundingBox.hxx" />
     <ClInclude Include="BRDF.hxx" />
     <ClInclude Include="Camera.hxx" />
@@ -199,12 +205,16 @@
     <ClInclude Include="Image.hxx" />
     <ClInclude Include="JitteredSampler.hxx" />
     <ClInclude Include="LambertianBRDF.hxx" />
+    <ClInclude Include="Light.hxx" />
+    <ClInclude Include="Material.hxx" />
     <ClInclude Include="Math.hxx" />
     <ClInclude Include="Matrix.hxx" />
+    <ClInclude Include="MatteMaterial.hxx" />
     <ClInclude Include="MultiJitteredSampler.hxx" />
     <ClInclude Include="NRooksSampler.hxx" />
     <ClInclude Include="PerspectiveCamera.hxx" />
     <ClInclude Include="Plane.hxx" />
+    <ClInclude Include="PointLight.hxx" />
     <ClInclude Include="Random.hxx" />
     <ClInclude Include="Ray.hxx" />
     <ClInclude Include="RegularSampler.hxx" />
@@ -221,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Color.inl" />
+    <None Include="Geometry.inl" />
     <None Include="Math.inl" />
     <None Include="Matrix.inl" />
     <None Include="Random.inl" />

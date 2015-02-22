@@ -14,7 +14,7 @@
 /// <param name="cond">The condition to check.</param>
 /// <param name="message">The message to log if the condition fails.</param>
 #define REX_ASSERT(cond, message) { \
-        bool __result = ( cond ); \
+        bool __result = static_cast<bool>( cond ); \
         if ( !__result ) { \
             rex::String __fname = __FILE__; \
             __fname = __fname.substr( __fname.find_last_of( '\\' ) + 1 ); \

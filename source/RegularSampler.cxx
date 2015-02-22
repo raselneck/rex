@@ -42,6 +42,7 @@ void RegularSampler::GenerateSamples()
                 ) );
             }
         }
+
     }
 }
 

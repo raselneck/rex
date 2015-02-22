@@ -28,14 +28,6 @@ public:
     Plane( const Vector3& point, const Vector3& normal );
 
     /// <summary>
-    /// Creates a new plane.
-    /// </summary>
-    /// <param name="point">The point through which the plane passes.</param>
-    /// <param name="normal">The normal representing the plane.</param>
-    /// <param name="color">The color of the plane.</param>
-    Plane( const Vector3& point, const Vector3& normal, const Color& color );
-
-    /// <summary>
     /// Destroys this plane.
     /// </summary>
     ~Plane();
@@ -46,14 +38,19 @@ public:
     virtual BoundingBox GetBounds() const;
 
     /// <summary>
+    /// Gets the normal that defines this plane.
+    /// </summary>
+    const Vector3& GetNormal() const;
+
+    /// <summary>
     /// Gets a point this plane passes through.
     /// </summary>
     const Vector3& GetPoint() const;
 
     /// <summary>
-    /// Gets the normal that defines this plane.
+    /// Gets the geometry type of this sphere.
     /// </summary>
-    const Vector3& GetNormal() const;
+    virtual GeometryType GetType() const;
 
     /// <summary>
     /// Checks to see if the given ray hits this plane. If it does, the shading

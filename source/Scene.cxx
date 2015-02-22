@@ -1,7 +1,5 @@
 #include "Rex.hxx"
 #include "Debug.hxx"
-#include "MatteMaterial.hxx"
-#include "ShadePoint.hxx"
 
 REX_NS_BEGIN
 
@@ -192,6 +190,10 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 
     // setup the image
     _image.reset( new Image( hres, vres ) );
+
+
+    // lights
+    auto pl = AddPointLight( 0.0, 0.0, 0.0 );
 
 
     // materials

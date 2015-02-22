@@ -13,6 +13,7 @@ Sphere::Sphere()
 Sphere::Sphere( const Vector3& center, real64 radius )
     : _center( center ), _radius( radius )
 {
+    _invRadius = 1.0 / _radius;
 }
 
 // destroy sphere

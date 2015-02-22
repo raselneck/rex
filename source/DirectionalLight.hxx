@@ -1,5 +1,5 @@
-#ifndef __REX_POINTLIGHT_HXX
-#define __REX_POINTLIGHT_HXX
+#ifndef __REX_DIRECTIONALLIGHT_HXX
+#define __REX_DIRECTIONALLIGHT_HXX
 
 #include "Config.hxx"
 #include "Light.hxx"
@@ -7,38 +7,38 @@
 REX_NS_BEGIN
 
 /// <summary>
-/// Defines a point light.
+/// Defines a directional light.
 /// </summary>
-class PointLight : public Light
+class DirectionalLight : public Light
 {
-    Vector3 _position;
+    Vector3 _direction;
     Color   _color;
     real32  _radianceScale;
 
 public:
     /// <summary>
-    /// Creates a new point light.
+    /// Creates a new directional light.
     /// </summary>
-    PointLight();
+    DirectionalLight();
 
     /// <summary>
-    /// Creates a new point light.
+    /// Creates a new directional light.
     /// </summary>
-    /// <param name="position">The light's coordinates.</param>
-    PointLight( const Vector3& position );
+    /// <param name="direction">The light's direction.</param>
+    DirectionalLight( const Vector3& direction );
 
     /// <summary>
-    /// Creates a new point light.
+    /// Creates a new directional light.
     /// </summary>
-    /// <param name="x">The light's X coordinate.</param>
-    /// <param name="y">The light's Y coordinate.</param>
-    /// <param name="z">The light's Z coordinate.</param>
-    PointLight( real64 x, real64 y, real64 z );
+    /// <param name="x">The light's X direction.</param>
+    /// <param name="y">The light's Y direction.</param>
+    /// <param name="z">The light's Z direction.</param>
+    DirectionalLight( real64 x, real64 y, real64 z );
 
     /// <summary>
-    /// Destroys this point light.
+    /// Destroys this directional light.
     /// </summary>
-    virtual ~PointLight();
+    virtual ~DirectionalLight();
 
     /// <summary>
     /// Gets this light's color.
@@ -46,9 +46,9 @@ public:
     const Color& GetColor() const;
 
     /// <summary>
-    /// Gets this light's position.
+    /// Gets this light's direction.
     /// </summary>
-    const Vector3& GetPosition() const;
+    const Vector3& GetDirection() const;
 
     /// <summary>
     /// Gets this light's radiance scale.
@@ -82,18 +82,18 @@ public:
     void SetColor( real32 r, real32 g, real32 b );
 
     /// <summary>
-    /// Sets this light's position.
+    /// Sets this light's direction.
     /// </summary>
-    /// <param name="position">The new position.</param>
-    void SetPosition( const Vector3& position );
+    /// <param name="direction">The new direction.</param>
+    void SetDirection( const Vector3& direction );
 
     /// <summary>
-    /// Sets this light's position.
+    /// Sets this light's direction.
     /// </summary>
-    /// <param name="x">The new position's X coordinate.</param>
-    /// <param name="y">The new position's Y coordinate.</param>
-    /// <param name="z">The new position's Z coordinate.</param>
-    void SetPosition( real64 x, real64 y, real64 z );
+    /// <param name="x">The new direction's X component.</param>
+    /// <param name="y">The new direction's Y component.</param>
+    /// <param name="z">The new direction's Z component.</param>
+    void SetDirection( real64 x, real64 y, real64 z );
 
     /// <summary>
     /// Sets this light's radiance scale.

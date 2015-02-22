@@ -12,6 +12,7 @@
 #include "BoundingBox.hxx"
 #include "Camera.hxx"
 #include "Color.hxx"
+#include "DirectionalLight.hxx"
 #include "Geometry.hxx"
 #include "HammersleySampler.hxx"
 #include "Image.hxx"

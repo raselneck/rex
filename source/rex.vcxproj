@@ -164,6 +164,7 @@
     <ClCompile Include="BRDF.cxx" />
     <ClCompile Include="Camera.cxx" />
     <ClCompile Include="Color.cxx" />
+    <ClCompile Include="DirectionalLight.cxx" />
     <ClCompile Include="Geometry.cxx" />
     <ClCompile Include="HammersleySampler.cxx" />
     <ClCompile Include="Image.cxx" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Color.hxx" />
     <ClInclude Include="Config.hxx" />
     <ClInclude Include="Debug.hxx" />
+    <ClInclude Include="DirectionalLight.hxx" />
     <ClInclude Include="Geometry.hxx" />
     <ClInclude Include="HammersleySampler.hxx" />
     <ClInclude Include="Image.hxx" />

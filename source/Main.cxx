@@ -44,7 +44,7 @@ public:
 
 
 // renders a custom scene animation
-void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount )
+void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
 {
     using namespace rex;
 
@@ -64,8 +64,8 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount )
     while ( angle < 360.0 )
     {
         // move the camera (I know this is mixed, but I want Z to be the "major" position at angle = 0)
-        real64 x = 750.0 * std::sin( angle * Math::PI_OVER_180 );
-        real64 z = 750.0 * std::cos( angle * Math::PI_OVER_180 );
+        real64 x = dist * std::sin( angle * Math::PI_OVER_180 );
+        real64 z = dist * std::cos( angle * Math::PI_OVER_180 );
         camera->SetPosition( x, eyeHeight, z );
 
         rex::Write( "Rendering image ", imgNumber + 1, " / ", frameCount, "... " );
@@ -88,10 +88,11 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount )
 
     rex::WriteLine();
     rex::WriteLine( "Finished rendering animation!" );
+    rex::WriteLine( "    Sample count:  ", scene.GetSampler()->GetSampleCount() );
+    rex::WriteLine( "    Light count:   ", scene.GetLightCount() );
+    rex::WriteLine( "    Object count:  ", scene.GetObjectCount() );
     rex::WriteLine( "    Average time:  ", totalTime / frameCount, " seconds / frame" );
     rex::WriteLine( "    Total time:    ", totalTime, " seconds" );
-    rex::WriteLine( "    Total lights:  ", scene.GetLightCount() );
-    rex::WriteLine( "    Total objects: ", scene.GetObjectCount() );
 }
 
 
@@ -111,15 +112,14 @@ int main( int argc, char** argv )
     scene.SetCameraType<PerspectiveCamera>();
     {
         PerspectiveCamera* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
-        camera->SetPosition( 0.0, 0.0, 750.0 );
-        camera->SetTarget  ( 0.0, 0.0,   0.0 );
-        camera->SetUp      ( 0.0, 1.0,   0.0 );
-        camera->SetViewPlaneDistance( 1000.0f );
+        camera->SetTarget( 0.0, 0.0, 0.0  );
+        camera->SetUp    ( 0.0, 1.0, 0.0  );
+        camera->SetViewPlaneDistance( 1750.0f );
     }
-    scene.Build( 400, 400, 0.5f );
+    scene.Build( 1280, 720, 0.5f );
 
 
-    RenderSceneAnimation( scene, 1 );
+    RenderSceneAnimation( scene, 1, 750.0 );
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );
 
 

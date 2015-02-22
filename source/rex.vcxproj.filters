@@ -161,6 +161,9 @@
     <ClCompile Include="MatteMaterial.cxx">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalLight.cxx">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math.hxx">
@@ -267,6 +270,9 @@
     </ClInclude>
     <ClInclude Include="MatteMaterial.hxx">
       <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.hxx">
+      <Filter>Header Files\Lights</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

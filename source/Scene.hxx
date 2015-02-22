@@ -4,6 +4,7 @@
 #include "Config.hxx"
 #include "AmbientLight.hxx"
 #include "Camera.hxx"
+#include "DirectionalLight.hxx"
 #include "Image.hxx"
 #include "Plane.hxx"
 #include "PointLight.hxx"
@@ -138,16 +139,30 @@ public:
     /// <summary>
     /// Adds a point light to the scene.
     /// </summary>
-    /// <param name="position">The point light's coordinates.</param>
+    /// <param name="position">The light's coordinates.</param>
     Handle<PointLight> AddPointLight( const Vector3& position );
 
     /// <summary>
     /// Adds a point light to the scene.
     /// </summary>
-    /// <param name="x">The point light's X coordinate.</param>
-    /// <param name="y">The point light's Y coordinate.</param>
-    /// <param name="z">The point light's Z coordinate.</param>
+    /// <param name="x">The light's X coordinate.</param>
+    /// <param name="y">The light's Y coordinate.</param>
+    /// <param name="z">The light's Z coordinate.</param>
     Handle<PointLight> AddPointLight( real64 x, real64 y, real64 z );
+
+    /// <summary>
+    /// Adds a directional light to the scene.
+    /// </summary>
+    /// <param name="direction">The light's direction.</param>
+    Handle<DirectionalLight> AddDirectionalLight( const Vector3& direction );
+
+    /// <summary>
+    /// Adds a directional light to the scene.
+    /// </summary>
+    /// <param name="x">The light's X direction.</param>
+    /// <param name="y">The light's Y direction.</param>
+    /// <param name="z">The light's Z direction.</param>
+    Handle<DirectionalLight> AddDirectionalLight( real64 x, real64 y, real64 z );
 
     /// <summary>
     /// Adds a sphere to the scene.

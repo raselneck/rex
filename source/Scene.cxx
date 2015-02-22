@@ -133,7 +133,21 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
     }
 }
 
-// add sphere
+// add directional light
+Handle<DirectionalLight> Scene::AddDirectionalLight( const Vector3& direction )
+{
+    Handle<DirectionalLight> light( new DirectionalLight( direction ) );
+    _lights.push_back( light );
+    return light;
+}
+
+// add directional light
+Handle<DirectionalLight> Scene::AddDirectionalLight( real64 x, real64 y, real64 z )
+{
+    return AddDirectionalLight( Vector3( x, y, z ) );
+}
+
+// add plane
 Handle<Plane> Scene::AddPlane( const Plane& plane )
 {
     return AddPlane( plane.GetPoint(), plane.GetNormal() );
@@ -178,6 +192,14 @@ Handle<Sphere> Scene::AddSphere( const Vector3& center, real64 radius )
 // build scene
 void Scene::Build( int32 hres, int32 vres, real32 ps )
 {
+    // ensure we have a sampler
+    if ( !_sampler )
+    {
+        rex::WriteLine( "The sampler must be set before building." );
+        return;
+    }
+
+
     // set the background color
     _bgColor = Color::Black;
 
@@ -186,14 +208,26 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     _viewPlane.Height       = vres;
     _viewPlane.PixelSize    = ps;
     _viewPlane.Gamma        = 1.0f;
-    _viewPlane.InvGamma     = 1.0f;
+    _viewPlane.InvGamma     = 1.0f / _viewPlane.InvGamma;
 
     // setup the image
     _image.reset( new Image( hres, vres ) );
 
 
-    // lights
-    auto pl = AddPointLight( 0.0, 0.0, 0.0 );
+    // point lights
+    auto p1 = AddPointLight(   0.0,    0.0,  120.0 );
+    auto p2 = AddPointLight(   0.0, -100.0,    0.0 );
+    auto p3 = AddPointLight( 100.0,  100.0,    0.0 );
+    auto p4 = AddPointLight(   0.0,    0.0, -200.0 );
+    p2->SetColor( 1.00f, 0.00f, 0.50f );
+    p3->SetColor( 0.00f, 0.80f, 0.32f );
+    p4->SetColor( 0.10f, 0.40f, 0.80f );
+
+
+    // directional lights
+    auto d1 = AddDirectionalLight( 100.0, 100.0, 200.0 );
+    d1->SetRadianceScale( 2.0 );
+
 
 
     // materials
@@ -208,6 +242,17 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     MatteMaterial dark_yellow ( Color( 0.61f, 0.61f, 0.00f ), ka, kd );
     MatteMaterial light_purple( Color( 0.65f, 0.30f, 1.00f ), ka, kd );
     MatteMaterial dark_purple ( Color( 0.50f, 0.00f, 1.00f ), ka, kd );
+
+    // set material samplers
+    yellow      .SetSampler( _sampler );
+    brown       .SetSampler( _sampler );
+    dark_green  .SetSampler( _sampler );
+    orange      .SetSampler( _sampler );
+    green       .SetSampler( _sampler );
+    light_green .SetSampler( _sampler );
+    dark_yellow .SetSampler( _sampler );
+    light_purple.SetSampler( _sampler );
+    dark_purple .SetSampler( _sampler );
 
 
     // spheres

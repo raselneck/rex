@@ -129,7 +129,7 @@ Vector3 Sampler::SampleUnitHemisphere() const
 // sample unit sphere
 Vector3 Sampler::SampleUnitSphere() const
 {
-    throw std::exception( "Not implemented." );
+    rex::WriteLine( "Sampler::SampleUnitSphere() not implemented!!" );
 }
 
 // map samples to unit disk

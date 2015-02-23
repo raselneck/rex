@@ -2,6 +2,7 @@
 #define __REX_VECTOR2_INL
 
 #include "Vector2.hxx"
+#include "Math.hxx"
 
 REX_NS_BEGIN
 

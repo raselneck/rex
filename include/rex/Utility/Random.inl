@@ -7,7 +7,7 @@
 #include <time.h>
 
 #if __DEBUG__
-#  include "Debug.hxx"
+#  include "../Debug.hxx"
 #endif
 
 REX_NS_BEGIN

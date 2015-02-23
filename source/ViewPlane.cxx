@@ -1,4 +1,5 @@
 #include <rex/Scene/ViewPlane.hxx>
+#include <stdlib.h>
 
 REX_NS_BEGIN
 

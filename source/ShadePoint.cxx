@@ -19,7 +19,9 @@ ShadePoint::~ShadePoint()
     HasHit      = 0;
     RecursDepth = 0;
     Material    = nullptr;
-    const_cast<rex::Scene*>( Scene ) = 0;
+
+    rex::Scene** pScene = const_cast<rex::Scene**>( &Scene );
+    *pScene = 0;
 }
 
 // reset shade point

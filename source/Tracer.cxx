@@ -11,7 +11,8 @@ Tracer::Tracer( Scene* scene )
 // destroy ray tracer
 Tracer::~Tracer()
 {
-    const_cast<Scene*>( _scene ) = 0;
+    Scene** pScene = const_cast<Scene**>( &_scene );
+    *pScene = 0;
 }
 
 // trace the ray

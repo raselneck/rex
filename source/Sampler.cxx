@@ -1,4 +1,5 @@
 #include <rex/Samplers/Sampler.hxx>
+#include <rex/Debug.hxx>
 #include <rex/Utility/Math.hxx>
 #include <rex/Utility/Random.hxx>
 #include <algorithm> // for std::random_shuffle
@@ -224,7 +225,7 @@ void Sampler::MapSamplesToUnitHemisphere( real32 exponent )
 // map samples to unit sphere
 void Sampler::MapSamplesToUnitSphere()
 {
-    throw std::exception( "Not implemented." );
+    rex::WriteLine( "Sampler::MapSamplesToUnitSphere() not implemented!!" );
 }
 
 // set sampler count

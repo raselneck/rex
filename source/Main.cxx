@@ -4,11 +4,13 @@
 #include <thread>
 
 // Windows includes to open the output image
-#define WIN32_LEAN_AND_MEAN
-#define VC_EXTRALEAN
-#define NOMINMAX
-#include <Windows.h>
-#include <shellapi.h>
+#if defined( _WIN32 ) || defined( _WIN64 )
+#  define WIN32_LEAN_AND_MEAN
+#  define VC_EXTRALEAN
+#  define NOMINMAX
+#  include <Windows.h>
+#  include <shellapi.h>
+#endif
 
 
 // the main ray-cast tracer
@@ -120,7 +122,9 @@ int main( int argc, char** argv )
 
 
     RenderSceneAnimation( scene, 1, 750.0 );
+#if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );
+#endif
 
 
     rex::ReadLine();

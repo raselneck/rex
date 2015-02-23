@@ -90,11 +90,11 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
 
     rex::WriteLine();
     rex::WriteLine( "Finished rendering animation!" );
-    rex::WriteLine( "    Sample count:  ", scene.GetSampler()->GetSampleCount() );
-    rex::WriteLine( "    Light count:   ", scene.GetLightCount() );
-    rex::WriteLine( "    Object count:  ", scene.GetObjectCount() );
-    rex::WriteLine( "    Average time:  ", totalTime / frameCount, " seconds / frame" );
-    rex::WriteLine( "    Total time:    ", totalTime, " seconds" );
+    rex::WriteLine( "* Sample count:  ", scene.GetSampler()->GetSampleCount() );
+    rex::WriteLine( "* Light count:   ", scene.GetLightCount() );
+    rex::WriteLine( "* Object count:  ", scene.GetObjectCount() );
+    rex::WriteLine( "* Average time:  ", totalTime / frameCount, " seconds / frame" );
+    rex::WriteLine( "* Total time:    ", totalTime, " seconds" );
 }
 
 
@@ -121,7 +121,7 @@ int main( int argc, char** argv )
     scene.Build( 1280, 720, 0.5f );
 
 
-    RenderSceneAnimation( scene, 1, 750.0 );
+    RenderSceneAnimation( scene, 720, 750.0 );
 #if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );
 #endif

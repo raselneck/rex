@@ -1,67 +1,58 @@
-#ifndef __REX_MATTEMATERIAL_HXX
-#define __REX_MATTEMATERIAL_HXX
+#ifndef __REX_PHONGMATERIAL_HXX
+#define __REX_PHONGMATERIAL_HXX
 
 #include "../Config.hxx"
+#include "../BRDFs/GlossySpecularBRDF.hxx"
 #include "../BRDFs/LambertianBRDF.hxx"
-#include "Material.hxx"
+#include "MatteMaterial.hxx"
 
 REX_NS_BEGIN
 
 /// <summary>
-/// Defines a matte material.
+/// Defines a Phong material.
 /// </summary>
-class MatteMaterial : public Material
+class PhongMaterial : public MatteMaterial
 {
 protected:
-    Handle<LambertianBRDF> _ambient;
-    Handle<LambertianBRDF> _diffuse;
+    Handle<GlossySpecularBRDF> _specular;
 
 public:
     /// <summary>
-    /// Creates a new matte material.
+    /// Creates a new Phong material.
     /// </summary>
-    MatteMaterial();
+    PhongMaterial();
 
     /// <summary>
-    /// Creates a new matte material.
+    /// Creates a new Phong material.
     /// </summary>
     /// <param name="color">The initial material color.</param>
-    MatteMaterial( const Color& color );
+    PhongMaterial( const Color& color );
 
     /// <summary>
-    /// Creates a new matte material.
+    /// Creates a new Phong material.
     /// </summary>
     /// <param name="color">The initial material color.</param>
     /// <param name="ka">The initial ambient coefficient.</param>
     /// <param name="kd">The initial diffuse coefficient.</param>
-    MatteMaterial( const Color& color, real32 ka, real32 kd );
+    /// <param name="ks">The initial specular coefficient.</param>
+    /// <param name="pow">The initial specular power.</param>
+    PhongMaterial( const Color& color, real32 ka, real32 kd, real32 ks, real32 pow );
 
     /// <summary>
-    /// Destroys this matte material.
+    /// Destroys this Phong material.
     /// </summary>
-    virtual ~MatteMaterial();
+    virtual ~PhongMaterial();
 
     /// <summary>
-    /// Gets the ambient BRDF's diffuse coefficient.
+    /// Gets the specular coefficient.
     /// </summary>
-    real32 GetAmbientCoefficient() const;
+    real32 GetSpecularCoefficient() const;
 
     /// <summary>
-    /// Gets this material's color.
+    /// Gets the specular power.
     /// </summary>
-    Color GetColor() const;
-
-    /// <summary>
-    /// Gets the diffuse BRDF's diffuse coefficient.
-    /// </summary>
-    real32 GetDiffuseCoefficient() const;
-
-    /// <summary>
-    /// Sets the ambient BRDF's diffuse coefficient.
-    /// </summary>
-    /// <param name="ka">The new ambient coefficient.</param>
-    void SetAmbientCoefficient( real32 ka );
-
+    real32 GetSpecularPower() const;
+    
     /// <summary>
     /// Sets this material's color.
     /// </summary>
@@ -77,16 +68,22 @@ public:
     virtual void SetColor( real32 r, real32 g, real32 b );
 
     /// <summary>
-    /// Sets the diffuse BRDF's diffuse coefficient.
-    /// </summary>
-    /// <param name="kd">The new diffuse coefficient.</param>
-    void SetDiffuseCoefficient( real32 kd );
-
-    /// <summary>
     /// Sets the sampler to use with this material.
     /// </summary>
     /// <param name="sampler">The sampler to use.</param>
     virtual void SetSampler( Handle<Sampler>& sampler );
+
+    /// <summary>
+    /// Sets the specular coefficient.
+    /// </summary>
+    /// <param name="ks">The new coefficient.</param>
+    void SetSpecularCoefficient( real32 ks );
+
+    /// <summary>
+    /// Sets the specular power.
+    /// </summary>
+    /// <param name="pow">The new power.</param>
+    void SetSpecularPower( real32 pow );
 
     /// <summary>
     /// Gets a shaded color given hit point data.

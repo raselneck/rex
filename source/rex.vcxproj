@@ -102,6 +102,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <MultiProcessorCompilation>
+      </MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,6 +118,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <MultiProcessorCompilation>
+      </MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,6 +170,7 @@
     <ClCompile Include="Color.cxx" />
     <ClCompile Include="DirectionalLight.cxx" />
     <ClCompile Include="Geometry.cxx" />
+    <ClCompile Include="GlossySpecularBRDF.cxx" />
     <ClCompile Include="HammersleySampler.cxx" />
     <ClCompile Include="Image.cxx" />
     <ClCompile Include="JitteredSampler.cxx" />
@@ -179,11 +184,13 @@
     <ClCompile Include="MultiJitteredSampler.cxx" />
     <ClCompile Include="NRooksSampler.cxx" />
     <ClCompile Include="PerspectiveCamera.cxx" />
+    <ClCompile Include="PhongMaterial.cxx" />
     <ClCompile Include="Plane.cxx" />
     <ClCompile Include="PointLight.cxx" />
     <ClCompile Include="Ray.cxx" />
     <ClCompile Include="RegularSampler.cxx" />
     <ClCompile Include="Sampler.cxx" />
+    <ClCompile Include="Scene.Build.cxx" />
     <ClCompile Include="Tracer.cxx" />
     <ClCompile Include="Scene.cxx" />
     <ClCompile Include="ShadePoint.cxx" />
@@ -195,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\BRDFs\BRDF.hxx" />
+    <ClInclude Include="..\include\rex\BRDFs\GlossySpecularBRDF.hxx" />
     <ClInclude Include="..\include\rex\BRDFs\LambertianBRDF.hxx" />
     <ClInclude Include="..\include\rex\Cameras\Camera.hxx" />
     <ClInclude Include="..\include\rex\Cameras\PerspectiveCamera.hxx" />
@@ -204,12 +212,14 @@
     <ClInclude Include="..\include\rex\Geometry\Geometry.hxx" />
     <ClInclude Include="..\include\rex\Geometry\Plane.hxx" />
     <ClInclude Include="..\include\rex\Geometry\Sphere.hxx" />
+    <ClInclude Include="..\include\rex\Handle.hxx" />
     <ClInclude Include="..\include\rex\Lights\AmbientLight.hxx" />
     <ClInclude Include="..\include\rex\Lights\DirectionalLight.hxx" />
     <ClInclude Include="..\include\rex\Lights\Light.hxx" />
     <ClInclude Include="..\include\rex\Lights\PointLight.hxx" />
     <ClInclude Include="..\include\rex\Materials\Material.hxx" />
     <ClInclude Include="..\include\rex\Materials\MatteMaterial.hxx" />
+    <ClInclude Include="..\include\rex\Materials\PhongMaterial.hxx" />
     <ClInclude Include="..\include\rex\Rex.hxx" />
     <ClInclude Include="..\include\rex\Samplers\HammersleySampler.hxx" />
     <ClInclude Include="..\include\rex\Samplers\JitteredSampler.hxx" />

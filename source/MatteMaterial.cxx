@@ -63,6 +63,13 @@ void MatteMaterial::SetColor( const Color& color )
     _diffuse->SetDiffuseColor( color );
 }
 
+// set color w/ components
+void MatteMaterial::SetColor( real32 r, real32 g, real32 b )
+{
+    Color color( r, g, b );
+    SetColor( color );
+}
+
 // set kd
 void MatteMaterial::SetDiffuseCoefficient( real32 kd )
 {
@@ -93,7 +100,7 @@ Color MatteMaterial::Shade( ShadePoint& sp )
 
         if ( angle > 0.0 )
         {
-            Color diffuse = _diffuse->GetBRDF( sp, wi, wo );
+            Color diffuse = _diffuse->GetBRDF( sp, wo, wi );
             color += diffuse * lights[ i ]->GetRadiance( sp ) * angle;
         }
     }

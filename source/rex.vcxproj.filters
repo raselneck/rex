@@ -164,6 +164,15 @@
     <ClCompile Include="DirectionalLight.cxx">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
+    <ClCompile Include="GlossySpecularBRDF.cxx">
+      <Filter>Source Files\BRDFs</Filter>
+    </ClCompile>
+    <ClCompile Include="PhongMaterial.cxx">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.Build.cxx">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx">
@@ -273,6 +282,15 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\BRDFs\LambertianBRDF.hxx">
       <Filter>Header Files\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\BRDFs\GlossySpecularBRDF.hxx">
+      <Filter>Header Files\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Handle.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Materials\PhongMaterial.hxx">
+      <Filter>Header Files\Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

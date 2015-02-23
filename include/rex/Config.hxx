@@ -2,18 +2,24 @@
 #define __REX_CONFIG_HXX
 
 /**
- | "Trick or bear?"
- | "Bear??"
- | "HE HAS CHOSEN THE BEAR!"
- | *sounds of chains and snarling off in the distance*
+ * "Trick or bear?"
+ * "Bear??"
+ * "HE HAS CHOSEN THE BEAR!"
+ * *sounds of chains and snarling off in the distance*
  */
 
 #define REX_NS_BEGIN namespace rex {
 #define REX_NS_END   }
 
-#define REX_DEFAULT_GAMMA   (2.2f)
-#define REX_DEFAULT_SAMPLES (1)
-#define REX_DEFAULT_SETS    (83)
+#define REX_DEFAULT_GAMMA   (  2.2f )
+#define REX_DEFAULT_SAMPLES (  1    )
+#define REX_DEFAULT_SETS    ( 83    )
+
+#if defined( REX_CUDA_BUILD )
+#  define REX_API __device__ __host__
+#else
+#  define REX_API
+#endif
 
 #if defined( NDEBUG )
 #  define __RELEASE__ 1
@@ -45,10 +51,14 @@ REX_NS_BEGIN
 /// </summary>
 typedef std::string String;
 
+#if !defined( REX_CUDA_BUILD )
+
 /// <summary>
 /// The handle type used by Rex for managing pointers.
 /// </summary>
 template<class T> using Handle = std::shared_ptr<T>;
+
+#endif
 
 REX_NS_END
 

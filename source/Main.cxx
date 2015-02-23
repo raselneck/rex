@@ -10,6 +10,10 @@
 #  define NOMINMAX
 #  include <Windows.h>
 #  include <shellapi.h>
+#  include <direct.h>
+#  define mkdir _mkdir
+#else
+#  include <sys/stat.h>
 #endif
 
 
@@ -59,10 +63,13 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
     const real64       eyeHeight  = 50.0;
     const real64       eyeCorrect = 10.0 * ( 2.0 / 3.0 );
 
+    // make the output directory
+    mkdir( "anim" );
+
     // begin the loop to render!
     Timer timer;
     camera->SetTarget( 0.0, eyeHeight / eyeCorrect, 0.0 );
-    rex::WriteLine( "Beginning animation..." );
+    rex::WriteLine( "Beginning animation...\n" );
     while ( angle < 360.0 )
     {
         // move the camera (I know this is mixed, but I want Z to be the "major" position at angle = 0)
@@ -70,6 +77,7 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
         real64 z = dist * std::cos( angle * Math::PI_OVER_180 );
         camera->SetPosition( x, eyeHeight, z );
 
+        
         rex::Write( "Rendering image ", imgNumber + 1, " / ", frameCount, "... " );
 
         // render the image
@@ -77,7 +85,7 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
         scene.Render();
         timer.Stop();
 
-        rex::WriteLine( "Done. ", timer.GetElapsed(), " seconds" );
+        rex::WriteLine( "Done. (", timer.GetElapsed(), " seconds)" );
 
         // save the image
         String path = "anim/img" + std::to_string( imgNumber ) + ".png";
@@ -121,7 +129,7 @@ int main( int argc, char** argv )
     scene.Build( 1280, 720, 0.5f );
 
 
-    RenderSceneAnimation( scene, 720, 750.0 );
+    RenderSceneAnimation( scene, 1, 750.0 );
 #if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );
 #endif

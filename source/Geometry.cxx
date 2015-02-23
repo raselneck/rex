@@ -1,5 +1,5 @@
-#include "Geometry.hxx"
-#include "MatteMaterial.hxx"
+#include <rex/Geometry/Geometry.hxx>
+#include <rex/Materials/MatteMaterial.hxx>
 
 REX_NS_BEGIN
 

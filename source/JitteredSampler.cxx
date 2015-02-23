@@ -1,5 +1,5 @@
-#include "JitteredSampler.hxx"
-#include "Random.hxx"
+#include <rex/Samplers/JitteredSampler.hxx>
+#include <rex/Utility/Random.hxx>
 
 REX_NS_BEGIN
 

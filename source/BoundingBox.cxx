@@ -1,4 +1,4 @@
-#include "BoundingBox.hxx"
+#include <rex/Geometry/BoundingBox.hxx>
 
 REX_NS_BEGIN
 

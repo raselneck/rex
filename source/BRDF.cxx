@@ -1,4 +1,4 @@
-#include "BRDF.hxx"
+#include <rex/BRDFs/BRDF.hxx>
 
 REX_NS_BEGIN
 

@@ -1,5 +1,5 @@
-#include "HammersleySampler.hxx"
-#include "Random.hxx"
+#include <rex/Samplers/HammersleySampler.hxx>
+#include <rex/Utility/Random.hxx>
 
 // Hammersley sampler defined in "Ray Tracing from the Ground Up," pages 107-110
 

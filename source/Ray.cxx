@@ -1,4 +1,4 @@
-#include "Ray.hxx"
+#include <rex/Utility/Ray.hxx>
 
 REX_NS_BEGIN
 

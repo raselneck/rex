@@ -1,7 +1,7 @@
-#include "PerspectiveCamera.hxx"
-#include "Color.hxx"
-#include "Scene.hxx"
-#include "ViewPlane.hxx"
+#include <rex/Cameras/PerspectiveCamera.hxx>
+#include <rex/Utility/Color.hxx>
+#include <rex/Scene/Scene.hxx>
+#include <rex/Scene/ViewPlane.hxx>
 
 REX_NS_BEGIN
 

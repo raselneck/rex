@@ -1,4 +1,4 @@
-#include "Camera.hxx"
+#include <rex/Cameras/Camera.hxx>
 
 REX_NS_BEGIN
 

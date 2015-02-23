@@ -1,5 +1,4 @@
-#include "Vector2.hxx"
-#include "Vector2.inl"
+#include <rex/Utility/Vector2.hxx>
 #include <math.h>
 
 REX_NS_BEGIN

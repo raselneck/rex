@@ -1,5 +1,4 @@
-#include "Color.hxx"
-#include "Vector3.hxx"
+#include <rex/Utility/Color.hxx>
 
 REX_NS_BEGIN
 

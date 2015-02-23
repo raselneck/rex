@@ -1,4 +1,4 @@
-#include "Light.hxx"
+#include <rex/Lights/Light.hxx>
 
 REX_NS_BEGIN
 

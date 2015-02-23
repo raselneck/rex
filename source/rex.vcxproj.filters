@@ -166,141 +166,141 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Rex.hxx">
+    <ClInclude Include="..\include\rex\Config.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.hxx">
+    <ClInclude Include="..\include\rex\Debug.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ray.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug.hxx">
+    <ClInclude Include="..\include\rex\Rex.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Random.hxx">
+    <ClInclude Include="..\include\rex\Utility\Color.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Image.hxx">
+    <ClInclude Include="..\include\rex\Utility\Image.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Color.hxx">
+    <ClInclude Include="..\include\rex\Utility\Math.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.hxx">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewPlane.hxx">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.hxx">
+    <ClInclude Include="..\include\rex\Utility\Matrix.hxx">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Sampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
+    <ClInclude Include="..\include\rex\Utility\Random.hxx">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Tracer.hxx">
+    <ClInclude Include="..\include\rex\Utility\Ray.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\Timer.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\Vector2.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\Vector3.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Tracers\Tracer.hxx">
       <Filter>Header Files\Tracers</Filter>
     </ClInclude>
-    <ClInclude Include="RegularSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="JitteredSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="NRooksSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="MultiJitteredSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="HammersleySampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.hxx">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="PerspectiveCamera.hxx">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="BRDF.hxx">
-      <Filter>Header Files\BRDFs</Filter>
-    </ClInclude>
-    <ClInclude Include="LambertianBRDF.hxx">
-      <Filter>Header Files\BRDFs</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadePoint.hxx">
+    <ClInclude Include="..\include\rex\Scene\Scene.hxx">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="BoundingBox.hxx">
+    <ClInclude Include="..\include\rex\Scene\ShadePoint.hxx">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Scene\ViewPlane.hxx">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Samplers\HammersleySampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Samplers\JitteredSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Samplers\MultiJitteredSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Samplers\NRooksSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Samplers\RegularSampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Samplers\Sampler.hxx">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Materials\Material.hxx">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Materials\MatteMaterial.hxx">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Lights\AmbientLight.hxx">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Lights\DirectionalLight.hxx">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Lights\Light.hxx">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Lights\PointLight.hxx">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Geometry\BoundingBox.hxx">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Light.hxx">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="..\include\rex\Geometry\Geometry.hxx">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="AmbientLight.hxx">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="..\include\rex\Geometry\Plane.hxx">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.hxx">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="..\include\rex\Geometry\Sphere.hxx">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Material.hxx">
-      <Filter>Header Files\Materials</Filter>
+    <ClInclude Include="..\include\rex\Cameras\Camera.hxx">
+      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="MatteMaterial.hxx">
-      <Filter>Header Files\Materials</Filter>
+    <ClInclude Include="..\include\rex\Cameras\PerspectiveCamera.hxx">
+      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="DirectionalLight.hxx">
-      <Filter>Header Files\Lights</Filter>
+    <ClInclude Include="..\include\rex\BRDFs\BRDF.hxx">
+      <Filter>Header Files\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\BRDFs\LambertianBRDF.hxx">
+      <Filter>Header Files\BRDFs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Vector2.inl">
+    <None Include="..\include\rex\Utility\Color.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="Vector3.inl">
+    <None Include="..\include\rex\Utility\Math.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="Matrix.inl">
+    <None Include="..\include\rex\Utility\Matrix.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="Random.inl">
+    <None Include="..\include\rex\Utility\Random.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="Color.inl">
+    <None Include="..\include\rex\Utility\Timer.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="Timer.inl">
+    <None Include="..\include\rex\Utility\Vector2.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="Math.inl">
+    <None Include="..\include\rex\Utility\Vector3.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="Scene.inl">
+    <None Include="..\include\rex\Scene\Scene.inl">
       <Filter>Header Files\Scene</Filter>
     </None>
-    <None Include="Geometry.inl">
+    <None Include="..\include\rex\Geometry\Geometry.inl">
       <Filter>Header Files\Geometry</Filter>
     </None>
   </ItemGroup>

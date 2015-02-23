@@ -1,5 +1,5 @@
-#include "LambertianBRDF.hxx"
-#include "Math.hxx"
+#include <rex/BRDFs/LambertianBRDF.hxx>
+#include <rex/Utility/Math.hxx>
 
 REX_NS_BEGIN
 

@@ -1,5 +1,5 @@
-#include "Sphere.hxx"
-#include "ShadePoint.hxx"
+#include <rex/Geometry/Sphere.hxx>
+#include <rex/Scene/ShadePoint.hxx>
 
 REX_NS_BEGIN
 

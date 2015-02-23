@@ -1,5 +1,5 @@
-#include "Rex.hxx"
-#include "Debug.hxx"
+#include <rex/Rex.hxx>
+#include <rex/Debug.hxx>
 #include <chrono>
 #include <thread>
 

@@ -1,5 +1,5 @@
-#include "MatteMaterial.hxx"
-#include "Scene.hxx"
+#include <rex/Materials/MatteMaterial.hxx>
+#include <rex/Scene/Scene.hxx>
 
 REX_NS_BEGIN
 

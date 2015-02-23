@@ -1,4 +1,4 @@
-#include "ShadePoint.hxx"
+#include <rex/Scene/ShadePoint.hxx>
 
 REX_NS_BEGIN
 

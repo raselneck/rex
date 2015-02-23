@@ -1,6 +1,6 @@
-#include "Sampler.hxx"
-#include "Math.hxx"
-#include "Random.hxx"
+#include <rex/Samplers/Sampler.hxx>
+#include <rex/Utility/Math.hxx>
+#include <rex/Utility/Random.hxx>
 #include <algorithm> // for std::random_shuffle
 #include <exception> // TODO : TEMPORARY!!
 

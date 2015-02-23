@@ -1,5 +1,5 @@
-#include "Image.hxx"
-#include "Math.hxx"
+#include <rex/Utility/Image.hxx>
+#include <rex/Utility/Math.hxx>
 
 // include stb image write header
 #pragma warning( push )

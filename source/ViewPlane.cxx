@@ -1,4 +1,4 @@
-#include "ViewPlane.hxx"
+#include <rex/Scene/ViewPlane.hxx>
 
 REX_NS_BEGIN
 

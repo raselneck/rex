@@ -1,6 +1,5 @@
-#include "Plane.hxx"
-#include "MatteMaterial.hxx"
-#include "ShadePoint.hxx"
+#include <rex/Geometry/Plane.hxx>
+#include <rex/Scene/ShadePoint.hxx>
 
 REX_NS_BEGIN
 

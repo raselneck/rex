@@ -1,4 +1,4 @@
-#include "Material.hxx"
+#include <rex/Materials/Material.hxx>
 
 REX_NS_BEGIN
 

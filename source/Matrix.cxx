@@ -1,5 +1,4 @@
-#include "Matrix.hxx"
-#include "Matrix.inl"
+#include <rex/Utility/Matrix.hxx>
 
 REX_NS_BEGIN
 

@@ -1,4 +1,4 @@
-#include "RegularSampler.hxx"
+#include <rex/Samplers/RegularSampler.hxx>
 
 REX_NS_BEGIN
 

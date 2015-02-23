@@ -1,5 +1,5 @@
-#include "DirectionalLight.hxx"
-#include "ShadePoint.hxx"
+#include <rex/Lights/DirectionalLight.hxx>
+#include <rex/Scene/ShadePoint.hxx>
 
 REX_NS_BEGIN
 

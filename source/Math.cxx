@@ -1,4 +1,4 @@
-#include "Math.hxx"
+#include <rex/Utility/Math.hxx>
 
 REX_NS_BEGIN
 

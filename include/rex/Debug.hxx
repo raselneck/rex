@@ -8,6 +8,8 @@
 #include <iostream>
 #include <sstream>
 
+#if defined( _MSC_VER )
+
 /// <summary>
 /// Custom assert macro for Rex.
 /// </summary>
@@ -22,6 +24,13 @@
             __debugbreak(); /* NOTE : Visual Studio only! */ \
                 } \
         }
+
+#else
+
+#include <assert.h>
+#define REX_ASSERT(cond, message) assert((cond) && message)
+
+#endif
 
 REX_NS_BEGIN
 

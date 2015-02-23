@@ -1,6 +1,7 @@
 #include <rex/Rex.hxx>
 #include <rex/Debug.hxx>
 #include <chrono>
+#include <cmath>
 #include <thread>
 
 // Windows includes to open the output image

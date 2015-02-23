@@ -14,6 +14,7 @@
 #  define mkdir _mkdir
 #else
 #  include <sys/stat.h>
+#  define mkdir(path) mkdir(path, S_IRWXU)
 #endif
 
 

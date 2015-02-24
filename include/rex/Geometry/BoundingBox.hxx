@@ -2,6 +2,7 @@
 #define __REX_BOUNDINGBOX_HXX
 
 #include "../Config.hxx"
+#include "../Utility/Ray.hxx"
 #include "../Utility/Vector3.hxx"
 
 REX_NS_BEGIN
@@ -64,6 +65,13 @@ public:
     /// </summary>
     /// <param name="bbox">The bounding box.</param>
     ContainmentType Contains( const BoundingBox& bbox ) const;
+
+    /// <summary>
+    /// Checks to see if this bounding box intersects the given ray.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="dist">The distance to the collision.</param>
+    bool Intersects( const Ray& ray, real32& dist ) const;
 };
 
 REX_NS_END

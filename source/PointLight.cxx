@@ -1,4 +1,5 @@
 #include <rex/Lights/PointLight.hxx>
+#include <rex/Scene/Scene.hxx>
 #include <rex/Scene/ShadePoint.hxx>
 
 REX_NS_BEGIN
@@ -13,6 +14,7 @@ PointLight::PointLight()
 PointLight::PointLight( const Vector3& position )
     : _position( position ), _color( Color::White ), _radianceScale( 1.0f )
 {
+    _castShadows = true;
 }
 
 // create point light w/ position components
@@ -55,6 +57,25 @@ Vector3 PointLight::GetLightDirection( ShadePoint& sp )
 Color PointLight::GetRadiance( ShadePoint& sp )
 {
     return _radianceScale * _color;
+}
+
+// check if in shadow
+bool PointLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
+{
+    // from Suffern, 300
+
+    real64 t = 0.0;
+    real64 d = Vector3::Distance( _position, ray.Origin );
+
+    for ( auto& obj : sp.Scene->GetObjects() )
+    {
+        if ( obj->ShadowHit( ray, t ) && ( t < d ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 // set color

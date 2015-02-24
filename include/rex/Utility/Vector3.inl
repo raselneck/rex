@@ -19,14 +19,6 @@ inline real64 Vector3::LengthSq() const
 }
 
 // dot product of two vectors
-inline real64 Vector3::Dot( const Vector3& v1, const Vector3& v2 )
-{
-    return v1.X * v2.X
-        + v1.Y * v2.Y
-        + v1.Z * v2.Z;
-}
-
-// dot product of two vectors
 inline Vector3 Vector3::Cross( const Vector3& v1, const Vector3& v2 )
 {
     return Vector3(
@@ -34,6 +26,28 @@ inline Vector3 Vector3::Cross( const Vector3& v1, const Vector3& v2 )
         v1.Z * v2.X - v1.X * v2.Z,
         v1.X * v2.Y - v1.Y * v2.X
         );
+}
+
+// distance between two vectors
+inline real64 Vector3::Distance( const Vector3& v1, const Vector3& v2 )
+{
+    Vector3 vec = v2 - v1;
+    return vec.Length();
+}
+
+// distance squared between two vectors
+inline real64 Vector3::DistanceSq( const Vector3& v1, const Vector3& v2 )
+{
+    Vector3 vec = v2 - v1;
+    return vec.LengthSq();
+}
+
+// dot product of two vectors
+inline real64 Vector3::Dot( const Vector3& v1, const Vector3& v2 )
+{
+    return v1.X * v2.X
+        + v1.Y * v2.Y
+        + v1.Z * v2.Z;
 }
 
 // get min components of two vectors

@@ -173,6 +173,9 @@
     <ClCompile Include="Scene.Build.cxx">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Octree.cxx">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx">
@@ -291,6 +294,9 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\Materials\PhongMaterial.hxx">
       <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Geometry\Octree.hxx">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

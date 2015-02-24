@@ -133,6 +133,22 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
     }
 }
 
+// shadow-hit all objects
+bool Scene::ShadowHitObjects( const Ray& ray ) const
+{
+    real64 t = 0.0;
+
+    for ( auto& obj : _objects )
+    {
+        if ( obj->ShadowHit( ray, t ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // add directional light
 Handle<DirectionalLight> Scene::AddDirectionalLight( const Vector3& direction )
 {

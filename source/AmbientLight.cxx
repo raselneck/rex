@@ -1,5 +1,6 @@
 #include <rex/Lights/AmbientLight.hxx>
 #include <rex/Scene/ShadePoint.hxx>
+#include <rex/Debug.hxx>
 
 REX_NS_BEGIN
 
@@ -7,6 +8,7 @@ REX_NS_BEGIN
 AmbientLight::AmbientLight()
     : _radianceScale( 1.0f ), _color( Color::White )
 {
+    _castShadows = false;
 }
 
 // destroy ambient light
@@ -37,6 +39,18 @@ Vector3 AmbientLight::GetLightDirection( ShadePoint& sp )
 Color AmbientLight::GetRadiance( ShadePoint& sp )
 {
     return _radianceScale * _color;
+}
+
+// check if in shadow
+bool AmbientLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
+{
+    return false;
+}
+
+// set casts shadows
+void AmbientLight::SetCastShadows( bool value )
+{
+    rex::WriteLine( "Ambient lights cannot cast shadows!" );
 }
 
 // set color

@@ -48,6 +48,19 @@ public:
     virtual Color GetRadiance( ShadePoint& sp );
 
     /// <summary>
+    /// Checks to see if the given ray is in shadow when viewed from this light.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="sp">Current hit point information.</param>
+    virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const;
+
+    /// <summary>
+    /// Sets whether or not this light should cast shadows.
+    /// </summary>
+    /// <param name="value">The new value.</param>
+    virtual void SetCastShadows( bool value );
+
+    /// <summary>
     /// Sets this ambient light's color.
     /// </summary>
     /// <param name="color">The new color.</param>

@@ -66,6 +66,13 @@ public:
     /// </summary>
     /// <param name="sp">The shading point information containing hit data.</param>
     virtual Color GetRadiance( ShadePoint& sp );
+    
+    /// <summary>
+    /// Checks to see if the given ray is in shadow when viewed from this light.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="sp">Current hit point information.</param>
+    virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const;
 
     /// <summary>
     /// Sets this light's color.

@@ -116,6 +116,12 @@ public:
     void HitObjects( const Ray& ray, ShadePoint& sp ) const;
 
     /// <summary>
+    /// Shadow-hits all of the objects in this scene with the given ray.
+    /// </summary>
+    /// <param name="ray">The ray to hit with.</param>
+    bool ShadowHitObjects( const Ray& ray ) const;
+
+    /// <summary>
     /// Adds a plane to the scene.
     /// </summary>
     /// <param name="plane">The plane to add.</param>

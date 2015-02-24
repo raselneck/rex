@@ -3,19 +3,19 @@
 
 #include "Math.hxx"
 
-// Floor and Ceiling functions derived from http://www.codeproject.com/Tips/700780/Fast-floor-ceiling-functions
-
 REX_NS_BEGIN
 
 // take floor
 inline int32 Math::Floor( real32 value )
 {
+    // derived from http://www.codeproject.com/Tips/700780/Fast-floor-ceiling-functions
     return (int32)( value + 64.0f ) - 64;
 }
 
 // take ceiling
 inline int32 Math::Ceiling( real32 value )
 {
+    // derived from http://www.codeproject.com/Tips/700780/Fast-floor-ceiling-functions
     return 64 - (int32)( 64.0f - value );
 }
 

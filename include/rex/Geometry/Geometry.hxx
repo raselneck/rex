@@ -70,6 +70,13 @@ public:
     virtual bool Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const = 0;
 
     /// <summary>
+    /// Performs the same thing as a normal ray hit, but for shadow rays.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="tmin">The distance to intersection.</param>
+    virtual bool ShadowHit( const Ray& ray, real64& tmin ) const = 0;
+
+    /// <summary>
     /// Sets the material for this piece of geometry.
     /// </summary>
     /// <param name="material">The material.</param>

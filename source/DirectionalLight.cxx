@@ -1,4 +1,5 @@
 #include <rex/Lights/DirectionalLight.hxx>
+#include <rex/Scene/Scene.hxx>
 #include <rex/Scene/ShadePoint.hxx>
 
 REX_NS_BEGIN
@@ -13,6 +14,7 @@ DirectionalLight::DirectionalLight()
 DirectionalLight::DirectionalLight( const Vector3& direction )
     : _direction( Vector3::Normalize( direction ) ), _radianceScale( 1.0f ), _color( Color::White )
 {
+    _castShadows = true;
 }
 
 // create light w/ direction components
@@ -55,6 +57,17 @@ Vector3 DirectionalLight::GetLightDirection( ShadePoint& sp )
 Color DirectionalLight::GetRadiance( ShadePoint& sp )
 {
     return _radianceScale * _color;
+}
+
+// check if in shadow
+bool DirectionalLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
+{
+    // I'm guessing at this implementation, as Suffern does not provide one
+    // it seems to work, so if the glove fits...
+
+    Ray ray2( ray.Origin, _direction );
+    bool inShadow = sp.Scene->ShadowHitObjects( ray2 );
+    return inShadow;
 }
 
 // set color

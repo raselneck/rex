@@ -3,7 +3,6 @@
 #include <rex/Utility/Math.hxx>
 #include <rex/Utility/Random.hxx>
 #include <algorithm> // for std::random_shuffle
-#include <exception> // TODO : TEMPORARY!!
 
 REX_NS_BEGIN
 
@@ -130,6 +129,8 @@ Vector3 Sampler::SampleUnitHemisphere() const
 Vector3 Sampler::SampleUnitSphere() const
 {
     rex::WriteLine( "Sampler::SampleUnitSphere() not implemented!!" );
+
+    return Vector3();
 }
 
 // map samples to unit disk

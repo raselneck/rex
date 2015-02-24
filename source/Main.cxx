@@ -56,6 +56,7 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
 {
     using namespace rex;
 
+
     // get the camera and setup some loop variables
     PerspectiveCamera* camera     = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
     real64             angle      = 0.0;
@@ -64,6 +65,7 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
     const real64       dAngle     = 360.0 / frameCount;
     const real64       eyeHeight  = 50.0;
     const real64       eyeCorrect = 10.0 * ( 2.0 / 3.0 );
+
 
     // make the output directory
     mkdir( "anim" );

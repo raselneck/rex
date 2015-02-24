@@ -16,6 +16,7 @@
 #include "Cameras/PerspectiveCamera.hxx"
 #include "Geometry/BoundingBox.hxx"
 #include "Geometry/Geometry.hxx"
+#include "Geometry/Octree.hxx"
 #include "Geometry/Plane.hxx"
 #include "Geometry/Sphere.hxx"
 #include "Lights/AmbientLight.hxx"

@@ -183,6 +183,7 @@
     <ClCompile Include="MatteMaterial.cxx" />
     <ClCompile Include="MultiJitteredSampler.cxx" />
     <ClCompile Include="NRooksSampler.cxx" />
+    <ClCompile Include="Octree.cxx" />
     <ClCompile Include="PerspectiveCamera.cxx" />
     <ClCompile Include="PhongMaterial.cxx" />
     <ClCompile Include="Plane.cxx" />
@@ -210,6 +211,7 @@
     <ClInclude Include="..\include\rex\Debug.hxx" />
     <ClInclude Include="..\include\rex\Geometry\BoundingBox.hxx" />
     <ClInclude Include="..\include\rex\Geometry\Geometry.hxx" />
+    <ClInclude Include="..\include\rex\Geometry\Octree.hxx" />
     <ClInclude Include="..\include\rex\Geometry\Plane.hxx" />
     <ClInclude Include="..\include\rex\Geometry\Sphere.hxx" />
     <ClInclude Include="..\include\rex\Handle.hxx" />

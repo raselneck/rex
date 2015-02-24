@@ -14,6 +14,9 @@ All of the necessary include (`.h` and `.hxx`) files are in the `include`
 directory, and all of the necessary source (`.cxx`) files are in the
 `source` folder.
 
+The following command works with G++ 4.8.2: `g++ ../source/*.cxx -I../include
+-std=c++11 -w -O3 -o rex`
+
 ## License
 
 ```

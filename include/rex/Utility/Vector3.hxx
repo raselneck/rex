@@ -49,18 +49,32 @@ struct Vector3
     real64 LengthSq() const;
 
     /// <summary>
-    /// Gets the dot product of two vectors.
-    /// </summary>
-    /// <param name="v1">The first vector.</param>
-    /// <param name="v2">The second vector.</param>
-    static real64 Dot( const Vector3& v1, const Vector3& v2 );
-
-    /// <summary>
     /// Gets the cross product of two vectors.
     /// </summary>
     /// <param name="v1">The first vector.</param>
     /// <param name="v2">The second vector.</param>
     static Vector3 Cross( const Vector3& v1, const Vector3& v2 );
+
+    /// <summary>
+    /// Gets the distance between two vectors.
+    /// </summary>
+    /// <param name="v1">The first vector.</param>
+    /// <param name="v2">The second vector.</param>
+    static real64 Distance( const Vector3& v1, const Vector3& v2 );
+
+    /// <summary>
+    /// Gets the distance squared between two vectors.
+    /// </summary>
+    /// <param name="v1">The first vector.</param>
+    /// <param name="v2">The second vector.</param>
+    static real64 DistanceSq( const Vector3& v1, const Vector3& v2 );
+
+    /// <summary>
+    /// Gets the dot product of two vectors.
+    /// </summary>
+    /// <param name="v1">The first vector.</param>
+    /// <param name="v2">The second vector.</param>
+    static real64 Dot( const Vector3& v1, const Vector3& v2 );
 
     /// <summary>
     /// Gets a vector containing the minimum components of each given vector.

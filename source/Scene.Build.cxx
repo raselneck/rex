@@ -30,13 +30,13 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 
 
     // point lights
-    //auto p1 = AddPointLight(   0.0,    0.0,  120.0 );
-    //auto p2 = AddPointLight(   0.0, -100.0,    0.0 );
-    //auto p3 = AddPointLight( 100.0,  100.0,    0.0 );
-    //auto p4 = AddPointLight(   0.0,    0.0, -200.0 );
-    //p2->SetColor( 1.00f, 0.00f, 0.50f );
-    //p3->SetColor( 0.00f, 0.80f, 0.32f );
-    //p4->SetColor( 0.10f, 0.40f, 0.80f );
+    auto p1 = AddPointLight(   0.0,    0.0,  120.0 );
+    auto p2 = AddPointLight(   0.0, -100.0,    0.0 );
+    auto p3 = AddPointLight( 100.0,  100.0,    0.0 );
+    auto p4 = AddPointLight(   0.0,    0.0, -200.0 );
+    p2->SetColor( 1.00f, 0.00f, 0.50f );
+    p3->SetColor( 0.00f, 0.80f, 0.32f );
+    p4->SetColor( 0.10f, 0.40f, 0.80f );
 
 
     // directional lights

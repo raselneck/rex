@@ -83,18 +83,29 @@ Color PhongMaterial::Shade( ShadePoint& sp )
     Vector3 wo         = -sp.Ray.Direction;
     Color   color      = _ambient->GetBHR( sp, wo );
     auto&   lights     = sp.Scene->GetLights();
-    uint32  lightCount = sp.Scene->GetLightCount();
 
-    for ( uint32 i = 0; i < lightCount; ++i )
+    for ( auto& light : lights )
     {
-        Vector3 wi = lights[ i ]->GetLightDirection( sp );
+        Vector3 wi = light->GetLightDirection( sp );
         real32  angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
 
         if ( angle > 0.0 )
         {
-            Color diffuse  = _diffuse->GetBRDF( sp, wo, wi );
-            Color specular = _specular->GetBRDF( sp, wo, wi );
-            color += ( diffuse + specular ) * lights[ i ]->GetRadiance( sp ) * angle;
+            // check if we need to perform shadow calculations
+            bool isInShadow = false;
+            if ( light->CastsShadows() )
+            {
+                Ray shadowRay( sp.HitPoint, wi );
+                isInShadow = light->IsInShadow( shadowRay, sp );
+            }
+            
+            // add the shadow-inclusive light information
+            if ( !isInShadow )
+            {
+                Color diffuse = _diffuse->GetBRDF( sp, wo, wi );
+                Color specular = _specular->GetBRDF( sp, wo, wi );
+                color += ( diffuse + specular ) * light->GetRadiance( sp ) * angle;
+            }
         }
     }
 

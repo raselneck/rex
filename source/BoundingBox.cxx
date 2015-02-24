@@ -58,4 +58,47 @@ ContainmentType BoundingBox::Contains( const BoundingBox& bbox ) const
     return ContainmentType::Intersects;
 }
 
+// check for ray-box intersection
+bool BoundingBox::Intersects( const Ray& ray, real32& dist ) const
+{
+    // adapted from http://gamedev.stackexchange.com/a/18459/46507
+    // NOTE : We're assuming the ray direction is a unit vector here
+
+    // get inverse of direction
+    Vector3 dirfrac;
+    dirfrac.X = 1.0 / ray.Direction.X;
+    dirfrac.Y = 1.0 / ray.Direction.Y;
+    dirfrac.Z = 1.0 / ray.Direction.Z;
+
+    // get helpers
+    real64 t1 = ( _min.X - ray.Origin.X ) * dirfrac.X;
+    real64 t2 = ( _max.X - ray.Origin.X ) * dirfrac.X;
+    real64 t3 = ( _min.Y - ray.Origin.Y ) * dirfrac.Y;
+    real64 t4 = ( _max.Y - ray.Origin.Y ) * dirfrac.Y;
+    real64 t5 = ( _min.Z - ray.Origin.Z ) * dirfrac.Z;
+    real64 t6 = ( _max.Z - ray.Origin.Z ) * dirfrac.Z;
+
+
+    real64 tmin = Math::Max( Math::Max( Math::Min( t1, t2 ), Math::Min( t3, t4 ) ), Math::Min( t5, t6 ) );
+    real64 tmax = Math::Min( Math::Min( Math::Max( t1, t2 ), Math::Max( t3, t4 ) ), Math::Max( t5, t6 ) );
+
+
+    // if tmax < 0, ray (line) is intersecting box, but whole box is behind us
+    if ( tmax < 0 )
+    {
+        dist = static_cast<real32>( tmax );
+        return false;
+    }
+
+    // if tmin > tmax, ray doesn't intersect box
+    if ( tmin > tmax )
+    {
+        dist = static_cast<real32>( tmax );
+        return false;
+    }
+
+    dist = static_cast<real32>( tmin );
+    return true;
+}
+
 REX_NS_END

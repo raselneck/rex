@@ -131,4 +131,18 @@ bool Sphere::ShadowHit( const Ray& ray, real64& tmin ) const
     return false;
 }
 
+// set center
+void Sphere::SetCenter( const Vector3& center )
+{
+    _center = center;
+}
+
+// set center
+void Sphere::SetCenter( real64 x, real64 y, real64 z )
+{
+    _center.X = x;
+    _center.Y = y;
+    _center.Z = z;
+}
+
 REX_NS_END

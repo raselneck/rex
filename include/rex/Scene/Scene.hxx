@@ -3,11 +3,12 @@
 
 #include "../Config.hxx"
 #include "../Cameras/Camera.hxx"
+#include "../Geometry/Octree.hxx"
+#include "../Geometry/Plane.hxx"
+#include "../Geometry/Sphere.hxx"
 #include "../Lights/AmbientLight.hxx"
 #include "../Lights/DirectionalLight.hxx"
 #include "../Lights/PointLight.hxx"
-#include "../Geometry/Plane.hxx"
-#include "../Geometry/Sphere.hxx"
 #include "../Samplers/Sampler.hxx"
 #include "../Tracers/Tracer.hxx"
 #include "../Utility/Image.hxx"
@@ -26,6 +27,7 @@ class Scene
     Color                _bgColor;
     Handle<Camera>       _camera;
     Handle<Image>        _image;
+    Handle<Octree>       _octree;
     Handle<Sampler>      _sampler;
     Handle<Tracer>       _tracer;
     Handle<AmbientLight> _ambientLight;
@@ -198,6 +200,11 @@ public:
     /// <param name="vres">The vertical resolution.</param>
     /// <param name="ps">The pixel size to use.</param>
     void Build( int32 hres, int32 vres, real32 ps );
+
+    /// <summary>
+    /// Builds the scene's octree for spatial partitioning.
+    /// </summary>
+    void BuildOctree();
     
     /// <summary>
     /// Gets this scene's camera.

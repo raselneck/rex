@@ -102,27 +102,52 @@ const ViewPlane& Scene::GetViewPlane() const
 // hit all objects
 void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
 {
+    static std::vector<const Geometry*> geom; // TODO : BAD! BAD!!
+
+
+    // only get the objects that the ray hits
+    _octree->QueryIntersections( ray, geom );
+
+
+    // prepare to check objects
     real64 t     = 0.0;
     real64 tmin  = Math::HUGE_VALUE;
     size_t count = _objects.size();
     Vector3 normal;
     Vector3 localHitPoint;
 
-    // iterate through all objects
-    for ( uint32 i = 0; i < count; ++i )
+
+    
+
+
+    // start the timer
+    Timer timer; timer.Start();
+
+    // iterate through the hit objects
+    for ( auto& obj : geom )
     {
-        auto& obj = _objects[ i ];
         if ( obj->Hit( ray, t, sp ) && ( t < tmin ) )
         {
-            sp.HasHit     = true;
-            sp.Material   = const_cast<Material*>( obj->GetMaterial() );
-            sp.HitPoint   = ray.Origin + t * ray.Direction;
+            sp.HasHit = true;
+            sp.Material = const_cast<Material*>( obj->GetMaterial() ); // TODO : BAD!
+            sp.HitPoint = ray.Origin + t * ray.Direction;
 
-            tmin          = t;
-            normal        = sp.Normal;
+            tmin = t;
+            normal = sp.Normal;
             localHitPoint = sp.LocalHitPoint;
         }
     }
+
+    // stop timer and print time, if applicable
+    timer.Stop(); real64 time = timer.GetElapsed();
+    if ( time > 0.0 )
+    {
+        rex::WriteLine( "checking all objects took ", time, " seconds" );
+    }
+
+
+
+
 
     // restore hit point data from closest object
     if ( sp.HasHit )
@@ -203,6 +228,30 @@ Handle<Sphere> Scene::AddSphere( const Vector3& center, real64 radius )
     Handle<Sphere> sphere( new Sphere( center, radius ) );
     _objects.push_back( sphere );
     return sphere;
+}
+
+// build octree bounds
+void Scene::BuildOctree()
+{
+    // TODO : This does not work with planes
+
+    // get the absolute min and max of the scene
+    Vector3 min, max;
+    for ( auto& obj : _objects )
+    {
+        BoundingBox bb = obj->GetBounds();
+        min = Vector3::Min( min, bb.GetMin() );
+        max = Vector3::Max( max, bb.GetMax() );
+    }
+
+    // create our octree
+    _octree.reset( new Octree( min, max ) );
+
+    // add all objects' bounds to the octree
+    for ( auto& obj : _objects )
+    {
+        _octree->Add( obj.get() );
+    }
 }
 
 // get camera

@@ -4,8 +4,10 @@ REX_NS_BEGIN
 
 // new bounding box
 BoundingBox::BoundingBox( const Vector3& min, const Vector3& max )
-    : _min( min ), _max( max )
 {
+    // ensure min and max
+    _min = Vector3::Min( min, max );
+    _max = Vector3::Max( min, max );
 }
 
 // new bounding box
@@ -17,18 +19,6 @@ BoundingBox::BoundingBox( real64 minX, real64 minY, real64 minZ, real64 maxX, re
 // destroy bounding box
 BoundingBox::~BoundingBox()
 {
-}
-
-// get bounding box min
-const Vector3& BoundingBox::GetMin() const
-{
-    return _min;
-}
-
-// get bounding box max
-const Vector3& BoundingBox::GetMax() const
-{
-    return _max;
 }
 
 // check for containment type
@@ -56,6 +46,30 @@ ContainmentType BoundingBox::Contains( const BoundingBox& bbox ) const
     }
 
     return ContainmentType::Intersects;
+}
+
+// get center
+Vector3 BoundingBox::GetCenter() const
+{
+    return _min + GetSize() * 0.5;
+}
+
+// get bounding box min
+const Vector3& BoundingBox::GetMin() const
+{
+    return _min;
+}
+
+// get bounding box max
+const Vector3& BoundingBox::GetMax() const
+{
+    return _max;
+}
+
+// get size
+Vector3 BoundingBox::GetSize() const
+{
+    return _max - _min;
 }
 
 // check for ray-box intersection

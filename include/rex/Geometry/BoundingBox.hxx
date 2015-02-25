@@ -51,6 +51,17 @@ public:
     ~BoundingBox();
 
     /// <summary>
+    /// Checks to see if this bounding box contains the given bounding box.
+    /// </summary>
+    /// <param name="bbox">The bounding box.</param>
+    ContainmentType Contains( const BoundingBox& bbox ) const;
+
+    /// <summary>
+    /// Gets the center of the bounding box.
+    /// </summary>
+    Vector3 GetCenter() const;
+
+    /// <summary>
     /// Gets this bounding box's "minimum" corner.
     /// </summary>
     const Vector3& GetMin() const;
@@ -61,10 +72,9 @@ public:
     const Vector3& GetMax() const;
 
     /// <summary>
-    /// Checks to see if this bounding box contains the given bounding box.
+    /// Gets the size of the bounding box.
     /// </summary>
-    /// <param name="bbox">The bounding box.</param>
-    ContainmentType Contains( const BoundingBox& bbox ) const;
+    Vector3 GetSize() const;
 
     /// <summary>
     /// Checks to see if this bounding box intersects the given ray.

@@ -68,6 +68,20 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="tmin">The distance to intersection.</param>
     virtual bool ShadowHit( const Ray& ray, real64& tmin ) const;
+
+    /// <summary>
+    /// Sets the center of the sphere.
+    /// <summary>
+    /// <param name="center">The new center.</param>
+    void SetCenter( const Vector3& center );
+
+    /// <summary>
+    /// Sets the center of the sphere.
+    /// <summary>
+    /// <param name="x">The new center's X coordinate.</param>
+    /// <param name="y">The new center's Y coordinate.</param>
+    /// <param name="z">The new center's Z coordinate.</param>
+    void SetCenter( real64 x, real64 y, real64 z );
 };
 
 REX_NS_END

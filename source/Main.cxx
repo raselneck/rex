@@ -63,12 +63,19 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
     uint32             imgNumber  = 0;
     real64             totalTime  = 0.0;
     const real64       dAngle     = 360.0 / frameCount;
-    const real64       eyeHeight  = 50.0;
+    const real64       eyeHeight  = 250.0;
     const real64       eyeCorrect = 10.0 * ( 2.0 / 3.0 );
 
 
     // make the output directory
     mkdir( "anim" );
+
+
+    // build scene octree
+    rex::Write( "Building scene octree... " );
+    scene.BuildOctree();
+    rex::WriteLine( "Done." );
+
 
     // begin the loop to render!
     Timer timer;
@@ -109,6 +116,57 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
     rex::WriteLine( "* Total time:    ", totalTime, " seconds" );
 }
 
+// renders a sphere animation
+void RenderSphereAnimation( rex::Scene& scene, uint32 frameCount, real64 eyeHeight, real64 eyeDist )
+{
+    using namespace rex;
+
+    const real64 dAngle = 2.0 * Math::INV_PI;
+    real64       angle = 0.0;
+    mkdir( "anim" );
+
+    // camera
+    auto* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
+    camera->SetPosition( 0.0, eyeHeight * ( 20.0 / 3.0 ), eyeDist );
+    camera->SetTarget  ( 0.0, eyeHeight / ( 20.0 / 3.0 ), 0.0 );
+
+
+    // materials
+    const real32 ka = 0.25f;
+    const real32 kd = 0.75f;
+    auto material = MatteMaterial( Color::White, ka, kd );
+
+
+    // sphere
+    auto sphere = scene.AddSphere( Vector3(), 15.0, material );
+
+
+    // render loop
+    Timer timer;
+    for ( uint32 frame = 0; frame < frameCount; ++frame )
+    {
+        angle += dAngle;
+
+        // set the sphere's position
+        real64 y = std::sin( angle ) * 20.0 + 20.0;
+        sphere->SetCenter( 0.0, y, 0.0 );
+
+        // render the scene
+        timer.Start();
+        scene.Render();
+        timer.Stop();
+
+        rex::Write( "Rendering frame ", frame + 1, " / ", frameCount, "... " );
+
+        // save the image
+        String path = "anim/img" + std::to_string( frame ) + ".png";
+        scene.GetImage()->Save( path.c_str() );
+
+        // print out how long it took
+        rex::WriteLine( "Done. (", timer.GetElapsed(), " seconds)" );
+    }
+}
+
 
 int main( int argc, char** argv )
 {
@@ -122,17 +180,17 @@ int main( int argc, char** argv )
     rex::WriteLine( "Building scene..." );
     Scene scene;
     scene.SetTracerType<RayCastTracer>();
-    scene.SetSamplerType<RegularSampler>( 4 );
+    scene.SetSamplerType<RegularSampler>( 9 );
     scene.SetCameraType<PerspectiveCamera>();
     {
         PerspectiveCamera* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
         camera->SetTarget( 0.0, 0.0, 0.0  );
-        camera->SetUp    ( 0.0, 1.0, 0.0  );
         camera->SetViewPlaneDistance( 1750.0f );
     }
     scene.Build( 1280, 720, 0.5f );
 
 
+    //RenderSphereAnimation( scene, 1, 100.0, 450.0 );
     RenderSceneAnimation( scene, 1, 750.0 );
 #if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );

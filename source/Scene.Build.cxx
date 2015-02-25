@@ -3,6 +3,8 @@
 
 REX_NS_BEGIN
 
+#if 1
+
 // build scene
 void Scene::Build( int32 hres, int32 vres, real32 ps )
 {
@@ -30,18 +32,18 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 
 
     // point lights
-    auto p1 = AddPointLight(   0.0,    0.0,  120.0 );
-    auto p2 = AddPointLight(   0.0, -100.0,    0.0 );
-    auto p3 = AddPointLight( 100.0,  100.0,    0.0 );
-    auto p4 = AddPointLight(   0.0,    0.0, -200.0 );
-    p2->SetColor( 1.00f, 0.00f, 0.50f );
-    p3->SetColor( 0.00f, 0.80f, 0.32f );
-    p4->SetColor( 0.10f, 0.40f, 0.80f );
+    //auto p1 = AddPointLight(   0.0,    0.0,  120.0 );
+    //auto p2 = AddPointLight(   0.0, -100.0,    0.0 );
+    //auto p3 = AddPointLight( 100.0,  100.0,    0.0 );
+    //auto p4 = AddPointLight(   0.0,    0.0, -200.0 );
+    //p2->SetColor( 1.00f, 0.00f, 0.50f );
+    //p3->SetColor( 0.00f, 0.80f, 0.32f );
+    //p4->SetColor( 0.10f, 0.40f, 0.80f );
 
 
     // directional lights
     auto d1 = AddDirectionalLight( 100.0, 100.0, 200.0 );
-    //d1->SetRadianceScale( 2.0 );
+    d1->SetRadianceScale( 2.0 );
 
 
 
@@ -109,5 +111,57 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     AddSphere( Vector3(  46,  68, -200 ), 10, light_purple  );
     AddSphere( Vector3(  -3, -72, -130 ), 12, light_purple  );
 }
+
+#endif
+#if 0
+
+// build scene
+void Scene::Build( int32 hres, int32 vres, real32 ps )
+{
+    // ensure we have a sampler
+    if ( !_sampler )
+    {
+        rex::WriteLine( "The sampler must be set before building." );
+        return;
+    }
+
+
+    // set the background color
+    _bgColor = Color( 0.05f );
+
+
+    // setup view plane
+    _viewPlane.Width        = hres;
+    _viewPlane.Height       = vres;
+    _viewPlane.PixelSize    = ps;
+    _viewPlane.Gamma        = 1.0f;
+    _viewPlane.InvGamma     = 1.0f / _viewPlane.InvGamma; // in case .Gamma is changed
+
+    // setup the image
+    _image.reset( new Image( hres, vres ) );
+
+
+    // point lights
+    auto p1 = AddPointLight( -50.0, 50.0, 0.0 );
+    auto p2 = AddPointLight(  50.0, 50.0, 0.0 );
+    p1->SetColor( Color::Red  );
+    p2->SetColor( Color::Blue );
+
+
+    // materials
+    const real32 ka   = 0.25f;
+    const real32 kd   = 0.75f;
+    const real32 ks   = 0.20f;
+    const real32 kpow = 2.00f;
+    MatteMaterial m   = MatteMaterial( Color::White, ka, kd );
+
+
+    // add plane
+    const Vector3 point  = Vector3( 0.0, 0.0, 0.0 );
+    const Vector3 normal = Vector3( 0.0, 1.0, 0.0 );
+    AddPlane( point, normal, m );
+}
+
+#endif
 
 REX_NS_END

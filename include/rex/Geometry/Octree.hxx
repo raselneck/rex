@@ -3,20 +3,22 @@
 
 #include "../Config.hxx"
 #include "BoundingBox.hxx"
+#include <array>
+#include <utility> // std::pair
 #include <vector>
 
-// TODO : Implement this
-
 REX_NS_BEGIN
+
+class Geometry;
 
 /// <summary>
 /// Defines an octree meant for spatially partitioning static objects based on their bounding boxes.
 /// </summary>
 class Octree
 {
-    std::vector<BoundingBox> _objects;
-    BoundingBox              _bounds;
-    Handle<Octree>           _children;
+    std::vector<std::pair<BoundingBox, const Geometry*>> _objects;
+    std::array<Octree*, 8>  _children;
+    BoundingBox             _bounds;
 
     /// <summary>
     /// Checks to see if this octree has subdivided.
@@ -27,6 +29,14 @@ class Octree
     /// Subdivides this octree.
     /// </summary>
     void Subdivide();
+
+    /// <summary>
+    /// Queries this octree for the pieces of geometry that a given ray intersects.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="objects">The objects list to check.</param>
+    /// <param name="clear">True to clear the list, false to leave it alone.</param>
+    void QueryIntersections( const Ray& ray, std::vector<const Geometry*>& objects, bool clear ) const;
 
 public:
     /// <summary>
@@ -48,10 +58,17 @@ public:
     ~Octree();
 
     /// <summary>
+    /// Queries this octree for the pieces of geometry that a given ray intersects.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="objects">The objects list to check.</param>
+    void QueryIntersections( const Ray& ray, std::vector<const Geometry*>& objects ) const;
+
+    /// <summary>
     /// Adds the given bounding box to this octree.
     /// </summary>
-    /// <param name="box">The bounds to remove.</param>
-    void Add( const BoundingBox& box );
+    /// <param name="geometry">The piece of geometry to add.</param>
+    bool Add( const Geometry* geometry );
 };
 
 REX_NS_END

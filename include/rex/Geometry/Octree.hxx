@@ -31,12 +31,11 @@ class Octree
     void Subdivide();
 
     /// <summary>
-    /// Queries this octree for the pieces of geometry that a given ray intersects.
+    /// Recursively queries this octree for the pieces of geometry that a given ray intersects.
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="objects">The objects list to check.</param>
-    /// <param name="clear">True to clear the list, false to leave it alone.</param>
-    void QueryIntersections( const Ray& ray, std::vector<const Geometry*>& objects, bool clear ) const;
+    void QueryIntersectionsRecurs( const Ray& ray, std::vector<const Geometry*>& objects ) const;
 
 public:
     /// <summary>

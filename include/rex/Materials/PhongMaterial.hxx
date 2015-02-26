@@ -39,6 +39,12 @@ public:
     PhongMaterial( const Color& color, real32 ka, real32 kd, real32 ks, real32 pow );
 
     /// <summary>
+    /// Copies another Phong material.
+    /// </summary>
+    /// <param name="other">The other material to copy.</param>
+    PhongMaterial( const PhongMaterial& other );
+
+    /// <summary>
     /// Destroys this Phong material.
     /// </summary>
     virtual ~PhongMaterial();

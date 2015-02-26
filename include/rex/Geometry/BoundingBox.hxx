@@ -81,7 +81,7 @@ public:
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the collision.</param>
-    bool Intersects( const Ray& ray, real32& dist ) const;
+    bool Intersects( const Ray& ray, real64& dist ) const;
 };
 
 REX_NS_END

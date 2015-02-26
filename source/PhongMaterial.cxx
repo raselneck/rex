@@ -4,26 +4,34 @@
 
 REX_NS_BEGIN
 
-// create phong material
+// create material
 PhongMaterial::PhongMaterial()
     : PhongMaterial( Color::White, 0.0f, 0.0f, 0.0f, 0.0f )
 {
 }
 
-// create phong material w/ color
+// create material w/ color
 PhongMaterial::PhongMaterial( const Color& color )
     : PhongMaterial( color, 0.0f, 0.0f, 0.0f, 0.0f )
 {
 }
 
-// create phong material w/ color, ambient coefficient, diffuse coefficient, specular coefficient, specular power
+// create material w/ color, ambient coefficient, diffuse coefficient, specular coefficient, specular power
 PhongMaterial::PhongMaterial( const Color& color, real32 ka, real32 kd, real32 ks, real32 pow )
     : MatteMaterial( color, ka, kd )
 {
     _specular.reset( new GlossySpecularBRDF( ks, color, pow ) );
 }
 
-// destroy phong material
+// copy material
+PhongMaterial::PhongMaterial( const PhongMaterial& other )
+{
+    _ambient  = other._ambient;
+    _diffuse  = other._diffuse;
+    _specular = other._specular;
+}
+
+// destroy material
 PhongMaterial::~PhongMaterial()
 {
 }

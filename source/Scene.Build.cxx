@@ -3,7 +3,93 @@
 
 REX_NS_BEGIN
 
+
 #if 1
+
+// build scene
+void Scene::Build( int32 hres, int32 vres, real32 ps )
+{
+    // ensure we have a sampler
+    if ( !_sampler )
+    {
+        rex::WriteLine( "The sampler must be set before building." );
+        return;
+    }
+
+
+    // set the background color
+    _bgColor = Color( 0.0725f );
+
+
+    // setup view plane
+    _viewPlane.Width        = hres;
+    _viewPlane.Height       = vres;
+    _viewPlane.PixelSize    =   ps;
+    _viewPlane.Gamma        = 1.0f;
+    _viewPlane.InvGamma     = 1.0f / _viewPlane.InvGamma; // in case .Gamma is changed
+
+
+    // setup the image
+    _image.reset( new Image( hres, vres ) );
+
+
+    // directional lights
+    auto d1 = AddDirectionalLight( 1.0, 1.0, 2.0 );
+    d1->SetRadianceScale( 2.0 );
+
+
+    // materials
+    const real32 ka     = 0.25f;
+    const real32 kd     = 0.75f;
+    const real32 ks     = 0.30f;
+    const real32 kpow   = 2.00f;
+    const PhongMaterial  white      ( Color( 1.00f, 1.00f, 1.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  yellow     ( Color( 1.00f, 1.00f, 0.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  brown      ( Color( 0.71f, 0.40f, 0.16f ), ka, kd, ks, kpow );
+    const PhongMaterial  darkGreen  ( Color( 0.00f, 0.41f, 0.41f ), ka, kd, ks, kpow );
+    const PhongMaterial  orange     ( Color( 1.00f, 0.75f, 0.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  green      ( Color( 0.00f, 0.60f, 0.30f ), ka, kd, ks, kpow );
+    const PhongMaterial  lightGreen ( Color( 0.65f, 1.00f, 0.30f ), ka, kd, ks, kpow );
+    const PhongMaterial  darkYellow ( Color( 0.61f, 0.61f, 0.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  lightPurple( Color( 0.65f, 0.30f, 1.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  darkPurple ( Color( 0.50f, 0.00f, 1.00f ), ka, kd, ks, kpow );
+    const PhongMaterial* materials[] =
+    {
+        &yellow,     &brown,       &darkGreen,
+        &orange,     &green,       &lightGreen,
+        &darkYellow, &lightPurple, &darkPurple,
+        &white
+    };
+    const int32 materialCount = sizeof( materials ) / sizeof( materials[ 0 ] );
+    rex::WriteLine( "  Using ", materialCount, " materials." );
+    
+
+    // add some random spheres
+    const uint32 sphereCount = static_cast<uint32>( Random::RandInt32( 45, 80 ) );
+    rex::WriteLine( "  Generating ", sphereCount, " spheres." );
+
+    Vector3 pos;
+    for ( uint32 i = 0; i < sphereCount; ++i )
+    {
+        // randomize position
+        pos.X = Random::RandReal32( -250.0f,  250.0f );
+        pos.Y = Random::RandReal32( -150.0f,  150.0f );
+        pos.Z = Random::RandReal32(  100.0f, -250.0f );
+        
+        // get random radius
+        real32 radius = Random::RandReal32( 5.0f, 25.0f );
+
+        // get random material
+        const int32 matIndex = Random::RandInt32( 0, materialCount - 1 );
+        const PhongMaterial& mat = *materials[ matIndex ];
+
+        // add sphere
+        AddSphere( pos, radius, mat );
+    }
+}
+
+#endif
+#if 0
 
 // build scene
 void Scene::Build( int32 hres, int32 vres, real32 ps )
@@ -32,13 +118,13 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 
 
     // point lights
-    //auto p1 = AddPointLight(   0.0,    0.0,  120.0 );
-    //auto p2 = AddPointLight(   0.0, -100.0,    0.0 );
-    //auto p3 = AddPointLight( 100.0,  100.0,    0.0 );
-    //auto p4 = AddPointLight(   0.0,    0.0, -200.0 );
-    //p2->SetColor( 1.00f, 0.00f, 0.50f );
-    //p3->SetColor( 0.00f, 0.80f, 0.32f );
-    //p4->SetColor( 0.10f, 0.40f, 0.80f );
+    auto p1 = AddPointLight(   0.0,    0.0,  120.0 );
+    auto p2 = AddPointLight(   0.0, -100.0,    0.0 );
+    auto p3 = AddPointLight( 100.0,  100.0,    0.0 );
+    auto p4 = AddPointLight(   0.0,    0.0, -200.0 );
+    p2->SetColor( 1.00f, 0.00f, 0.50f );
+    p3->SetColor( 0.00f, 0.80f, 0.32f );
+    p4->SetColor( 0.10f, 0.40f, 0.80f );
 
 
     // directional lights

@@ -37,6 +37,12 @@ public:
     MatteMaterial( const Color& color, real32 ka, real32 kd );
 
     /// <summary>
+    /// Copies another matter material.
+    /// </summary>
+    /// <param name="other">The other material to copy.</param>
+    MatteMaterial( const MatteMaterial& other );
+
+    /// <summary>
     /// Destroys this matte material.
     /// </summary>
     virtual ~MatteMaterial();

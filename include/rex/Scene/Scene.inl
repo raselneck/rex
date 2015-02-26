@@ -10,7 +10,7 @@ template<class T> inline Handle<Plane> Scene::AddPlane( const Vector3& point, co
 {
     Handle<Plane> plane( new Plane( point, normal ) );
     plane->SetMaterial( material );
-    _objects.push_back( plane );
+    _planes.push_back( plane );
     return plane;
 }
 

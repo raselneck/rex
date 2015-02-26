@@ -73,16 +73,17 @@ Vector3 BoundingBox::GetSize() const
 }
 
 // check for ray-box intersection
-bool BoundingBox::Intersects( const Ray& ray, real32& dist ) const
+bool BoundingBox::Intersects( const Ray& ray, real64& dist ) const
 {
     // adapted from http://gamedev.stackexchange.com/a/18459/46507
     // NOTE : We're assuming the ray direction is a unit vector here
 
     // get inverse of direction
-    Vector3 dirfrac;
-    dirfrac.X = 1.0 / ray.Direction.X;
-    dirfrac.Y = 1.0 / ray.Direction.Y;
-    dirfrac.Z = 1.0 / ray.Direction.Z;
+    Vector3 dirfrac(
+        1.0 / ray.Direction.X,
+        1.0 / ray.Direction.Y,
+        1.0 / ray.Direction.Z
+    );
 
     // get helpers
     real64 t1 = ( _min.X - ray.Origin.X ) * dirfrac.X;
@@ -100,18 +101,18 @@ bool BoundingBox::Intersects( const Ray& ray, real32& dist ) const
     // if tmax < 0, ray (line) is intersecting box, but whole box is behind us
     if ( tmax < 0 )
     {
-        dist = static_cast<real32>( tmax );
+        dist = tmax;
         return false;
     }
 
     // if tmin > tmax, ray doesn't intersect box
     if ( tmin > tmax )
     {
-        dist = static_cast<real32>( tmax );
+        dist = tmax;
         return false;
     }
 
-    dist = static_cast<real32>( tmin );
+    dist = tmin;
     return true;
 }
 

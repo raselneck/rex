@@ -102,29 +102,25 @@ const ViewPlane& Scene::GetViewPlane() const
 // hit all objects
 void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
 {
-    static std::vector<const Geometry*> geom; // TODO : BAD! BAD!!
-
-
     // only get the objects that the ray hits
-    _octree->QueryIntersections( ray, geom );
+    _octree->QueryIntersections( ray, _queryObjects );
+
+    // append the planes to the list of things to check
+    for ( auto& plane : _planes )
+    {
+        _queryObjects.push_back( plane.get() );
+    }
 
 
     // prepare to check objects
-    real64 t     = 0.0;
-    real64 tmin  = Math::HUGE_VALUE;
-    size_t count = _objects.size();
+    real64  t     = 0.0;
+    real64  tmin  = Math::HUGE_VALUE;
     Vector3 normal;
     Vector3 localHitPoint;
 
 
-    
-
-
-    // start the timer
-    Timer timer; timer.Start();
-
     // iterate through the hit objects
-    for ( auto& obj : geom )
+    for ( auto& obj : _queryObjects )
     {
         if ( obj->Hit( ray, t, sp ) && ( t < tmin ) )
         {
@@ -137,16 +133,6 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
             localHitPoint = sp.LocalHitPoint;
         }
     }
-
-    // stop timer and print time, if applicable
-    timer.Stop(); real64 time = timer.GetElapsed();
-    if ( time > 0.0 )
-    {
-        rex::WriteLine( "checking all objects took ", time, " seconds" );
-    }
-
-
-
 
 
     // restore hit point data from closest object
@@ -198,7 +184,7 @@ Handle<Plane> Scene::AddPlane( const Plane& plane )
 Handle<Plane> Scene::AddPlane( const Vector3& point, const Vector3& normal )
 {
     Handle<Plane> plane( new Plane( point, normal ) );
-    _objects.push_back( plane );
+    _planes.push_back( plane );
     return plane;
 }
 
@@ -244,14 +230,22 @@ void Scene::BuildOctree()
         max = Vector3::Max( max, bb.GetMax() );
     }
 
+    // expand out the bounds of the tree a bit
+    min -= Vector3( 1.0 );
+    max += Vector3( 1.0 );
+
+
     // create our octree
     _octree.reset( new Octree( min, max ) );
 
     // add all objects' bounds to the octree
     for ( auto& obj : _objects )
     {
-        _octree->Add( obj.get() );
+        REX_ASSERT( _octree->Add( obj.get() ), "Failed to add object to octree." );
     }
+
+    // reserve space for our objects
+    _queryObjects.reserve( _objects.size() );
 }
 
 // get camera

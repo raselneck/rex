@@ -64,7 +64,6 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
     real64             totalTime  = 0.0;
     const real64       dAngle     = 360.0 / frameCount;
     const real64       eyeHeight  = 250.0;
-    const real64       eyeCorrect = 10.0 * ( 2.0 / 3.0 );
 
 
     // make the output directory
@@ -79,7 +78,7 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
 
     // begin the loop to render!
     Timer timer;
-    camera->SetTarget( 0.0, eyeHeight / eyeCorrect, 0.0 );
+    camera->SetTarget( 0.0, 0.0, 0.0 );
     rex::WriteLine( "Beginning animation...\n" );
     while ( angle < 360.0 )
     {
@@ -116,6 +115,7 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
     rex::WriteLine( "* Total time:    ", totalTime, " seconds" );
 }
 
+
 // renders a sphere animation
 void RenderSphereAnimation( rex::Scene& scene, uint32 frameCount, real64 eyeHeight, real64 eyeDist )
 {
@@ -145,8 +145,6 @@ void RenderSphereAnimation( rex::Scene& scene, uint32 frameCount, real64 eyeHeig
     Timer timer;
     for ( uint32 frame = 0; frame < frameCount; ++frame )
     {
-        angle += dAngle;
-
         // set the sphere's position
         real64 y = std::sin( angle ) * 20.0 + 20.0;
         sphere->SetCenter( 0.0, y, 0.0 );
@@ -164,6 +162,8 @@ void RenderSphereAnimation( rex::Scene& scene, uint32 frameCount, real64 eyeHeig
 
         // print out how long it took
         rex::WriteLine( "Done. (", timer.GetElapsed(), " seconds)" );
+
+        angle += dAngle;
     }
 }
 
@@ -185,13 +185,13 @@ int main( int argc, char** argv )
     {
         PerspectiveCamera* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
         camera->SetTarget( 0.0, 0.0, 0.0  );
-        camera->SetViewPlaneDistance( 1750.0f );
+        camera->SetViewPlaneDistance( 2000.0f );
     }
     scene.Build( 1280, 720, 0.5f );
 
 
     //RenderSphereAnimation( scene, 1, 100.0, 450.0 );
-    RenderSceneAnimation( scene, 1, 750.0 );
+    RenderSceneAnimation( scene, 1, 2000.0 );
 #if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );
 #endif

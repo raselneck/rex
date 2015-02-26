@@ -48,29 +48,34 @@ bool Octree::HasSubdivided() const
 // query intersections
 void Octree::QueryIntersections( const Ray& ray, std::vector<const Geometry*>& objects ) const
 {
-    QueryIntersections( ray, objects, true );
+    objects.clear();
+
+    real64 dist = 0.0;
+    if ( _bounds.Intersects( ray, dist ) )
+    {
+        QueryIntersectionsRecurs( ray, objects );
+    }
 }
 
 // query intersections
-void Octree::QueryIntersections( const Ray& ray, std::vector<const Geometry*>& objects, bool clear ) const
+void Octree::QueryIntersectionsRecurs( const Ray& ray, std::vector<const Geometry*>& objects ) const
 {
-    // clear if necessary
-    if ( clear )
-    {
-        objects.clear();
-    }
+    real64 dist = 0.0;
 
     // check children first
     if ( HasSubdivided() )
     {
         for ( uint32 i = 0; i < 8; ++i )
         {
-            _children[ i ]->QueryIntersections( ray, objects, false );
+            auto& child = _children[ i ];
+            if ( child->_bounds.Intersects( ray, dist ) )
+            {
+                _children[ i ]->QueryIntersectionsRecurs( ray, objects );
+            }
         }
     }
 
     // now check our objects
-    real32 dist = 0.0f;
     for ( auto& pair : _objects )
     {
         if ( pair.first.Intersects( ray, dist ) )
@@ -87,7 +92,7 @@ bool Octree::Add( const Geometry* geometry )
 
     // make sure we contain the geometry's bounding box
     ContainmentType ctype = _bounds.Contains( gBounds );
-    if ( ctype == ContainmentType::Disjoint )
+    if ( ctype != ContainmentType::Contains )
     {
         return false;
     }
@@ -157,6 +162,8 @@ void Octree::Subdivide()
     for ( size_t oi = 0; oi < _objects.size(); ++oi )
     {
         auto& obj = _objects[ oi ];
+        
+        // check each child to see if we can move the object
         for ( uint32 ci = 0; ci < 8; ++ci )
         {
             if ( _children[ ci ]->Add( obj.second ) )

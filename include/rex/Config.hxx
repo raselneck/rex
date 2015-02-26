@@ -15,12 +15,6 @@
 #define REX_DEFAULT_SAMPLES (  1    )
 #define REX_DEFAULT_SETS    ( 83    )
 
-#if defined( REX_CUDA_BUILD )
-#  define REX_API __device__ __host__
-#else
-#  define REX_API
-#endif
-
 #if defined( NDEBUG )
 #  define __RELEASE__ 1
 #  define __DEBUG__   0

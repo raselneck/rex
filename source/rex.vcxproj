@@ -214,7 +214,6 @@
     <ClInclude Include="..\include\rex\Geometry\Octree.hxx" />
     <ClInclude Include="..\include\rex\Geometry\Plane.hxx" />
     <ClInclude Include="..\include\rex\Geometry\Sphere.hxx" />
-    <ClInclude Include="..\include\rex\Handle.hxx" />
     <ClInclude Include="..\include\rex\Lights\AmbientLight.hxx" />
     <ClInclude Include="..\include\rex\Lights\DirectionalLight.hxx" />
     <ClInclude Include="..\include\rex\Lights\Light.hxx" />

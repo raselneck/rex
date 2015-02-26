@@ -26,6 +26,13 @@ MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd )
     SetDiffuseCoefficient( kd );
 }
 
+// copy material
+MatteMaterial::MatteMaterial( const MatteMaterial& other )
+{
+    _ambient = other._ambient;
+    _diffuse = other._diffuse;
+}
+
 // destroy material
 MatteMaterial::~MatteMaterial()
 {

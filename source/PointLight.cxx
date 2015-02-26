@@ -2,6 +2,8 @@
 #include <rex/Scene/Scene.hxx>
 #include <rex/Scene/ShadePoint.hxx>
 
+// TODO : Implement point light attenuation
+
 REX_NS_BEGIN
 
 // create point light

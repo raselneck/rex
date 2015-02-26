@@ -8,7 +8,6 @@
  * 3) Ch. 12 explains stereoscopy with a stereoscopic camera (for use with an Oculus Rift)
  */
 
-#include "Handle.hxx"
 #include "BRDFs/BRDF.hxx"
 #include "BRDFs/GlossySpecularBRDF.hxx"
 #include "BRDFs/LambertianBRDF.hxx"

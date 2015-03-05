@@ -3,7 +3,97 @@
 
 REX_NS_BEGIN
 
+// sphere "grid"
+#if 0
 
+// build scene
+void Scene::Build( int32 hres, int32 vres, real32 ps )
+{
+    // ensure we have a sampler
+    if ( !_sampler )
+    {
+        rex::WriteLine( "The sampler must be set before building." );
+        return;
+    }
+
+
+    // set the background color
+    _bgColor = Color( 0.0725f );
+
+
+    // setup view plane
+    _viewPlane.Width = hres;
+    _viewPlane.Height = vres;
+    _viewPlane.PixelSize = ps;
+    _viewPlane.Gamma = 1.0f;
+    _viewPlane.InvGamma = 1.0f / _viewPlane.InvGamma; // in case .Gamma is changed
+
+
+    // setup the image
+    _image.reset( new Image( hres, vres ) );
+
+
+    // directional lights
+    auto d1 = AddDirectionalLight( 1.0, 1.0, 2.0 );
+    d1->SetRadianceScale( 2.0 );
+
+
+    // materials
+    const real32 ka      = 0.25f;
+    const real32 kd      = 0.75f;
+    const real32 ks      = 0.30f;
+    const real32 kpow    = 2.00f;
+    const PhongMaterial  white      ( Color( 1.00f, 1.00f, 1.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  yellow     ( Color( 1.00f, 1.00f, 0.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  brown      ( Color( 0.71f, 0.40f, 0.16f ), ka, kd, ks, kpow );
+    const PhongMaterial  darkGreen  ( Color( 0.00f, 0.41f, 0.41f ), ka, kd, ks, kpow );
+    const PhongMaterial  orange     ( Color( 1.00f, 0.75f, 0.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  green      ( Color( 0.00f, 0.60f, 0.30f ), ka, kd, ks, kpow );
+    const PhongMaterial  lightGreen ( Color( 0.65f, 1.00f, 0.30f ), ka, kd, ks, kpow );
+    const PhongMaterial  darkYellow ( Color( 0.61f, 0.61f, 0.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  lightPurple( Color( 0.65f, 0.30f, 1.00f ), ka, kd, ks, kpow );
+    const PhongMaterial  darkPurple ( Color( 0.50f, 0.00f, 1.00f ), ka, kd, ks, kpow );
+    const PhongMaterial* materials[] =
+    {
+        &yellow,     &brown,       &darkGreen,
+        &orange,     &green,       &lightGreen,
+        &darkYellow, &lightPurple, &darkPurple,
+        &white
+    };
+    const int32 materialCount = sizeof( materials ) / sizeof( materials[ 0 ] );
+    rex::WriteLine( "  Using ", materialCount, " materials." );
+
+
+    // add some randomized spheres into a grid
+    const int32  dx = 75;
+    const int32  dy = 75;
+    const int32  dz = 75;
+    const real32 maxR = Math::Min( Math::Min( dx, dy ), dz ) * 0.4f;
+    uint32 sphereCount = 0;
+    for ( int32 x = -250; x <= 250; x += dx )
+    {
+        for ( int32 y = -150; y <= 150; y += dy )
+        {
+            for ( int32 z = -250; z <= 100; z += dz, ++sphereCount )
+            {
+                // get random radius
+                real32 radius = Random::RandReal32( 5.0f, maxR );
+
+                // get random material
+                const int32 matIndex = Random::RandInt32( 0, materialCount - 1 );
+                const PhongMaterial& mat = *materials[ matIndex ];
+
+                // add the sphere
+                AddSphere( Vector3( x, y, z ), radius, mat );
+            }
+        }
+    }
+    rex::WriteLine( "  Generated ", sphereCount, " spheres." );
+}
+
+#endif
+
+// randomly placed spheres
 #if 1
 
 // build scene
@@ -65,7 +155,7 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     
 
     // add some random spheres
-    const uint32 sphereCount = static_cast<uint32>( Random::RandInt32( 45, 80 ) );
+    const uint32 sphereCount = static_cast<uint32>( Random::RandInt32( 100, 175 ) );
     rex::WriteLine( "  Generating ", sphereCount, " spheres." );
 
     Vector3 pos;
@@ -89,6 +179,8 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 }
 
 #endif
+
+// sphere scene from the book
 #if 0
 
 // build scene
@@ -199,6 +291,8 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 }
 
 #endif
+
+// blank slate w/ plane on XY plane
 #if 0
 
 // build scene

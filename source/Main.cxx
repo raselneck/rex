@@ -85,7 +85,9 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
         // move the camera (I know this is mixed, but I want Z to be the "major" position at angle = 0)
         real64 x = dist * std::sin( angle * Math::PI_OVER_180 );
         real64 z = dist * std::cos( angle * Math::PI_OVER_180 );
-        camera->SetPosition( x, eyeHeight, z );
+        Vector3 position( x, 0.0, z );
+        camera->SetPosition( position );
+        camera->SetTarget( position + Vector3( 0.0, 0.0, -1.0 ) );
 
         
         rex::Write( "Rendering image ", imgNumber + 1, " / ", frameCount, "... " );
@@ -116,71 +118,22 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
 }
 
 
-// renders a sphere animation
-void RenderSphereAnimation( rex::Scene& scene, uint32 frameCount, real64 eyeHeight, real64 eyeDist )
-{
-    using namespace rex;
-
-    const real64 dAngle = 2.0 * Math::INV_PI;
-    real64       angle = 0.0;
-    mkdir( "anim" );
-
-    // camera
-    auto* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );
-    camera->SetPosition( 0.0, eyeHeight * ( 20.0 / 3.0 ), eyeDist );
-    camera->SetTarget  ( 0.0, eyeHeight / ( 20.0 / 3.0 ), 0.0 );
-
-
-    // materials
-    const real32 ka = 0.25f;
-    const real32 kd = 0.75f;
-    auto material = MatteMaterial( Color::White, ka, kd );
-
-
-    // sphere
-    auto sphere = scene.AddSphere( Vector3(), 15.0, material );
-
-
-    // render loop
-    Timer timer;
-    for ( uint32 frame = 0; frame < frameCount; ++frame )
-    {
-        // set the sphere's position
-        real64 y = std::sin( angle ) * 20.0 + 20.0;
-        sphere->SetCenter( 0.0, y, 0.0 );
-
-        // render the scene
-        timer.Start();
-        scene.Render();
-        timer.Stop();
-
-        rex::Write( "Rendering frame ", frame + 1, " / ", frameCount, "... " );
-
-        // save the image
-        String path = "anim/img" + std::to_string( frame ) + ".png";
-        scene.GetImage()->Save( path.c_str() );
-
-        // print out how long it took
-        rex::WriteLine( "Done. (", timer.GetElapsed(), " seconds)" );
-
-        angle += dAngle;
-    }
-}
-
-
 int main( int argc, char** argv )
 {
     using namespace rex;
 
     // seed the random number generator
-    Random::Seed( static_cast<uint32>( time( 0 ) ) );
+    //const uint32 seed = static_cast<uint32>( time( 0 ) );
+    const uint32 seed = 1337U;
+    Random::Seed( seed );
+    rex::WriteLine( "Random seed: ", seed );
 
 
     // create the scene
     rex::WriteLine( "Building scene..." );
     Scene scene;
     scene.SetTracerType<RayCastTracer>();
-    scene.SetSamplerType<RegularSampler>( 9 );
+    scene.SetSamplerType<RegularSampler>( 4 );
     scene.SetCameraType<PerspectiveCamera>();
     {
         PerspectiveCamera* camera = reinterpret_cast<PerspectiveCamera*>( scene.GetCamera().get() );

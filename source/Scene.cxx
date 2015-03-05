@@ -102,21 +102,27 @@ const ViewPlane& Scene::GetViewPlane() const
 // hit all objects
 void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
 {
+    // prepare to check objects
+    real64  t = 0.0;
+    real64  tmin = Math::HUGE_VALUE;
+    Vector3 normal;
+    Vector3 localHitPoint;
+
+
+
     // only get the objects that the ray hits
     _octree->QueryIntersections( ray, _queryObjects );
 
     // append the planes to the list of things to check
     for ( auto& plane : _planes )
     {
-        _queryObjects.push_back( plane.get() );
+        // TODO : Make sure this actually works
+        if ( plane->ShadowHit( ray, t ) )
+        {
+            _queryObjects.push_back( plane.get() );
+        }
+        t = 0.0;
     }
-
-
-    // prepare to check objects
-    real64  t     = 0.0;
-    real64  tmin  = Math::HUGE_VALUE;
-    Vector3 normal;
-    Vector3 localHitPoint;
 
 
     // iterate through the hit objects
@@ -149,7 +155,11 @@ bool Scene::ShadowHitObjects( const Ray& ray ) const
 {
     real64 t = 0.0;
 
-    for ( auto& obj : _objects )
+    // query which objects the ray hits
+    _octree->QueryIntersections( ray, _queryObjects );
+
+    // only hit the objects the ray actually hits
+    for ( auto& obj : _queryObjects )
     {
         if ( obj->ShadowHit( ray, t ) )
         {

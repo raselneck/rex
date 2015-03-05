@@ -1,3 +1,4 @@
+
 # Rex the Ray Tracer
 
 Rex is a ray tracer I am working on for an independent study where I will
@@ -14,8 +15,15 @@ All of the necessary include (`.h` and `.hxx`) files are in the `include`
 directory, and all of the necessary source (`.cxx`) files are in the
 `source` folder.
 
-The following command works with G++ 4.8.2: `g++ ../source/*.cxx -I../include
--std=c++11 -w -O3 -o rex`
+The following works with G++ 4.8.2 (assuming you have git installed):
+
+```
+git clone git://github.com/fastinvsqrt/rex.git rex
+cd rex
+mkdir build
+cd build
+g++ ../source/*.cxx -I../include -std=c++11 -w -O3 -o rex
+```
 
 ## License
 

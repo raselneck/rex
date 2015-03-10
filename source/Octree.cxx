@@ -39,6 +39,12 @@ Octree::~Octree()
     }
 }
 
+// get octree bounds
+const BoundingBox& Octree::GetBounds() const
+{
+    return _bounds;
+}
+
 // check if we've subdivided
 bool Octree::HasSubdivided() const
 {

@@ -57,6 +57,11 @@ public:
     ~Octree();
 
     /// <summary>
+    /// Gets this octree's bounds.
+    /// </summary>
+    const BoundingBox& GetBounds() const;
+
+    /// <summary>
     /// Queries this octree for the pieces of geometry that a given ray intersects.
     /// </summary>
     /// <param name="ray">The ray to check.</param>

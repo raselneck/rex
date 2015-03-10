@@ -116,4 +116,18 @@ bool BoundingBox::Intersects( const Ray& ray, real64& dist ) const
     return true;
 }
 
+// set box max
+void BoundingBox::SetMin( const Vector3& min )
+{
+    _min = Vector3::Min( min, _max );
+    _max = Vector3::Max( min, _max );
+}
+
+// set box max
+void BoundingBox::SetMax( const Vector3& max )
+{
+    _max = Vector3::Max( max, _min );
+    _min = Vector3::Min( max, _min );
+}
+
 REX_NS_END

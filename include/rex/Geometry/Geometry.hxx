@@ -17,7 +17,9 @@ struct ShadePoint;
 enum class GeometryType
 {
     Plane,
-    Sphere
+    Sphere,
+    Triangle,
+    Mesh
 };
 
 /// <summary>
@@ -61,6 +63,12 @@ public:
     virtual BoundingBox GetBounds() const = 0;
 
     /// <summary>
+    /// Gets this piece of geometry's bounds by populating an existing bounding box.
+    /// </summary>
+    /// <param name="box">The bounding box to populate.</param>
+    void GetBounds( BoundingBox& box ) const;
+
+    /// <summary>
     /// Checks to see if the given ray hits this geometric object. If it does, the shading
     /// point information is populated and the collision distance is recorded.
     /// </summary>
@@ -79,8 +87,14 @@ public:
     /// <summary>
     /// Sets the material for this piece of geometry.
     /// </summary>
+    /// <param name="material">The existing material.</param>
+    template<class T> virtual void SetMaterial( const Handle<T>& material );
+
+    /// <summary>
+    /// Sets the material for this piece of geometry.
+    /// </summary>
     /// <param name="material">The material.</param>
-    template<class T> void SetMaterial( const T& material );
+    template<class T> virtual void SetMaterial( const T& material );
 };
 
 REX_NS_END

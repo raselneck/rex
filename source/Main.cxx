@@ -18,39 +18,6 @@
 #  define mkdir(path) mkdir(path, S_IRWXU)
 #endif
 
-
-// the main ray-cast tracer
-class RayCastTracer : public rex::Tracer
-{
-    mutable rex::ShadePoint _sp;
-
-public:
-    RayCastTracer( rex::Scene* scene )
-        : rex::Tracer( scene ), _sp( scene )
-    {
-    }
-
-    virtual rex::Color Trace( const rex::Ray& ray ) const
-    {
-        return Trace( ray, 0 );
-    }
-
-    virtual rex::Color Trace( const rex::Ray& ray, int32 depth ) const
-    {
-        _sp.Reset();
-        
-        _scene->HitObjects( ray, _sp );
-        if ( _sp.HasHit )
-        {
-            _sp.Ray = ray;
-            return _sp.Material->Shade( _sp );
-        }
-
-        return _scene->GetBackgroundColor();
-    }
-};
-
-
 // renders a custom scene animation
 void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
 {
@@ -143,7 +110,6 @@ int main( int argc, char** argv )
     scene.Build( 1280, 720, 0.5f );
 
 
-    //RenderSphereAnimation( scene, 1, 100.0, 450.0 );
     RenderSceneAnimation( scene, 1, 2000.0 );
 #if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );

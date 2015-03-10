@@ -1,59 +1,58 @@
-#ifndef __REX_PLANE_HXX
-#define __REX_PLANE_HXX
+#ifndef __REX_TRIANGLE_HXX
+#define __REX_TRIANGLE_HXX
 
-#include "../Config.hxx"
 #include "Geometry.hxx"
 
 REX_NS_BEGIN
 
 /// <summary>
-/// Defines a plane as a geometric object.
+/// Defines a piece of triangular geometry.
 /// </summary>
-class Plane : public Geometry
+class Triangle : public Geometry
 {
-    Vector3 _point;
-    Vector3 _normal;
-
 public:
     /// <summary>
-    /// Creates a new plane.
+    /// The triangle's first point.
     /// </summary>
-    Plane();
+    Vector3 P1;
 
     /// <summary>
-    /// Creates a new plane.
+    /// The triangle's second point.
     /// </summary>
-    /// <param name="point">The point through which the plane passes.</param>
-    /// <param name="normal">The normal representing the plane.</param>
-    Plane( const Vector3& point, const Vector3& normal );
+    Vector3 P2;
 
     /// <summary>
-    /// Destroys this plane.
+    /// The triangle's third point.
     /// </summary>
-    virtual ~Plane();
+    Vector3 P3;
 
     /// <summary>
-    /// Gets this plane's bounds.
+    /// Creates a new triangle.
+    /// </summary>
+    Triangle();
+
+    /// <summary>
+    /// Destroys this triangle.
+    /// </summary>
+    virtual ~Triangle();
+
+    /// <summary>
+    /// Gets this triangle's bounds.
     /// </summary>
     virtual BoundingBox GetBounds() const;
 
     /// <summary>
-    /// Gets the normal that defines this plane.
+    /// Gets this triangle's normal.
     /// </summary>
-    const Vector3& GetNormal() const;
+    Vector3 GetNormal() const;
 
     /// <summary>
-    /// Gets a point this plane passes through.
-    /// </summary>
-    const Vector3& GetPoint() const;
-
-    /// <summary>
-    /// Gets the geometry type of this sphere.
+    /// Gets the geometry type of this triangle.
     /// </summary>
     virtual GeometryType GetType() const;
 
     /// <summary>
-    /// Checks to see if the given ray hits this plane. If it does, the shading
+    /// Checks to see if the given ray hits this triangle. If it does, the shading
     /// point information is populated and the collision distance is recorded.
     /// </summary>
     /// <param name="ray">The ray to check.</param>

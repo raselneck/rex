@@ -176,6 +176,15 @@
     <ClCompile Include="Octree.cxx">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="..\include\rex\Tracers\RayCastTracer.cxx">
+      <Filter>Source Files\Tracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cxx">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cxx">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx">
@@ -295,6 +304,15 @@
     <ClInclude Include="..\include\rex\Geometry\Octree.hxx">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\rex\Tracers\RayCastTracer.hxx">
+      <Filter>Header Files\Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Geometry\Triangle.hxx">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Geometry\Mesh.hxx">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Utility\Color.inl">
@@ -322,6 +340,9 @@
       <Filter>Header Files\Scene</Filter>
     </None>
     <None Include="..\include\rex\Geometry\Geometry.inl">
+      <Filter>Header Files\Geometry</Filter>
+    </None>
+    <None Include="..\include\rex\Geometry\Mesh.inl">
       <Filter>Header Files\Geometry</Filter>
     </None>
   </ItemGroup>

@@ -31,7 +31,7 @@ public:
     /// <summary>
     /// Destroys this sphere.
     /// </summary>
-    ~Sphere();
+    virtual ~Sphere();
 
     /// <summary>
     /// Gets this sphere's bounds.

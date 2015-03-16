@@ -38,6 +38,13 @@ MatteMaterial::~MatteMaterial()
 {
 }
 
+// copy this material
+Handle<Material> MatteMaterial::Copy() const
+{
+    Handle<MatteMaterial> that( new MatteMaterial( *this ) );
+    return that;
+}
+
 // get ka
 real32 MatteMaterial::GetAmbientCoefficient() const
 {

@@ -342,8 +342,5 @@
     <None Include="..\include\rex\Geometry\Geometry.inl">
       <Filter>Header Files\Geometry</Filter>
     </None>
-    <None Include="..\include\rex\Geometry\Mesh.inl">
-      <Filter>Header Files\Geometry</Filter>
-    </None>
   </ItemGroup>
 </Project>

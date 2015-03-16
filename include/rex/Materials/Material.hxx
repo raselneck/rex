@@ -25,6 +25,11 @@ public:
     virtual ~Material();
 
     /// <summary>
+    /// Copies this material.
+    /// </summary>
+    virtual Handle<Material> Copy() const = 0;
+
+    /// <summary>
     /// Gets a shaded color given hit point data.
     /// </summary>
     /// <param name="sp">The hit point data.</param>

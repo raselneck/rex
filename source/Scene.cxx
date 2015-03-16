@@ -109,7 +109,6 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
     Vector3 localHitPoint;
 
 
-
     // only get the objects that the ray hits
     _octree->QueryIntersections( ray, _queryObjects );
 

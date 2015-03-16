@@ -36,6 +36,13 @@ PhongMaterial::~PhongMaterial()
 {
 }
 
+// copy this material
+Handle<Material> PhongMaterial::Copy() const
+{
+    Handle<PhongMaterial> that( new PhongMaterial( *this ) );
+    return that;
+}
+
 // get specular coefficient
 real32 PhongMaterial::GetSpecularCoefficient() const
 {

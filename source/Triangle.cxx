@@ -16,16 +16,8 @@ Triangle::~Triangle()
 // get triangle bounds
 BoundingBox Triangle::GetBounds() const
 {
-    real64 minX = Math::Min( P1.X, Math::Min( P2.X, P3.X ) ) - Math::EPSILON;
-    real64 minY = Math::Min( P1.Y, Math::Min( P2.Y, P3.Y ) ) - Math::EPSILON;
-    real64 minZ = Math::Min( P1.Z, Math::Min( P2.Z, P3.Z ) ) - Math::EPSILON;
-
-    real64 maxX = Math::Max( P1.X, Math::Max( P2.X, P3.X ) ) + Math::EPSILON;
-    real64 maxY = Math::Max( P1.Y, Math::Max( P2.Y, P3.Y ) ) + Math::EPSILON;
-    real64 maxZ = Math::Max( P1.Z, Math::Max( P2.Z, P3.Z ) ) + Math::EPSILON;
-
-    Vector3 min( minX, minY, minZ );
-    Vector3 max( maxX, maxY, maxZ );
+    Vector3 min = Vector3::Min( Vector3::Min( P1, P2 ), P3 );
+    Vector3 max = Vector3::Max( Vector3::Max( P1, P2 ), P3 );
 
     return BoundingBox( min, max );
 }

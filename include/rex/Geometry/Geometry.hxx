@@ -43,6 +43,12 @@ public:
     template<class T> Geometry( const T& material );
 
     /// <summary>
+    /// Creates a new geometric object.
+    /// </summary>
+    /// <param name="material">The material to use.</param>
+    template<class T> Geometry( const Handle<T>& material );
+
+    /// <summary>
     /// Destroys this geometric object.
     /// </summary>
     virtual ~Geometry();
@@ -61,12 +67,6 @@ public:
     /// Gets this piece of geometry's bounds.
     /// </summary>
     virtual BoundingBox GetBounds() const = 0;
-
-    /// <summary>
-    /// Gets this piece of geometry's bounds by populating an existing bounding box.
-    /// </summary>
-    /// <param name="box">The bounding box to populate.</param>
-    void GetBounds( BoundingBox& box ) const;
 
     /// <summary>
     /// Checks to see if the given ray hits this geometric object. If it does, the shading
@@ -88,13 +88,13 @@ public:
     /// Sets the material for this piece of geometry.
     /// </summary>
     /// <param name="material">The existing material.</param>
-    template<class T> virtual void SetMaterial( const Handle<T>& material );
+    virtual void SetMaterial( const Handle<Material>& material );
 
     /// <summary>
     /// Sets the material for this piece of geometry.
     /// </summary>
     /// <param name="material">The material.</param>
-    template<class T> virtual void SetMaterial( const T& material );
+    virtual void SetMaterial( const Material& material );
 };
 
 REX_NS_END

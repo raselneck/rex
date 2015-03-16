@@ -18,6 +18,7 @@
 #  define mkdir(path) mkdir(path, S_IRWXU)
 #endif
 
+
 // renders a custom scene animation
 void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
 {
@@ -52,9 +53,8 @@ void RenderSceneAnimation( rex::Scene& scene, uint32 frameCount, real64 dist )
         // move the camera (I know this is mixed, but I want Z to be the "major" position at angle = 0)
         real64 x = dist * std::sin( angle * Math::PI_OVER_180 );
         real64 z = dist * std::cos( angle * Math::PI_OVER_180 );
-        Vector3 position( x, 0.0, z );
+        Vector3 position( x, 30.0, z );
         camera->SetPosition( position );
-        camera->SetTarget( position + Vector3( 0.0, 0.0, -1.0 ) );
 
         
         rex::Write( "Rendering image ", imgNumber + 1, " / ", frameCount, "... " );
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
     scene.Build( 1280, 720, 0.5f );
 
 
-    RenderSceneAnimation( scene, 1, 2000.0 );
+    RenderSceneAnimation( scene, 1, 150.0 );
 #if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );
 #endif

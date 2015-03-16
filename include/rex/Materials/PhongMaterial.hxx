@@ -50,6 +50,11 @@ public:
     virtual ~PhongMaterial();
 
     /// <summary>
+    /// Copies this Phong material.
+    /// </summary>
+    virtual Handle<Material> Copy() const;
+
+    /// <summary>
     /// Gets the specular coefficient.
     /// </summary>
     real32 GetSpecularCoefficient() const;

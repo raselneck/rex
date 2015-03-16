@@ -3,23 +3,24 @@
 
 REX_NS_BEGIN
 
-// the maximum number of children an octree can have before it subdivides
-static const uint32 MaxOctreeChildCount = 8;
+#define DEFAULT_MAX_ITEM_COUNT 12
 
 
 // create octree
 Octree::Octree( const BoundingBox& bounds )
-    : _bounds( bounds )
+    : Octree( bounds.GetMin(), bounds.GetMax(), DEFAULT_MAX_ITEM_COUNT )
 {
-    for ( uint32 i = 0; i < 8; ++i )
-    {
-        _children[ i ] = nullptr;
-    }
 }
 
 // create octree
 Octree::Octree( const Vector3& min, const Vector3& max )
-    : _bounds( min, max )
+    : Octree( min, max, DEFAULT_MAX_ITEM_COUNT )
+{
+}
+
+Octree::Octree( const Vector3& min, const Vector3& max, uint32 maxItemCount )
+    : _bounds( min, max ),
+      _maxItemCount( maxItemCount )
 {
     for ( uint32 i = 0; i < 8; ++i )
     {
@@ -104,7 +105,7 @@ bool Octree::Add( const Geometry* geometry )
     }
 
     // check if we can add the object to us first
-    if ( _objects.size() < MaxOctreeChildCount && !HasSubdivided() )
+    if ( _objects.size() < _maxItemCount && !HasSubdivided() )
     {
         _objects.push_back( std::make_pair( gBounds, geometry ) );
     }

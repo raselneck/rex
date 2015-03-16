@@ -11,25 +11,23 @@ template<class T> Geometry::Geometry( const T& material )
     _material.reset( new T( material ) );
 }
 
-// get geometry bounds by population
-inline void Geometry::GetBounds( BoundingBox& box ) const
+// create geometry w/ material handle
+template<class T> Geometry::Geometry( const Handle<T>& material )
 {
-    BoundingBox bounds = GetBounds();
-    box.SetMin( bounds.GetMin() );
-    box.SetMax( bounds.GetMax() );
+    _material = material;
 }
 
 // set geometry's material
-template<class T> inline void Geometry::SetMaterial( const Handle<T>& material )
+inline void Geometry::SetMaterial( const Handle<Material>& material )
 {
     _material.reset();
     _material = material;
 }
 
 // set geometry's material
-template<class T> inline void Geometry::SetMaterial( const T& material )
+inline void Geometry::SetMaterial( const Material& material )
 {
-    _material.reset( new T( material ) );
+    _material = material.Copy();
 }
 
 REX_NS_END

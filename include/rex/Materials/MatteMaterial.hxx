@@ -48,6 +48,11 @@ public:
     virtual ~MatteMaterial();
 
     /// <summary>
+    /// Copies this matte material.
+    /// </summary>
+    virtual Handle<Material> Copy() const;
+
+    /// <summary>
     /// Gets the ambient BRDF's diffuse coefficient.
     /// </summary>
     real32 GetAmbientCoefficient() const;

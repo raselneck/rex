@@ -254,7 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Geometry\Geometry.inl" />
-    <None Include="..\include\rex\Geometry\Mesh.inl" />
     <None Include="..\include\rex\Scene\Scene.inl" />
     <None Include="..\include\rex\Utility\Color.inl" />
     <None Include="..\include\rex\Utility\Math.inl" />

@@ -1,4 +1,5 @@
 build/*
+content/*
 *.opensdf
 *.sdf
 *.suo

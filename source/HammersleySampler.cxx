@@ -49,7 +49,7 @@ HammersleySampler::~HammersleySampler()
 // generate samples
 void HammersleySampler::GenerateSamples()
 {
-    _unitSquareSamples.clear();
+    _samples.clear();
 
     Vector2 vec;
     for ( int32 set = 0; set < _setCount; ++set )
@@ -59,7 +59,7 @@ void HammersleySampler::GenerateSamples()
             vec.X = static_cast<real64>( i ) / _sampleCount;
             vec.Y = GetPhi( i );
 
-            _unitSquareSamples.push_back( vec );
+            _samples.push_back( vec );
         }
     }
 }

@@ -13,6 +13,18 @@ Camera::~Camera()
 {
 }
 
+// get position
+const Vector3& Camera::GetPosition() const
+{
+    return _position;
+}
+
+// get target
+const Vector3& Camera::GetTarget() const
+{
+    return _target;
+}
+
 // calculate orthonormal basis vectors
 void Camera::CalculateUVW()
 {

@@ -5,7 +5,7 @@ REX_NS_BEGIN
 
 // create tracer
 RayCastTracer::RayCastTracer( Scene* scene )
-    : Tracer( scene ), _sp( scene )
+    : Tracer( scene )
 {
 }
 
@@ -23,13 +23,13 @@ Color RayCastTracer::Trace( const rex::Ray& ray ) const
 // trace a ray based on depth
 Color RayCastTracer::Trace( const rex::Ray& ray, int32 depth ) const
 {
-    _sp.Reset();
+    ShadePoint sp( _scene );
 
-    _scene->HitObjects( ray, _sp );
-    if ( _sp.HasHit )
+    _scene->HitObjects( ray, sp );
+    if ( sp.HasHit )
     {
-        _sp.Ray = ray;
-        return _sp.Material->Shade( _sp );
+        sp.Ray = ray;
+        return sp.Material->Shade( sp );
     }
 
     return _scene->GetBackgroundColor();

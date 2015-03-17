@@ -34,13 +34,13 @@ void MultiJitteredSampler::GenerateSamples()
     const int32 n          = (int32)sqrt( (real32)_sampleCount );
     const real32 cellWidth = 1.0f / _sampleCount;
 
-    _unitSquareSamples.clear();
+    _samples.clear();
 
     // create some dummy points
     const int32 maxPoints = _sampleCount * _setCount;
     for ( int32 i = 0; i < maxPoints; ++i )
     {
-        _unitSquareSamples.push_back( Vector2() );
+        _samples.push_back( Vector2() );
     }
 
     // now distribute the points in the initial patterns
@@ -51,8 +51,8 @@ void MultiJitteredSampler::GenerateSamples()
             for ( int32 j = 0; j < n; ++j )
             {
                 const int32 index = i * n + j + set * _sampleCount;
-                _unitSquareSamples[ index ].X = ( i * n + j ) * cellWidth + Random::RandReal32( 0.0f, cellWidth );
-                _unitSquareSamples[ index ].Y = ( j * n + i ) * cellWidth + Random::RandReal32( 0.0f, cellWidth );
+                _samples[ index ].X = ( i * n + j ) * cellWidth + Random::RandReal32( 0.0f, cellWidth );
+                _samples[ index ].Y = ( j * n + i ) * cellWidth + Random::RandReal32( 0.0f, cellWidth );
             }
         }
     }
@@ -68,9 +68,9 @@ void MultiJitteredSampler::GenerateSamples()
                 const int32 current = i * n + j + set * _sampleCount;
                 const int32 target  = i * n + k + set * _sampleCount;
 
-                real64 x = _unitSquareSamples[ current ].X;
-                _unitSquareSamples[ current ].X = _unitSquareSamples[ target ].X;
-                _unitSquareSamples[ target ].X = x;
+                real64 x = _samples[ current ].X;
+                _samples[ current ].X = _samples[ target ].X;
+                _samples[ target ].X = x;
             }
         }
     }
@@ -86,9 +86,9 @@ void MultiJitteredSampler::GenerateSamples()
                 const int32 current = j * n + i + set * _sampleCount;
                 const int32 target  = k * n + i + set * _sampleCount;
 
-                real64 y = _unitSquareSamples[ current ].Y;
-                _unitSquareSamples[ current ].Y = _unitSquareSamples[ target ].Y;
-                _unitSquareSamples[ target  ].Y = y;
+                real64 y = _samples[ current ].Y;
+                _samples[ current ].Y = _samples[ target ].Y;
+                _samples[ target  ].Y = y;
             }
         }
     }

@@ -38,7 +38,7 @@ void NRooksSampler::GenerateSamples()
             vec.X = ( i + Random::RandReal32() ) / _sampleCount;
             vec.Y = ( i + Random::RandReal32() ) / _sampleCount;
 
-            _unitSquareSamples.push_back( vec );
+            _samples.push_back( vec );
         }
     }
 
@@ -59,9 +59,9 @@ void NRooksSampler::ShuffleXCoordinates()
             const int32 target  = ( Random::RandInt32() % _sampleCount ) + ( set * _sampleCount );
 
             // swap X coordinate
-            real64 x = _unitSquareSamples[ current ].X;
-            _unitSquareSamples[ current ].X = _unitSquareSamples[ target ].X;
-            _unitSquareSamples[ target  ].X = x;
+            real64 x = _samples[ current ].X;
+            _samples[ current ].X = _samples[ target ].X;
+            _samples[ target  ].X = x;
         }
     }
 }
@@ -78,9 +78,9 @@ void NRooksSampler::ShuffleYCoordinates()
             const int32 target = ( Random::RandInt32() % _sampleCount ) + ( set * _sampleCount );
 
             // swap Y coordinate
-            real64 y = _unitSquareSamples[ current ].Y;
-            _unitSquareSamples[ current ].Y = _unitSquareSamples[ target ].Y;
-            _unitSquareSamples[ target  ].Y = y;
+            real64 y = _samples[ current ].Y;
+            _samples[ current ].Y = _samples[ target ].Y;
+            _samples[ target  ].Y = y;
         }
     }
 }

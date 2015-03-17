@@ -38,6 +38,16 @@ public:
     virtual ~Camera();
 
     /// <summary>
+    /// Gets this camera's position.
+    /// </summary>
+    const Vector3& GetPosition() const;
+
+    /// <summary>
+    /// Gets this camera's target.
+    /// </summary>
+    const Vector3& GetTarget() const;
+
+    /// <summary>
     /// Renders the given scene.
     /// </summary>
     /// <param name="scene">The scene to render.</param>

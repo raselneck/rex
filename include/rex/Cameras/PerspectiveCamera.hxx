@@ -15,12 +15,6 @@ class PerspectiveCamera : public Camera
     real32 _viewPlaneDistance;
     real32 _zoomAmount;
 
-    /// <summary>
-    /// Gets the ray direction to the given sample point.
-    /// </summary>
-    /// <param name=""></param>
-    Vector3 GetRayDirection( const Vector2& sp ) const;
-
 public:
     /// <summary>
     /// Creates a new perspective camera.
@@ -31,6 +25,12 @@ public:
     /// Destroys this perspective camera.
     /// </summary>
     virtual ~PerspectiveCamera();
+
+    /// <summary>
+    /// Gets the ray direction to the given sample point.
+    /// </summary>
+    /// <param name=""></param>
+    Vector3 GetRayDirection( const Vector2& sp ) const;
 
     /// <summary>
     /// Renders the given scene.

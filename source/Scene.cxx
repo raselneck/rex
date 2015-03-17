@@ -109,8 +109,12 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
     Vector3 localHitPoint;
 
 
+    std::vector<const Geometry*> queryObjects;
+    queryObjects.reserve( _objects.size() / 2 );
+
+
     // only get the objects that the ray hits
-    _octree->QueryIntersections( ray, _queryObjects );
+    _octree->QueryIntersections( ray, queryObjects );
 
     // append the planes to the list of things to check
     for ( auto& plane : _planes )
@@ -118,14 +122,14 @@ void Scene::HitObjects( const Ray& ray, ShadePoint& sp ) const
         // TODO : Make sure this actually works
         if ( plane->ShadowHit( ray, t ) )
         {
-            _queryObjects.push_back( plane.get() );
+            queryObjects.push_back( plane.get() );
         }
         t = 0.0;
     }
 
 
     // iterate through the hit objects
-    for ( auto& obj : _queryObjects )
+    for ( auto& obj : queryObjects )
     {
         if ( obj->Hit( ray, t, sp ) && ( t < tmin ) )
         {
@@ -154,11 +158,16 @@ bool Scene::ShadowHitObjects( const Ray& ray ) const
 {
     real64 t = 0.0;
 
+
+    std::vector<const Geometry*> queryObjects;
+    queryObjects.reserve( _objects.size() / 2 );
+
+
     // query which objects the ray hits
-    _octree->QueryIntersections( ray, _queryObjects );
+    _octree->QueryIntersections( ray, queryObjects );
 
     // only hit the objects the ray actually hits
-    for ( auto& obj : _queryObjects )
+    for ( auto& obj : queryObjects )
     {
         if ( obj->ShadowHit( ray, t ) )
         {
@@ -248,9 +257,6 @@ void Scene::BuildOctree()
     {
         REX_ASSERT( _octree->Add( obj.get() ), "Failed to add object to octree." );
     }
-
-    // reserve space for our objects
-    _queryObjects.reserve( _objects.size() );
 }
 
 // get camera

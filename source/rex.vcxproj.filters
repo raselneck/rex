@@ -286,9 +286,6 @@
     <ClInclude Include="..\include\rex\Cameras\Camera.hxx">
       <Filter>Header Files\Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Cameras\PerspectiveCamera.hxx">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\rex\BRDFs\BRDF.hxx">
       <Filter>Header Files\BRDFs</Filter>
     </ClInclude>
@@ -312,6 +309,9 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\Geometry\Mesh.hxx">
       <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Cameras\PerspectiveCamera.hxx">
+      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

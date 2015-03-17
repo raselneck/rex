@@ -4,6 +4,7 @@
 #include "../Config.hxx"
 #include "../Utility/Vector2.hxx"
 #include "../Utility/Vector3.hxx"
+#include <mutex>
 #include <vector>
 
 REX_NS_BEGIN
@@ -19,11 +20,9 @@ class Sampler
     // allows us to have the sample methods be const
 
 protected:
-    std::vector<Vector2> _unitSquareSamples;
-    std::vector<Vector2> _unitDiskSamples;
-    std::vector<Vector3> _unitHemisphereSamples;
-    std::vector<Vector3> _unitSphereSamples;
+    std::vector<Vector2> _samples;
     std::vector<int32>   _indices;
+    mutable std::mutex   _mutex;
     mutable int32        _indexJump;
     mutable uint32       _samplePointCount;
     int32                _sampleCount;
@@ -77,37 +76,6 @@ public:
     /// Gets the next sample on the unit square.
     /// </summary>
     Vector2 SampleUnitSquare() const;
-
-    /// <summary>
-    /// Gets the next sample on the unit disk.
-    /// </summary>
-    Vector2 SampleUnitDisk() const;
-
-    /// <summary>
-    /// Gets the next sample on the unit hemisphere.
-    /// </summary>
-    Vector3 SampleUnitHemisphere() const;
-
-    /// <summary>
-    /// Gets the next sample on the unit square.
-    /// </summary>
-    Vector3 SampleUnitSphere() const;
-
-    /// <summary>
-    /// Maps the samples to the unit disk.
-    /// </summary>
-    void MapSamplesToUnitDisk();
-
-    /// <summary>
-    /// Maps the samples to the unit hemisphere.
-    /// </summary>
-    /// <param name="exponent">The exponent to use in hemisphere conversions.</param>
-    void MapSamplesToUnitHemisphere( real32 exponent );
-
-    /// <summary>
-    /// Maps the samples to the unit sphere.
-    /// </summary>
-    void MapSamplesToUnitSphere();
 
     /// <summary>
     /// Sets the sample count.

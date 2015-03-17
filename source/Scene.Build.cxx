@@ -50,8 +50,8 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 
 
 
-#if 0
-    // load the gourd model
+#if 1
+    // load the model
     std::vector<Handle<Mesh>> meshes;
     if ( Mesh::LoadFile( "X:\\rex\\content\\cessna.fbx", meshes ) )
     {
@@ -66,12 +66,12 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
     }
     else
     {
-        std::cout << "Failed to load cessna model." << std::endl;
+        std::cout << "Failed to load model." << std::endl;
     }
 #endif
 
 
-#if 1
+#if 0
     // load the gourd model
     std::vector<Handle<Mesh>> meshes;
     if ( Mesh::LoadFile( "X:\\rex\\content\\gourd.fbx", meshes ) )

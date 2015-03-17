@@ -31,7 +31,7 @@ void JitteredSampler::GenerateSamples()
 {
     const int32 n = (int32)sqrt( (real32)_sampleCount );
 
-    _unitSquareSamples.clear();
+    _samples.clear();
 
     for ( int32 set = 0; set < _setCount; ++set )
     {
@@ -39,7 +39,7 @@ void JitteredSampler::GenerateSamples()
         {
             for ( int32 x = 0; x < n; ++x )
             {
-                _unitSquareSamples.push_back( Vector2(
+                _samples.push_back( Vector2(
                     ( x + Random::RandReal32() ) / n,
                     ( y + Random::RandReal32() ) / n
                 ) );

@@ -31,10 +31,9 @@ class Scene
     Handle<Sampler>      _sampler;
     Handle<Tracer>       _tracer;
     Handle<AmbientLight> _ambientLight;
-    std::vector<Handle<Plane>>           _planes;
-    std::vector<Handle<Geometry>>        _objects;
-    std::vector<Handle<Light>>           _lights;
-    mutable std::vector<const Geometry*> _queryObjects;
+    std::vector<Handle<Plane>>    _planes;
+    std::vector<Handle<Geometry>> _objects;
+    std::vector<Handle<Light>>    _lights;
 
     // planes need to be separate because they will always be checked,
     // whereas all other objects will be spatially partitioned

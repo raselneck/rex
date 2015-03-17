@@ -11,8 +11,6 @@ REX_NS_BEGIN
 /// </summary>
 class RayCastTracer : public Tracer
 {
-    mutable ShadePoint _sp;
-
 public:
     /// <summary>
     /// Creates a new ray cast tracer.

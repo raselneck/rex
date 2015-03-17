@@ -82,12 +82,18 @@ bool Mesh::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
     Vector3 localHitPoint;
 
 
+
+    std::vector<const Geometry*> queryObjects;
+    queryObjects.reserve( _triangles.size() / 2 );
+
+
+
     // only get the objects that the ray hits
-    _octree->QueryIntersections( ray, _queryObjects );
+    _octree->QueryIntersections( ray, queryObjects );
 
 
     // iterate through the hit objects
-    for ( auto& obj : _queryObjects )
+    for ( auto& obj : queryObjects )
     {
         if ( obj->Hit( ray, t, sp ) && ( t < tmin ) )
         {
@@ -118,7 +124,7 @@ bool Mesh::ShadowHit( const Ray& ray, real64& tmin ) const
 {
     // TODO : Does this really need to check through every single object
     // that the ray has hit after querying the octree?
-    // If the size of the _queryObjects collection is > 0 then the ray
+    // If the size of the queryObjects collection is > 0 then the ray
     // has hit, and we only need the minimum hit distance.
 
     // NOTE : You guessed it! This is basically the same as the scene's
@@ -127,12 +133,17 @@ bool Mesh::ShadowHit( const Ray& ray, real64& tmin ) const
 
     real64 t = 0.0;
 
+
+    std::vector<const Geometry*> queryObjects;
+    queryObjects.reserve( _triangles.size() / 2 );
+
+
     // query which objects the ray hits
-    _octree->QueryIntersections( ray, _queryObjects );
+    _octree->QueryIntersections( ray, queryObjects );
 
     // only hit the objects the ray actually hits
     bool hasHit = false;
-    for ( auto& obj : _queryObjects )
+    for ( auto& obj : queryObjects )
     {
         if ( obj->ShadowHit( ray, t ) && ( t < tmin ) )
         {
@@ -157,7 +168,7 @@ void Mesh::BuildOctree()
     }
 
     // now create (or reset) the octree
-    const uint32 maxItemCount = static_cast<uint32>( Math::Max( 4ULL, _triangles.size() / 12 ) );
+    const uint32 maxItemCount = static_cast<uint32>( Math::Max( 4U, static_cast<uint32>( _triangles.size() / 12 ) ) );
     _octree.reset( new Octree( bMin, bMax, maxItemCount ) );
 
 

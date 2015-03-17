@@ -91,9 +91,9 @@ int main( int argc, char** argv )
 
     // seed the random number generator
     //const uint32 seed = static_cast<uint32>( time( 0 ) );
-    const uint32 seed = 1337U;
-    Random::Seed( seed );
-    rex::WriteLine( "Random seed: ", seed );
+    //const uint32 seed = 1337U;
+    //Random::Seed( seed );
+    //rex::WriteLine( "Random seed: ", seed );
 
 
     // create the scene
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
     scene.Build( 1280, 720, 0.5f );
 
 
-    RenderSceneAnimation( scene, 360, 50.0 );
+    RenderSceneAnimation( scene, 1, 150.0 );
 #if defined( _WIN32 ) || defined( _WIN64 )
     ShellExecute( 0, 0, TEXT( "anim\\img0.png" ), 0, 0, SW_SHOW );
 #endif

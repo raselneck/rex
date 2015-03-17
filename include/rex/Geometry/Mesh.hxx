@@ -17,7 +17,6 @@ REX_NS_BEGIN
 /// </summary>
 class Mesh : public Geometry
 {
-    mutable std::vector<const Geometry*> _queryObjects;
     std::vector<Handle<Triangle>> _triangles;
     Handle<Octree> _octree;
     Vector3 _center;

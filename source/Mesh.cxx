@@ -39,6 +39,12 @@ const String& Mesh::GetName() const
     return _name;
 }
 
+// get mesh triangle count
+uint64 Mesh::GetTriangleCount() const
+{
+    return static_cast<uint64>( _triangles.size() );
+}
+
 // get mesh geometry type
 GeometryType Mesh::GetType() const
 {
@@ -77,12 +83,11 @@ bool Mesh::Hit( const Ray& ray, real64& tmin, ShadePoint& sp ) const
 
 
     // only get the objects that the ray hits
-    //_octree->QueryIntersections( ray, _queryObjects );
+    _octree->QueryIntersections( ray, _queryObjects );
 
 
     // iterate through the hit objects
-    //for ( auto& obj : _queryObjects )
-    for ( auto& obj : _triangles )
+    for ( auto& obj : _queryObjects )
     {
         if ( obj->Hit( ray, t, sp ) && ( t < tmin ) )
         {
@@ -121,20 +126,18 @@ bool Mesh::ShadowHit( const Ray& ray, real64& tmin ) const
 
 
     real64 t = 0.0;
-           tmin = Math::HUGE_VALUE;
 
     // query which objects the ray hits
-    //_octree->QueryIntersections( ray, _queryObjects );
+    _octree->QueryIntersections( ray, _queryObjects );
 
     // only hit the objects the ray actually hits
     bool hasHit = false;
-    //for ( auto& obj : _queryObjects )
-    for ( auto& obj : _triangles )
+    for ( auto& obj : _queryObjects )
     {
-        if ( obj->ShadowHit( ray, t ) )
+        if ( obj->ShadowHit( ray, t ) && ( t < tmin ) )
         {
             hasHit = true;
-            tmin = Math::Min( t, tmin );
+            tmin = t;
         }
     }
 
@@ -149,17 +152,12 @@ void Mesh::BuildOctree()
     Vector3 bMax( -Math::HUGE_VALUE );
     for ( auto& tri : _triangles )
     {
-        bMin = Vector3::Min( Vector3::Min( tri->P1, tri->P2 ), tri->P3 );
-        bMax = Vector3::Max( Vector3::Max( tri->P1, tri->P2 ), tri->P3 );
+        bMin = Vector3::Min( bMin, Vector3::Min( tri->P1, Vector3::Min( tri->P2, tri->P3 ) ) );
+        bMax = Vector3::Max( bMax, Vector3::Max( tri->P1, Vector3::Max( tri->P2, tri->P3 ) ) );
     }
 
-    // inflate the bounds a little bit
-    bMin -= Vector3( 1.0 );
-    bMax += Vector3( 1.0 );
-
-
     // now create (or reset) the octree
-    const uint32 maxItemCount = static_cast<uint32>( Math::Max( 4ULL, _triangles.size() / 8 ) );
+    const uint32 maxItemCount = static_cast<uint32>( Math::Max( 4ULL, _triangles.size() / 12 ) );
     _octree.reset( new Octree( bMin, bMax, maxItemCount ) );
 
 
@@ -225,11 +223,20 @@ bool Mesh::LoadFile( const String& fname, std::vector<Handle<Mesh>>& meshes )
     // read the mesh file (generate normals in case we need to end up using those
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile( fname,
-                                              aiProcessPreset_TargetRealtime_MaxQuality
-                                              | aiProcess_OptimizeMeshes
-                                              | aiProcess_Triangulate // IMPORTANT
-                                              | aiProcess_GenSmoothNormals
-                                              ^ aiProcess_FindInvalidData );
+                                              aiProcess_JoinIdenticalVertices
+                                            | aiProcess_ImproveCacheLocality
+                                            | aiProcess_LimitBoneWeights
+                                            | aiProcess_RemoveRedundantMaterials
+                                            | aiProcess_SplitLargeMeshes
+                                            | aiProcess_Triangulate
+                                            | aiProcess_SortByPType
+                                            | aiProcess_FindDegenerates
+                                            | aiProcess_FindInvalidData
+                                            | aiProcess_OptimizeMeshes
+                                            | aiProcess_FindInstances
+                                            | aiProcess_ValidateDataStructure
+                                            | aiProcess_FixInfacingNormals
+                                            );
 
     rex::WriteLine( "Done." );
 
@@ -309,7 +316,9 @@ void Mesh::ProcessAssimpMesh( aiMesh* aMesh, const aiScene* scene, Handle<Mesh>&
     }
 
     // build our mesh's octree data
+    rex::Write( "      Building octree... " );
     rMesh->BuildOctree();
+    rex::WriteLine( "Done." );
 }
 
 REX_NS_END

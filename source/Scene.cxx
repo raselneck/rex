@@ -239,10 +239,6 @@ void Scene::BuildOctree()
         max = Vector3::Max( max, bb.GetMax() );
     }
 
-    // expand out the bounds of the tree a bit
-    min -= Vector3( 1.0 );
-    max += Vector3( 1.0 );
-
 
     // create our octree
     _octree.reset( new Octree( min, max ) );

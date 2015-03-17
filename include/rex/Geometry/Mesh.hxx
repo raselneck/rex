@@ -65,14 +65,19 @@ public:
     const String& GetName() const;
 
     /// <summary>
-    /// Gets this mesh's geometry type.
-    /// </summary>
-    virtual GeometryType GetType() const;
-
-    /// <summary>
     /// Gets this mesh's bounds.
     /// </summary>
     virtual BoundingBox GetBounds() const;
+
+    /// <summary>
+    /// Gets the number of triangles in this mesh.
+    /// </summary>
+    uint64 GetTriangleCount() const;
+
+    /// <summary>
+    /// Gets this mesh's geometry type.
+    /// </summary>
+    virtual GeometryType GetType() const;
 
     /// <summary>
     /// Checks to see if the given ray hits this mesh. If it does, the shading

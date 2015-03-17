@@ -5,6 +5,9 @@
 #pragma warning( disable : 4789 )
 
 #include "Config.hxx"
+#include "Utility/Vector2.hxx"
+#include "Utility/Vector3.hxx"
+#include "Geometry/BoundingBox.hxx"
 #include <iostream>
 #include <sstream>
 
@@ -73,6 +76,32 @@ inline String ReadLine()
 }
 
 REX_NS_END
+
+// print Vector2
+static std::ostream& operator<<( std::ostream& stream, const rex::Vector2 vec )
+{
+    stream.precision( 12 );
+    stream << "{" << vec.X << ", " << vec.Y << "}";
+
+    return stream;
+}
+
+// print Vector3
+static std::ostream& operator<<( std::ostream& stream, const rex::Vector3 vec )
+{
+    stream.precision( 12 );
+    stream << "{" << vec.X << ", " << vec.Y << ", " << vec.Z << "}";
+
+    return stream;
+}
+
+// print BoundingBox
+static std::ostream& operator<<( std::ostream& stream, const rex::BoundingBox box )
+{
+    stream << "{" << box.GetMin() << ", " << box.GetMax() << "}";
+
+    return stream;
+}
 
 #pragma warning( pop )
 

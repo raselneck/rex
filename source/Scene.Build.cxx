@@ -50,32 +50,40 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 
 
 
+#if 0
     // load the gourd model
     std::vector<Handle<Mesh>> meshes;
-    if ( Mesh::LoadFile( "X:\\rex\\content\\cessna.obj", meshes ) )
+    if ( Mesh::LoadFile( "X:\\rex\\content\\cessna.fbx", meshes ) )
     {
         for ( auto& mesh : meshes )
         {
-            mesh->SetMaterial( white );
-            _objects.push_back( mesh );
+            if ( mesh->GetTriangleCount() > 0 )
+            {
+                mesh->SetMaterial( white );
+                _objects.push_back( mesh );
+            }
         }
     }
     else
     {
         std::cout << "Failed to load cessna model." << std::endl;
     }
+#endif
 
 
-#if 0
+#if 1
     // load the gourd model
     std::vector<Handle<Mesh>> meshes;
-    if ( Mesh::LoadFile( "X:\\rex\\content\\gourd.obj", meshes ) )
+    if ( Mesh::LoadFile( "X:\\rex\\content\\gourd.fbx", meshes ) )
     {
         for ( auto& mesh : meshes )
         {
-            mesh->SetMaterial( white );
-            mesh->Move( -3.0, 0.0, 0.0 );
-            _objects.push_back( mesh );
+            if ( mesh->GetTriangleCount() > 0 )
+            {
+                mesh->SetMaterial( white );
+                mesh->Move( -3.0, 0.0, 0.0 );
+                _objects.push_back( mesh );
+            }
         }
     }
     else
@@ -85,13 +93,16 @@ void Scene::Build( int32 hres, int32 vres, real32 ps )
 
 
     // load the dodecahedron model
-    if ( Mesh::LoadFile( "X:\\rex\\content\\dodecahedron.obj", meshes ) )
+    if ( Mesh::LoadFile( "X:\\rex\\content\\dodecahedron.fbx", meshes ) )
     {
         for ( auto& mesh : meshes )
         {
-            mesh->SetMaterial( white );
-            mesh->Move( 3.0, 0.0, 0.0 );
-            _objects.push_back( mesh );
+            if ( mesh->GetTriangleCount() > 0 )
+            {
+                mesh->SetMaterial( white );
+                mesh->Move( 3.0, 0.0, 0.0 );
+                _objects.push_back( mesh );
+            }
         }
     }
     else

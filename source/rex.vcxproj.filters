@@ -3,344 +3,77 @@
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>cpp;c;cc;cxx;cu;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\Utility">
-      <UniqueIdentifier>{c0f2e112-f780-446b-bd8a-70b7fd6686d2}</UniqueIdentifier>
+    <Filter Include="Header Files\CUDA">
+      <UniqueIdentifier>{a4b8e409-08d6-480f-a2ba-f4838c7cd518}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility">
-      <UniqueIdentifier>{bfbed11e-f2c2-4ff2-8a05-bb0cb4bba5f0}</UniqueIdentifier>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{7862d328-8846-43e4-98a5-cbf740bce98b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry">
-      <UniqueIdentifier>{c3ae9b37-5259-4265-b1ac-9cd38f2e980e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Geometry">
-      <UniqueIdentifier>{2234da25-4167-408e-a058-4f49ce097809}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene">
-      <UniqueIdentifier>{985b9b8b-1c79-4503-8899-6e48717c74e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scene">
-      <UniqueIdentifier>{523158dc-8e7c-4fde-9679-9c8cac88a45e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Samplers">
-      <UniqueIdentifier>{c6280f2a-4ad5-4f39-9d3f-708405f7df78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Samplers">
-      <UniqueIdentifier>{9cb6dcb8-fd1a-4c02-9f7b-1e47c14953c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tracers">
-      <UniqueIdentifier>{9034585e-641f-46a9-a3bc-bb66dfd33688}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tracers">
-      <UniqueIdentifier>{29761c55-af06-4d33-8a7a-d7bafd73f7f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Cameras">
-      <UniqueIdentifier>{0e85f27e-9c28-4ff6-a01d-ce57acdc2ed4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Cameras">
-      <UniqueIdentifier>{ea570b92-7493-4ee8-b588-2c3531e4b512}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\BRDFs">
-      <UniqueIdentifier>{78650a38-5fcb-4439-832e-69d3cb0d6ca8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\BRDFs">
-      <UniqueIdentifier>{6f8961e5-23ca-42d0-a347-863c1a731a44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Materials">
-      <UniqueIdentifier>{23834659-88ef-4655-a407-cd7617b7245c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Materials">
-      <UniqueIdentifier>{f50a938a-a147-4082-b938-6da12b1b40ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Lights">
-      <UniqueIdentifier>{22e3e9e1-1730-48ed-9f3d-aef616c0231c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lights">
-      <UniqueIdentifier>{8e46e63b-bfd4-4ff1-a122-352332769245}</UniqueIdentifier>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{6e8990dc-d055-4ba9-81cc-c5f73c3484bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cxx">
+    <CudaCompile Include="kernel.cu">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Ray.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane.cxx">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cxx">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cxx">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewPlane.cxx">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Geometry.cxx">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Tracer.cxx">
-      <Filter>Source Files\Tracers</Filter>
-    </ClCompile>
-    <ClCompile Include="Sampler.cxx">
-      <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="RegularSampler.cxx">
-      <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="JitteredSampler.cxx">
-      <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="NRooksSampler.cxx">
-      <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="MultiJitteredSampler.cxx">
-      <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="HammersleySampler.cxx">
-      <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cxx">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="PerspectiveCamera.cxx">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="BRDF.cxx">
-      <Filter>Source Files\BRDFs</Filter>
-    </ClCompile>
-    <ClCompile Include="LambertianBRDF.cxx">
-      <Filter>Source Files\BRDFs</Filter>
-    </ClCompile>
-    <ClCompile Include="ShadePoint.cxx">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingBox.cxx">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cxx">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="AmbientLight.cxx">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLight.cxx">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cxx">
-      <Filter>Source Files\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="MatteMaterial.cxx">
-      <Filter>Source Files\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionalLight.cxx">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="GlossySpecularBRDF.cxx">
-      <Filter>Source Files\BRDFs</Filter>
-    </ClCompile>
-    <ClCompile Include="PhongMaterial.cxx">
-      <Filter>Source Files\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.Build.cxx">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Octree.cxx">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\include\rex\Tracers\RayCastTracer.cxx">
-      <Filter>Source Files\Tracers</Filter>
-    </ClCompile>
-    <ClCompile Include="Triangle.cxx">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cxx">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
+    </CudaCompile>
+    <CudaCompile Include="Color.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Math.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Matrix.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Ray.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Vector2.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Vector3.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Debug.hxx">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\rex\Rex.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Color.hxx">
-      <Filter>Header Files\Utility</Filter>
+    <ClInclude Include="..\include\rex\Graphics\Color.hxx">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Image.hxx">
-      <Filter>Header Files\Utility</Filter>
+    <ClInclude Include="..\include\rex\CUDA.hxx">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Math.hxx">
-      <Filter>Header Files\Utility</Filter>
+    <ClInclude Include="..\include\rex\Math\Math.hxx">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Matrix.hxx">
-      <Filter>Header Files\Utility</Filter>
+    <ClInclude Include="..\include\rex\Math\Matrix.hxx">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Random.hxx">
-      <Filter>Header Files\Utility</Filter>
+    <ClInclude Include="..\include\rex\Math\Ray.hxx">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Ray.hxx">
-      <Filter>Header Files\Utility</Filter>
+    <ClInclude Include="..\include\rex\Math\Vector2.hxx">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Timer.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Vector2.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\Vector3.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Tracers\Tracer.hxx">
-      <Filter>Header Files\Tracers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Scene\Scene.hxx">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Scene\ShadePoint.hxx">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Scene\ViewPlane.hxx">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Samplers\HammersleySampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Samplers\JitteredSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Samplers\MultiJitteredSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Samplers\NRooksSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Samplers\RegularSampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Samplers\Sampler.hxx">
-      <Filter>Header Files\Samplers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Materials\Material.hxx">
-      <Filter>Header Files\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Materials\MatteMaterial.hxx">
-      <Filter>Header Files\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Lights\AmbientLight.hxx">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Lights\DirectionalLight.hxx">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Lights\Light.hxx">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Lights\PointLight.hxx">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Geometry\BoundingBox.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Geometry\Geometry.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Geometry\Plane.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Geometry\Sphere.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Cameras\Camera.hxx">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\BRDFs\BRDF.hxx">
-      <Filter>Header Files\BRDFs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\BRDFs\LambertianBRDF.hxx">
-      <Filter>Header Files\BRDFs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\BRDFs\GlossySpecularBRDF.hxx">
-      <Filter>Header Files\BRDFs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Materials\PhongMaterial.hxx">
-      <Filter>Header Files\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Geometry\Octree.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Tracers\RayCastTracer.hxx">
-      <Filter>Header Files\Tracers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Geometry\Triangle.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Geometry\Mesh.hxx">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Cameras\PerspectiveCamera.hxx">
-      <Filter>Header Files\Cameras</Filter>
+    <ClInclude Include="..\include\rex\Math\Vector3.hxx">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\include\rex\Utility\Color.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
-    <None Include="..\include\rex\Utility\Math.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
-    <None Include="..\include\rex\Utility\Matrix.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
-    <None Include="..\include\rex\Utility\Random.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
-    <None Include="..\include\rex\Utility\Timer.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
-    <None Include="..\include\rex\Utility\Vector2.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
-    <None Include="..\include\rex\Utility\Vector3.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
-    <None Include="..\include\rex\Scene\Scene.inl">
-      <Filter>Header Files\Scene</Filter>
-    </None>
-    <None Include="..\include\rex\Geometry\Geometry.inl">
-      <Filter>Header Files\Geometry</Filter>
+    <None Include="..\include\rex\Math\Math.inl">
+      <Filter>Header Files\Math</Filter>
     </None>
   </ItemGroup>
 </Project>

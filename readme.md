@@ -1,29 +1,33 @@
-
 # Rex the Ray Tracer
 
 Rex is a ray tracer I am working on for an independent study where I will
-be attempting to make a real-time ray tracer on the GPU utilizing either
-CUDA or OpenCL (though, Rex is currently CPU-only). I am using "Ray Tracing
-from the Ground Up" by Kevin Suffern as the basis and reference.
+be attempting to make a real-time ray tracer on the GPU utilizing CUDA. I
+am using "Ray Tracing from the Ground Up" by Kevin Suffern as the basis and
+reference for the ray tracer itself.
 
-## Building
+## Building & Running
 
-Rex is currently only set up to be used with Visual Studio 2013, but it
-should be trivial to use other compilers, such as GCC or Clang.
+To build and run the current version of Rex, you will need to check the
+following:
 
-All of the necessary include (`.h` and `.hxx`) files are in the `include`
-directory, and all of the necessary source (`.cxx`) files are in the
-`source` folder.
+1.   Make sure you have an NVIDIA GPU.
+2.   Make sure your GPU supports CUDA 6.5.
+3.   Have the CUDA SDK v6.5 installed.
+     * A newer version of CUDA may work, but I only tested with 6.5.
+4.   Have Visual Studio 2013 installed.
+     * This may work with an earlier version of VS, but I used 2013.
+     * This may work on Linux or Mac, but I only tested on Windows.
 
-The following works with G++ 4.8.2 (assuming you have git installed):
+If you have all of the above steps complete, then you *should* be fine
+to open up the solution file in Visual Studio and compile/run Rex.
 
-```
-git clone git://github.com/fastinvsqrt/rex.git rex
-cd rex
-mkdir build
-cd build
-g++ ../source/*.cxx -I../include -std=c++11 -w -O3 -o rex
-```
+If you don't have one or more of the above steps complete, then you're on
+your own. Sorry. I don't have enough time to test this everywhere I can.
+
+### What happened to the CPU version??
+
+Not to fear! If you don't want to play around with CUDA, you can still
+access the CPU-based version of Rex [here](https://github.com/fastinvsqrt/rex/tree/CPU)!
 
 ## License
 

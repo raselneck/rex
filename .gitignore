@@ -1,6 +1,6 @@
 build/*
-content/*
 *.opensdf
+*.pdb
 *.sdf
 *.suo
 *.user

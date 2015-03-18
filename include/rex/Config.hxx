@@ -1,19 +1,18 @@
-#ifndef __REX_CONFIG_HXX
-#define __REX_CONFIG_HXX
+#pragma once
 
-/**
- * "Trick or bear?"
- * "Bear??"
- * "HE HAS CHOSEN THE BEAR!"
- * *sounds of chains and snarling off in the distance*
- */
+#include "CUDA.hxx"
 
 #define REX_NS_BEGIN namespace rex {
 #define REX_NS_END   }
 
-#define REX_DEFAULT_GAMMA   (  2.2f )
-#define REX_DEFAULT_SAMPLES (  1    )
-#define REX_DEFAULT_SETS    ( 83    )
+#define REX_STATIC_CLASS(cname) \
+    private: \
+        cname() = delete; \
+        cname(const cname&) = delete; \
+        cname(cname&&) = delete; \
+        ~cname() = delete; \
+        cname& operator=(const cname&) = delete; \
+        cname& operator=(cname&&) = delete /* no semicolon here to make the macro look like a function */
 
 #if defined( NDEBUG )
 #  define __RELEASE__ 1
@@ -45,15 +44,4 @@ REX_NS_BEGIN
 /// </summary>
 typedef std::string String;
 
-#if !defined( REX_CUDA_BUILD )
-
-/// <summary>
-/// The handle type used by Rex for managing pointers.
-/// </summary>
-template<class T> using Handle = std::shared_ptr<T>;
-
-#endif
-
 REX_NS_END
-
-#endif

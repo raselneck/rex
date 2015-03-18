@@ -1,5 +1,4 @@
-#ifndef __REX_TIMER_HXX
-#define __REX_TIMER_HXX
+#pragma once
 
 #include "../Config.hxx"
 #include <chrono>
@@ -52,6 +51,3 @@ public:
 };
 
 REX_NS_END
-
-#include "Timer.inl"
-#endif

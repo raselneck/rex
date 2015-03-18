@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,251 +19,194 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CAD3C151-B12C-43DE-B056-BF6F539C85DD}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{C9CF617B-30CE-46D7-A01C-860B26588C35}</ProjectGuid>
     <RootNamespace>rex</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 6.5.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)build\x86\$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)obj\</IntDir>
+    <IntDir>$(SolutionDir)build\x86\$(Configuration)\obj\</IntDir>
+    <ExecutablePath>$(SolutionDir)bin\x86\;$(ExecutablePath)</ExecutablePath>
     <IncludePath>$(SolutionDir)include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\x86\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)build\x64\$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)obj\</IntDir>
+    <IntDir>$(SolutionDir)build\x64\$(Configuration)\obj\</IntDir>
+    <ExecutablePath>$(SolutionDir)bin\x64\;$(ExecutablePath)</ExecutablePath>
     <IncludePath>$(SolutionDir)include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(OutDir)obj\</IntDir>
-    <IncludePath>$(SolutionDir)include\;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)build\x86\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\x86\$(Configuration)\obj\</IntDir>
+    <ExecutablePath>$(SolutionDir)bin\x86\;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\x86\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)build\x64\$(Configuration)\obj\</IntDir>
-    <IncludePath>$(SolutionDir)include\;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)build\x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\x64\$(Configuration)\obj\</IntDir>
+    <ExecutablePath>$(SolutionDir)bin\x64\;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <MultiProcessorCompilation>
-      </MultiProcessorCompilation>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <CudaCompile>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <MultiProcessorCompilation>
-      </MultiProcessorCompilation>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <CudaCompile>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\rex\Tracers\RayCastTracer.cxx" />
-    <ClCompile Include="AmbientLight.cxx" />
-    <ClCompile Include="BoundingBox.cxx" />
-    <ClCompile Include="BRDF.cxx" />
-    <ClCompile Include="Camera.cxx" />
-    <ClCompile Include="Color.cxx" />
-    <ClCompile Include="DirectionalLight.cxx" />
-    <ClCompile Include="Geometry.cxx" />
-    <ClCompile Include="GlossySpecularBRDF.cxx" />
-    <ClCompile Include="HammersleySampler.cxx" />
-    <ClCompile Include="Image.cxx" />
-    <ClCompile Include="JitteredSampler.cxx" />
-    <ClCompile Include="LambertianBRDF.cxx" />
-    <ClCompile Include="Light.cxx" />
-    <ClCompile Include="Main.cxx" />
-    <ClCompile Include="Material.cxx" />
-    <ClCompile Include="Math.cxx" />
-    <ClCompile Include="Matrix.cxx" />
-    <ClCompile Include="MatteMaterial.cxx" />
-    <ClCompile Include="Mesh.cxx" />
-    <ClCompile Include="MultiJitteredSampler.cxx" />
-    <ClCompile Include="NRooksSampler.cxx" />
-    <ClCompile Include="Octree.cxx" />
-    <ClCompile Include="PerspectiveCamera.cxx" />
-    <ClCompile Include="PhongMaterial.cxx" />
-    <ClCompile Include="Plane.cxx" />
-    <ClCompile Include="PointLight.cxx" />
-    <ClCompile Include="Ray.cxx" />
-    <ClCompile Include="RegularSampler.cxx" />
-    <ClCompile Include="Sampler.cxx" />
-    <ClCompile Include="Scene.Build.cxx" />
-    <ClCompile Include="Tracer.cxx" />
-    <ClCompile Include="Scene.cxx" />
-    <ClCompile Include="ShadePoint.cxx" />
-    <ClCompile Include="Sphere.cxx" />
-    <ClCompile Include="Timer.cxx" />
-    <ClCompile Include="Triangle.cxx" />
-    <ClCompile Include="Vector2.cxx" />
-    <ClCompile Include="Vector3.cxx" />
-    <ClCompile Include="ViewPlane.cxx" />
+    <CudaCompile Include="Color.cu" />
+    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="Math.cu" />
+    <CudaCompile Include="Matrix.cu" />
+    <CudaCompile Include="Ray.cu" />
+    <CudaCompile Include="Vector2.cu" />
+    <CudaCompile Include="Vector3.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\rex\BRDFs\BRDF.hxx" />
-    <ClInclude Include="..\include\rex\BRDFs\GlossySpecularBRDF.hxx" />
-    <ClInclude Include="..\include\rex\BRDFs\LambertianBRDF.hxx" />
-    <ClInclude Include="..\include\rex\Cameras\Camera.hxx" />
-    <ClInclude Include="..\include\rex\Cameras\PerspectiveCamera.hxx" />
     <ClInclude Include="..\include\rex\Config.hxx" />
-    <ClInclude Include="..\include\rex\Debug.hxx" />
-    <ClInclude Include="..\include\rex\Geometry\BoundingBox.hxx" />
-    <ClInclude Include="..\include\rex\Geometry\Geometry.hxx" />
-    <ClInclude Include="..\include\rex\Geometry\Mesh.hxx" />
-    <ClInclude Include="..\include\rex\Geometry\Octree.hxx" />
-    <ClInclude Include="..\include\rex\Geometry\Plane.hxx" />
-    <ClInclude Include="..\include\rex\Geometry\Sphere.hxx" />
-    <ClInclude Include="..\include\rex\Geometry\Triangle.hxx" />
-    <ClInclude Include="..\include\rex\Lights\AmbientLight.hxx" />
-    <ClInclude Include="..\include\rex\Lights\DirectionalLight.hxx" />
-    <ClInclude Include="..\include\rex\Lights\Light.hxx" />
-    <ClInclude Include="..\include\rex\Lights\PointLight.hxx" />
-    <ClInclude Include="..\include\rex\Materials\Material.hxx" />
-    <ClInclude Include="..\include\rex\Materials\MatteMaterial.hxx" />
-    <ClInclude Include="..\include\rex\Materials\PhongMaterial.hxx" />
+    <ClInclude Include="..\include\rex\CUDA.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Color.hxx" />
+    <ClInclude Include="..\include\rex\Math\Math.hxx" />
+    <ClInclude Include="..\include\rex\Math\Matrix.hxx" />
+    <ClInclude Include="..\include\rex\Math\Ray.hxx" />
+    <ClInclude Include="..\include\rex\Math\Vector2.hxx" />
+    <ClInclude Include="..\include\rex\Math\Vector3.hxx" />
     <ClInclude Include="..\include\rex\Rex.hxx" />
-    <ClInclude Include="..\include\rex\Samplers\HammersleySampler.hxx" />
-    <ClInclude Include="..\include\rex\Samplers\JitteredSampler.hxx" />
-    <ClInclude Include="..\include\rex\Samplers\MultiJitteredSampler.hxx" />
-    <ClInclude Include="..\include\rex\Samplers\NRooksSampler.hxx" />
-    <ClInclude Include="..\include\rex\Samplers\RegularSampler.hxx" />
-    <ClInclude Include="..\include\rex\Samplers\Sampler.hxx" />
-    <ClInclude Include="..\include\rex\Scene\Scene.hxx" />
-    <ClInclude Include="..\include\rex\Scene\ShadePoint.hxx" />
-    <ClInclude Include="..\include\rex\Scene\ViewPlane.hxx" />
-    <ClInclude Include="..\include\rex\Tracers\RayCastTracer.hxx" />
-    <ClInclude Include="..\include\rex\Tracers\Tracer.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Color.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Image.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Math.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Matrix.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Random.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Ray.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Timer.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Vector2.hxx" />
-    <ClInclude Include="..\include\rex\Utility\Vector3.hxx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\include\rex\Geometry\Geometry.inl" />
-    <None Include="..\include\rex\Scene\Scene.inl" />
-    <None Include="..\include\rex\Utility\Color.inl" />
-    <None Include="..\include\rex\Utility\Math.inl" />
-    <None Include="..\include\rex\Utility\Matrix.inl" />
-    <None Include="..\include\rex\Utility\Random.inl" />
-    <None Include="..\include\rex\Utility\Timer.inl" />
-    <None Include="..\include\rex\Utility\Vector2.inl" />
-    <None Include="..\include\rex\Utility\Vector3.inl" />
+    <None Include="..\include\rex\Math\Math.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 6.5.targets" />
   </ImportGroup>
 </Project>

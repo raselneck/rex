@@ -11,12 +11,13 @@ To build and run the current version of Rex, you will need to check the
 following:
 
 1.   Make sure you have an NVIDIA GPU.
-2.   Make sure your GPU supports CUDA 6.5.
-3.   Have the CUDA SDK v6.5 installed.
-     * A newer version of CUDA may work, but I only tested with 6.5.
-4.   Have Visual Studio 2013 installed.
-     * This may work with an earlier version of VS, but I used 2013.
-     * This may work on Linux or Mac, but I only tested on Windows.
+2.   Make sure your GPU supports CUDA 6.5+.
+3.   Make sure your GPU supports OpenGL 4.0+.
+4.   Have the CUDA SDK v6.5 installed.
+     * A newer version of CUDA may work, but I use 6.5.
+5.   Have Visual Studio 2013 installed.
+     * This may work with an earlier version of VS, but I use 2013.
+     * This may work on Linux and/or Mac, but I use Windows.
 
 If you have all of the above steps complete, then you *should* be fine
 to open up the solution file in Visual Studio and compile/run Rex.

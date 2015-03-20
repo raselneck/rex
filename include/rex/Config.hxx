@@ -44,4 +44,9 @@ REX_NS_BEGIN
 /// </summary>
 typedef std::string String;
 
+/// <summary>
+/// The handle (smart pointer) type used by Rex.
+/// </summary>
+template<typename T> using Handle = std::shared_ptr<T>;
+
 REX_NS_END

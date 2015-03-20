@@ -26,25 +26,25 @@ struct Matrix
     /// <summary>
     /// Creates a new matrix.
     /// </summary>
-    __cuda_func__ Matrix();
+    __both__ Matrix();
 
     /// <summary>
     /// Destroys this matrix.
     /// </summary>
-    __cuda_func__ ~Matrix();
+    __both__ ~Matrix();
 
     /// <summary>
     /// Sets this matrix to be the identity matrix.
     /// </summary>
-    __cuda_func__ void SetIdentity();
+    __both__ void SetIdentity();
 
-    __cuda_func__ bool operator==( const Matrix& ) const;
-    __cuda_func__ bool operator!=( const Matrix& ) const;
+    __both__ bool operator==( const Matrix& ) const;
+    __both__ bool operator!=( const Matrix& ) const;
 };
 
-__cuda_func__ Matrix operator*( const Matrix&, const Matrix& );
-__cuda_func__ Matrix operator*( const Matrix&, real64 );
-__cuda_func__ Matrix operator*( real64, const Matrix& );
-__cuda_func__ Matrix operator/( const Matrix&, real64 );
+__both__ Matrix operator*( const Matrix&, const Matrix& );
+__both__ Matrix operator*( const Matrix&, real64 );
+__both__ Matrix operator*( real64, const Matrix& );
+__both__ Matrix operator/( const Matrix&, real64 );
 
 REX_NS_END

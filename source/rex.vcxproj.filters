@@ -18,27 +18,51 @@
     <Filter Include="Header Files\Math">
       <UniqueIdentifier>{6e8990dc-d055-4ba9-81cc-c5f73c3484bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{58dd54f8-167c-47f5-851f-224c2d8405b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GL">
+      <UniqueIdentifier>{64035ede-53d8-4770-95f0-49ee08b6082e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CUDA">
+      <UniqueIdentifier>{f979bdfd-7096-481f-979d-46849cfaced6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GL">
+      <UniqueIdentifier>{91d46313-7f0a-4ab8-9afb-b6a05a594f42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{639722b7-d01c-45e6-832d-3192e3e7891c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{c064da7c-51e6-45fd-b5ca-808bd1af0cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{d057fb85-2a14-4749-862c-d764d802edbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
     <CudaCompile Include="Color.cu">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="BoundingBox.cu">
+      <Filter>Source Files\Math</Filter>
     </CudaCompile>
     <CudaCompile Include="Math.cu">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </CudaCompile>
     <CudaCompile Include="Matrix.cu">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </CudaCompile>
     <CudaCompile Include="Ray.cu">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </CudaCompile>
     <CudaCompile Include="Vector2.cu">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </CudaCompile>
     <CudaCompile Include="Vector3.cu">
+      <Filter>Source Files\Math</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Main.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -51,9 +75,6 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\Graphics\Color.hxx">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\CUDA.hxx">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\rex\Math\Math.hxx">
       <Filter>Header Files\Math</Filter>
@@ -70,10 +91,57 @@
     <ClInclude Include="..\include\rex\Math\Vector3.hxx">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\Timer.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Math\BoundingBox.hxx">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\GL\Shader.hxx">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\CUDA.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\OpenGL.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\GL\GLWindow.hxx">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\GL\GLWindowHints.hxx">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\Logger.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\GL\GLContext.hxx">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Math\Math.inl">
       <Filter>Header Files\Math</Filter>
     </None>
+    <None Include="..\include\rex\Utility\Logger.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Timer.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="GLWindowHints.cxx">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="GLWindow.cxx">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cxx">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="GLContext.cxx">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

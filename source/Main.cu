@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <rex/Rex.hxx>
+#include <thread>
 
 using namespace rex;
 
@@ -25,33 +26,37 @@ __global__ void KernalAddColor( Color* out, const Color* lhs, const real32* rhs 
     out[ index ] = rhs[ index ] * lhs[ index ];
 }
 
-int main()
+int32 main( int32 argc, char** argv )
 {
-    const uint32 arraySize = 5;
+    const uint32 arraySize = 10;
     const Color lhs[ arraySize ] =
     {
-        Color( 0.13f ),
-        Color( 0.24f ),
-        Color( 0.38f ),
-        Color( 0.49f ),
-        Color( 0.52f )
+        Color( 0.1f ),
+        Color( 0.2f ),
+        Color( 0.3f ),
+        Color( 0.4f ),
+        Color( 0.5f ),
+        Color( 0.6f ),
+        Color( 0.7f ),
+        Color( 0.8f ),
+        Color( 0.9f ),
+        Color( 1.0f )
     };
     const real32 rhs[ arraySize ] =
     {
-        0.41f,
-        0.62f,
-        0.73f,
-        0.54f,
-        0.25f
+        0.01f,
+        0.02f,
+        0.03f,
+        0.04f,
+        0.05f,
+        0.06f,
+        0.07f,
+        0.08f,
+        0.09f,
+        0.10f
     };
-    Color out[ arraySize ] =
-    {
-        Color( 0.0f ),
-        Color( 0.0f ),
-        Color( 0.0f ),
-        Color( 0.0f ),
-        Color( 0.0f )
-    };
+    Color out[ arraySize ];
+
 
     // Add vectors in parallel.
     cudaError_t cudaStatus = AddColorsWithCuda( out, lhs, rhs, arraySize );
@@ -60,6 +65,7 @@ int main()
         puts( "AddColorsWithCuda failed!" );
         return 1;
     }
+
 
     // print out the colors
     for ( uint32 i = 0; i < arraySize; ++i )
@@ -74,6 +80,7 @@ int main()
                 o.R, o.G, o.B );
     }
 
+
     // reset the device to make graphics debugging tools happy
     cudaStatus = cudaDeviceReset();
     if ( cudaStatus != cudaSuccess )
@@ -81,6 +88,7 @@ int main()
         puts( "cudaDeviceReset failed!" );
         return 1;
     }
+
 
     return 0;
 }

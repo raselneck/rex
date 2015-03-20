@@ -105,7 +105,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;OpenGL32.lib;glew32d.lib;glfw3d.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -124,7 +124,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;OpenGL32.lib;glew32d.lib;glfw3d.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -148,7 +148,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;OpenGL32.lib;glew32.lib;glfw3.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -171,7 +171,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;OpenGL32.lib;glew32.lib;glfw3.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -183,8 +183,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="BoundingBox.cu" />
     <CudaCompile Include="Color.cu" />
-    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="Main.cu" />
     <CudaCompile Include="Math.cu" />
     <CudaCompile Include="Matrix.cu" />
     <CudaCompile Include="Ray.cu" />
@@ -194,16 +195,32 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx" />
     <ClInclude Include="..\include\rex\CUDA.hxx" />
+    <ClInclude Include="..\include\rex\GL\GLContext.hxx" />
+    <ClInclude Include="..\include\rex\GL\GLWindow.hxx" />
+    <ClInclude Include="..\include\rex\GL\GLWindowHints.hxx" />
+    <ClInclude Include="..\include\rex\GL\Shader.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Color.hxx" />
+    <ClInclude Include="..\include\rex\Math\BoundingBox.hxx" />
     <ClInclude Include="..\include\rex\Math\Math.hxx" />
     <ClInclude Include="..\include\rex\Math\Matrix.hxx" />
     <ClInclude Include="..\include\rex\Math\Ray.hxx" />
     <ClInclude Include="..\include\rex\Math\Vector2.hxx" />
     <ClInclude Include="..\include\rex\Math\Vector3.hxx" />
+    <ClInclude Include="..\include\rex\OpenGL.hxx" />
     <ClInclude Include="..\include\rex\Rex.hxx" />
+    <ClInclude Include="..\include\rex\Utility\Logger.hxx" />
+    <ClInclude Include="..\include\rex\Utility\Timer.hxx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Math\Math.inl" />
+    <None Include="..\include\rex\Utility\Logger.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GLContext.cxx" />
+    <ClCompile Include="GLWindow.cxx" />
+    <ClCompile Include="GLWindowHints.cxx" />
+    <ClCompile Include="Logger.cxx" />
+    <ClCompile Include="Timer.cxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

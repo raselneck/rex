@@ -16,19 +16,19 @@ struct Ray
     /// <summary>
     /// Creates a new ray.
     /// <summary>
-    __cuda_func__ Ray();
+    __both__ Ray();
 
     /// <summary>
     /// Creates a new ray.
     /// <summary>
     /// <param name="origin">The ray's origin.</param>
     /// <param name="direction">The ray's direction.</param>
-    __cuda_func__ Ray( const Vector3& origin, const Vector3& direction );
+    __both__ Ray( const Vector3& origin, const Vector3& direction );
 
     /// <summary>
     /// Destroys this ray.
     /// <summary>
-    __cuda_func__ ~Ray();
+    __both__ ~Ray();
 };
 
 REX_NS_END

@@ -183,12 +183,23 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="AmbientLight.cu" />
     <CudaCompile Include="BoundingBox.cu" />
+    <CudaCompile Include="BRDF.cu" />
     <CudaCompile Include="Color.cu" />
+    <CudaCompile Include="DirectionalLight.cu" />
+    <CudaCompile Include="GlossySpecularBRDF.cu" />
+    <CudaCompile Include="LambertianBRDF.cu" />
+    <CudaCompile Include="Light.cu" />
     <CudaCompile Include="Main.cu" />
+    <CudaCompile Include="Material.cu" />
     <CudaCompile Include="Math.cu" />
     <CudaCompile Include="Matrix.cu" />
+    <CudaCompile Include="MatteMaterial.cu" />
+    <CudaCompile Include="PhongMaterial.cu" />
+    <CudaCompile Include="PointLight.cu" />
     <CudaCompile Include="Ray.cu" />
+    <CudaCompile Include="ShadePoint.cu" />
     <CudaCompile Include="Vector2.cu" />
     <CudaCompile Include="Vector3.cu" />
   </ItemGroup>
@@ -199,7 +210,18 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\GL\GLWindow.hxx" />
     <ClInclude Include="..\include\rex\GL\GLWindowHints.hxx" />
     <ClInclude Include="..\include\rex\GL\Shader.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\BRDFs\BRDF.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\BRDFs\GlossySpecularBRDF.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\BRDFs\LambertianBRDF.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Color.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Lights\AmbientLight.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Lights\DirectionalLight.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Lights\Light.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Lights\PointLight.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Materials\Material.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Materials\MatteMaterial.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Materials\PhongMaterial.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\ShadePoint.hxx" />
     <ClInclude Include="..\include\rex\Math\BoundingBox.hxx" />
     <ClInclude Include="..\include\rex\Math\Math.hxx" />
     <ClInclude Include="..\include\rex\Math\Matrix.hxx" />

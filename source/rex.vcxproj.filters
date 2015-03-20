@@ -39,6 +39,30 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{d057fb85-2a14-4749-862c-d764d802edbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\BRDFs">
+      <UniqueIdentifier>{baed13ac-1b20-4516-a204-27f26f151e00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Geometry">
+      <UniqueIdentifier>{5b0d056d-b817-44d5-b10c-aee1bdad5646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Materials">
+      <UniqueIdentifier>{cb6f6759-b707-4d1b-b92c-07bb5c2be03f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\BRDFs">
+      <UniqueIdentifier>{08a7256c-b1f1-4686-929b-a14d74cbbea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Geometry">
+      <UniqueIdentifier>{711c3de5-8360-40f0-83ee-ae914b553a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Materials">
+      <UniqueIdentifier>{9fcbdab3-ff81-498b-82bd-301a42f20b13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Lights">
+      <UniqueIdentifier>{04cb3421-1da3-4caf-8325-0b4bd458eb59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Lights">
+      <UniqueIdentifier>{625c231d-1537-4b6c-8a7e-94d615d58c32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Color.cu">
@@ -64,6 +88,39 @@
     </CudaCompile>
     <CudaCompile Include="Main.cu">
       <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ShadePoint.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="BRDF.cu">
+      <Filter>Source Files\Graphics\BRDFs</Filter>
+    </CudaCompile>
+    <CudaCompile Include="LambertianBRDF.cu">
+      <Filter>Source Files\Graphics\BRDFs</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GlossySpecularBRDF.cu">
+      <Filter>Source Files\Graphics\BRDFs</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Material.cu">
+      <Filter>Source Files\Graphics\Materials</Filter>
+    </CudaCompile>
+    <CudaCompile Include="MatteMaterial.cu">
+      <Filter>Source Files\Graphics\Materials</Filter>
+    </CudaCompile>
+    <CudaCompile Include="PhongMaterial.cu">
+      <Filter>Source Files\Graphics\Materials</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Light.cu">
+      <Filter>Source Files\Graphics\Lights</Filter>
+    </CudaCompile>
+    <CudaCompile Include="AmbientLight.cu">
+      <Filter>Source Files\Graphics\Lights</Filter>
+    </CudaCompile>
+    <CudaCompile Include="DirectionalLight.cu">
+      <Filter>Source Files\Graphics\Lights</Filter>
+    </CudaCompile>
+    <CudaCompile Include="PointLight.cu">
+      <Filter>Source Files\Graphics\Lights</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +174,39 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\GL\GLContext.hxx">
       <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\BRDFs\BRDF.hxx">
+      <Filter>Header Files\Graphics\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\ShadePoint.hxx">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\BRDFs\LambertianBRDF.hxx">
+      <Filter>Header Files\Graphics\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\BRDFs\GlossySpecularBRDF.hxx">
+      <Filter>Header Files\Graphics\BRDFs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Materials\Material.hxx">
+      <Filter>Header Files\Graphics\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Materials\MatteMaterial.hxx">
+      <Filter>Header Files\Graphics\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Materials\PhongMaterial.hxx">
+      <Filter>Header Files\Graphics\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Lights\Light.hxx">
+      <Filter>Header Files\Graphics\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Lights\AmbientLight.hxx">
+      <Filter>Header Files\Graphics\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Lights\DirectionalLight.hxx">
+      <Filter>Header Files\Graphics\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Lights\PointLight.hxx">
+      <Filter>Header Files\Graphics\Lights</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

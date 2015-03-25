@@ -10,6 +10,16 @@ REX_NS_BEGIN
 struct ShadePoint;
 
 /// <summary>
+/// An enumeration of possible light types.
+/// </summary>
+enum class LightType
+{
+    AmbientLight,
+    DirectionalLight,
+    PointLight
+};
+
+/// <summary>
 /// Defines the base for lights.
 /// </summary>
 class Light
@@ -32,6 +42,11 @@ public:
     /// Checks to see if this light casts shadows.
     /// </summary>
     __both__ bool CastsShadows() const;
+
+    /// <summary>
+    /// Gets this light's type.
+    /// </summary>
+    __both__ virtual LightType GetType() const = 0;
 
     /// <summary>
     /// Checks to see if the given ray is in shadow when viewed from this light.

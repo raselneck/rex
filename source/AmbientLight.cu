@@ -40,6 +40,12 @@ Color AmbientLight::GetRadiance( ShadePoint& sp )
     return _radianceScale * _color;
 }
 
+// get type
+LightType AmbientLight::GetType() const
+{
+    return LightType::AmbientLight;
+}
+
 // check if in shadow
 bool AmbientLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 {

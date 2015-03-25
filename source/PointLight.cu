@@ -37,6 +37,12 @@ const Color& PointLight::GetColor() const
     return _color;
 }
 
+// get type
+LightType PointLight::GetType() const
+{
+    return LightType::PointLight;
+}
+
 // get position
 const Vector3& PointLight::GetPosition() const
 {

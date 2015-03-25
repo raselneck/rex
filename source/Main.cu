@@ -59,12 +59,7 @@ int32 main( int32 argc, char** argv )
 
 
     // Add vectors in parallel.
-    cudaError_t cudaStatus = AddColorsWithCuda( out, lhs, rhs, arraySize );
-    if ( cudaStatus != cudaSuccess )
-    {
-        puts( "AddColorsWithCuda failed!" );
-        return 1;
-    }
+    cudaCheck( AddColorsWithCuda( out, lhs, rhs, arraySize ), {} );
 
 
     // print out the colors
@@ -82,12 +77,7 @@ int32 main( int32 argc, char** argv )
 
 
     // reset the device to make graphics debugging tools happy
-    cudaStatus = cudaDeviceReset();
-    if ( cudaStatus != cudaSuccess )
-    {
-        puts( "cudaDeviceReset failed!" );
-        return 1;
-    }
+    cudaCheck( cudaDeviceReset(), {} );
 
 
     return 0;
@@ -102,49 +92,29 @@ cudaError_t AddColorsWithCuda( Color* out, const Color* lhs, const real32* rhs, 
     cudaError_t status;
 
     // select the main GPU
-    status = cudaSetDevice( 0 );
-    if ( status != cudaSuccess )
-    {
-        puts( "cudaSetDevice failed! Do you have a CUDA-capable GPU installed?" );
-        goto Error;
-    }
+    cudaCheck( cudaSetDevice( 0 ), {} );
 
     // Allocate GPU buffers for three vectors (two input, one output)    .
-    status = cudaMalloc( (void**)&devOut, colorCount * sizeof( Color ) );
-    if ( status != cudaSuccess )
-    {
-        puts( "cudaMalloc failed!" );
-        goto Error;
-    }
+    cudaCheck( cudaMalloc( (void**)&devOut, colorCount * sizeof( Color ) ),
+               status = __err;
+               goto Error; );
 
-    status = cudaMalloc( (void**)&devLhs, colorCount * sizeof( Color ) );
-    if ( status != cudaSuccess )
-    {
-        puts( "cudaMalloc failed!" );
-        goto Error;
-    }
+    cudaCheck( cudaMalloc( (void**)&devLhs, colorCount * sizeof( Color ) ),
+               status = __err;
+               goto Error; );
 
-    status = cudaMalloc( (void**)&devRhs, colorCount * sizeof( real32 ) );
-    if ( status != cudaSuccess )
-    {
-        puts( "cudaMalloc failed!" );
-        goto Error;
-    }
+    cudaCheck( cudaMalloc( (void**)&devRhs, colorCount * sizeof( real32 ) ),
+               status = __err;
+               goto Error; );
 
     // Copy input vectors from host memory to GPU buffers.
-    status = cudaMemcpy( devLhs, lhs, colorCount * sizeof( Color ), cudaMemcpyHostToDevice );
-    if ( status != cudaSuccess )
-    {
-        puts( "cudaMemcpy failed!" );
-        goto Error;
-    }
+    cudaCheck( cudaMemcpy( devLhs, lhs, colorCount * sizeof( Color ), cudaMemcpyHostToDevice ),
+               status = __err;
+               goto Error; );
 
-    status = cudaMemcpy( devRhs, rhs, colorCount * sizeof( real32 ), cudaMemcpyHostToDevice );
-    if ( status != cudaSuccess )
-    {
-        puts( "cudaMemcpy failed!" );
-        goto Error;
-    }
+    cudaCheck( cudaMemcpy( devRhs, rhs, colorCount * sizeof( real32 ), cudaMemcpyHostToDevice ),
+               status = __err;
+               goto Error; );
 
     // run our kernel with 1 thread block and one thread per color
     KernalAddColor<<<1, colorCount>>>( devOut, devLhs, devRhs );
@@ -158,25 +128,19 @@ cudaError_t AddColorsWithCuda( Color* out, const Color* lhs, const real32* rhs, 
     }
 
     // wait for the kernel to finish then check for any errors that occurred while running
-    status = cudaDeviceSynchronize();
-    if ( status != cudaSuccess )
-    {
-        printf( "cudaDeviceSynchronize returned error code %d after launching KernalAddColor!\n", status );
-        goto Error;
-    }
+    cudaCheck( cudaDeviceSynchronize(),
+               status = __err;
+               goto Error; );
 
     // Copy output vector from GPU buffer to host memory.
-    status = cudaMemcpy( out, devOut, colorCount * sizeof( Color ), cudaMemcpyDeviceToHost );
-    if ( status != cudaSuccess )
-    {
-        puts( "cudaMemcpy failed!" );
-        goto Error;
-    }
+    cudaCheck( cudaMemcpy( out, devOut, colorCount * sizeof( Color ), cudaMemcpyDeviceToHost ),
+               status = __err;
+               goto Error; );
 
 Error:
     cudaFree( devOut );
     cudaFree( devLhs );
     cudaFree( devRhs );
 
-    return status;
+    return cudaSuccess;
 }

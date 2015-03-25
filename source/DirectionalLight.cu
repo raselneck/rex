@@ -41,6 +41,12 @@ const Vector3& DirectionalLight::GetDirection() const
     return _direction;
 }
 
+// get type
+LightType DirectionalLight::GetType() const
+{
+    return LightType::DirectionalLight;
+}
+
 // get radiance scale
 real32 DirectionalLight::GetRadianceScale() const
 {

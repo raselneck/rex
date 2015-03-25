@@ -186,9 +186,11 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="AmbientLight.cu" />
     <CudaCompile Include="BoundingBox.cu" />
     <CudaCompile Include="BRDF.cu" />
+    <CudaCompile Include="Camera.cu" />
     <CudaCompile Include="Color.cu" />
     <CudaCompile Include="DirectionalLight.cu" />
     <CudaCompile Include="GlossySpecularBRDF.cu" />
+    <CudaCompile Include="Image.cu" />
     <CudaCompile Include="LambertianBRDF.cu" />
     <CudaCompile Include="Light.cu" />
     <CudaCompile Include="Main.cu" />
@@ -202,6 +204,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="ShadePoint.cu" />
     <CudaCompile Include="Vector2.cu" />
     <CudaCompile Include="Vector3.cu" />
+    <CudaCompile Include="ViewPlane.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx" />
@@ -213,6 +216,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\BRDFs\BRDF.hxx" />
     <ClInclude Include="..\include\rex\Graphics\BRDFs\GlossySpecularBRDF.hxx" />
     <ClInclude Include="..\include\rex\Graphics\BRDFs\LambertianBRDF.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Camera.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Color.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\AmbientLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\DirectionalLight.hxx" />
@@ -221,7 +225,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\Materials\Material.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\MatteMaterial.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\PhongMaterial.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Scene.hxx" />
     <ClInclude Include="..\include\rex\Graphics\ShadePoint.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\ViewPlane.hxx" />
     <ClInclude Include="..\include\rex\Math\BoundingBox.hxx" />
     <ClInclude Include="..\include\rex\Math\Math.hxx" />
     <ClInclude Include="..\include\rex\Math\Matrix.hxx" />
@@ -230,14 +236,18 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Math\Vector3.hxx" />
     <ClInclude Include="..\include\rex\OpenGL.hxx" />
     <ClInclude Include="..\include\rex\Rex.hxx" />
+    <ClInclude Include="..\include\rex\Utility\GC.hxx" />
+    <ClInclude Include="..\include\rex\Utility\Image.hxx" />
     <ClInclude Include="..\include\rex\Utility\Logger.hxx" />
     <ClInclude Include="..\include\rex\Utility\Timer.hxx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Math\Math.inl" />
+    <None Include="..\include\rex\Utility\GC.inl" />
     <None Include="..\include\rex\Utility\Logger.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GC.cxx" />
     <ClCompile Include="GLContext.cxx" />
     <ClCompile Include="GLWindow.cxx" />
     <ClCompile Include="GLWindowHints.cxx" />

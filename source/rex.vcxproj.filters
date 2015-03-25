@@ -122,6 +122,15 @@
     <CudaCompile Include="PointLight.cu">
       <Filter>Source Files\Graphics\Lights</Filter>
     </CudaCompile>
+    <CudaCompile Include="ViewPlane.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Camera.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Image.cu">
+      <Filter>Source Files\Utility</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx">
@@ -208,12 +217,30 @@
     <ClInclude Include="..\include\rex\Graphics\Lights\PointLight.hxx">
       <Filter>Header Files\Graphics\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\GC.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Scene.hxx">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\Image.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Camera.hxx">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\ViewPlane.hxx">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Math\Math.inl">
       <Filter>Header Files\Math</Filter>
     </None>
     <None Include="..\include\rex\Utility\Logger.inl">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\include\rex\Utility\GC.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
   </ItemGroup>
@@ -232,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="GLContext.cxx">
       <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="GC.cxx">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

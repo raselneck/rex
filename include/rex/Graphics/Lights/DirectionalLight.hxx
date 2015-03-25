@@ -54,6 +54,11 @@ public:
     __both__ real32 GetRadianceScale() const;
 
     /// <summary>
+    /// Gets this light's type.
+    /// </summary>
+    __both__ virtual LightType GetType() const;
+
+    /// <summary>
     /// Checks to see if the given ray is in shadow when viewed from this light.
     /// </summary>
     /// <param name="ray">The ray to check.</param>

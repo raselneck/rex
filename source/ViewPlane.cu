@@ -8,7 +8,6 @@ ViewPlane::ViewPlane()
     Width       = 0;
     Height      = 0;
     SampleCount = 1;
-    PixelSize   = 1.0f;
     Gamma       = 2.2f;
     InvGamma    = 1.0f / Gamma;
 }
@@ -19,7 +18,6 @@ ViewPlane::~ViewPlane()
     Width       = 0;
     Height      = 0;
     SampleCount = 0;
-    PixelSize   = 0;
     Gamma       = 0;
     InvGamma    = 0;
 }

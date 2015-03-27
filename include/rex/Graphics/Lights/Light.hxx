@@ -31,12 +31,12 @@ public:
     /// <summary>
     /// Creates a new light.
     /// </summary>
-    __both__ Light();
+    __host__ Light();
 
     /// <summary>
     /// Destroys this light.
     /// </summary>
-    __both__ virtual ~Light();
+    __host__ virtual ~Light();
 
     /// <summary>
     /// Checks to see if this light casts shadows.
@@ -53,25 +53,30 @@ public:
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="sp">Current hit point information.</param>
-    __both__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const = 0;
+    __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const = 0;
 
     /// <summary>
     /// Gets the direction of the incoming light at a hit point.
     /// </summary>
     /// <param name="sp">The shading point information containing hit data.</param>
-    __both__ virtual Vector3 GetLightDirection( ShadePoint& sp ) = 0;
+    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) = 0;
+
+    /// <summary>
+    /// Gets this light on the device.
+    /// </summary>
+    __host__ virtual Light* GetOnDevice() = 0;
 
     /// <summary>
     /// Gets the incident radiance at a hit point.
     /// </summary>
     /// <param name="sp">The shading point information containing hit data.</param>
-    __both__ virtual Color GetRadiance( ShadePoint& sp ) = 0;
+    __device__ virtual Color GetRadiance( ShadePoint& sp ) = 0;
 
     /// <summary>
     /// Sets whether or not this light should cast shadows.
     /// </summary>
     /// <param name="value">The new value.</param>
-    __both__ virtual void SetCastShadows( bool value );
+    __host__ virtual void SetCastShadows( bool value );
 };
 
 REX_NS_END

@@ -189,10 +189,12 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="Camera.cu" />
     <CudaCompile Include="Color.cu" />
     <CudaCompile Include="DirectionalLight.cu" />
+    <CudaCompile Include="GC.cu" />
     <CudaCompile Include="GlossySpecularBRDF.cu" />
     <CudaCompile Include="Image.cu" />
     <CudaCompile Include="LambertianBRDF.cu" />
     <CudaCompile Include="Light.cu" />
+    <CudaCompile Include="Logger.cu" />
     <CudaCompile Include="Main.cu" />
     <CudaCompile Include="Material.cu" />
     <CudaCompile Include="Math.cu" />
@@ -202,6 +204,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="PointLight.cu" />
     <CudaCompile Include="Ray.cu" />
     <CudaCompile Include="ShadePoint.cu" />
+    <CudaCompile Include="Timer.cu" />
     <CudaCompile Include="Vector2.cu" />
     <CudaCompile Include="Vector3.cu" />
     <CudaCompile Include="ViewPlane.cu" />
@@ -221,6 +224,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\Lights\AmbientLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\DirectionalLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\Light.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Lights\LightCollection.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\PointLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\Material.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\MatteMaterial.hxx" />
@@ -247,12 +251,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <None Include="..\include\rex\Utility\Logger.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GC.cxx" />
     <ClCompile Include="GLContext.cxx" />
     <ClCompile Include="GLWindow.cxx" />
     <ClCompile Include="GLWindowHints.cxx" />
-    <ClCompile Include="Logger.cxx" />
-    <ClCompile Include="Timer.cxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

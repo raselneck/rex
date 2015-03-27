@@ -12,7 +12,6 @@ struct ViewPlane
     uint32 Width;
     uint32 Height;
     uint32 SampleCount;
-    real32 PixelSize;
     real32 Gamma;
     real32 InvGamma;
 

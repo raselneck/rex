@@ -1,46 +1,49 @@
 #include <rex/Graphics/Lights/PointLight.hxx>
 #include <rex/Graphics/Scene.hxx>
 #include <rex/Graphics/ShadePoint.hxx>
+#include <rex/Utility/GC.hxx>
 
 // TODO : Implement point light attenuation
+// TODO : Override SetCastsShadows to update on device
 
 REX_NS_BEGIN
 
 // create point light
 PointLight::PointLight()
-    : PointLight( 0.0, 0.0, 0.0 )
+    : PointLight( Vector3( 0.0, 0.0, 0.0 ) )
+{
+}
+
+// create point light w/ position components
+PointLight::PointLight( real64 x, real64 y, real64 z )
+    : PointLight( Vector3( x, y, z ) )
 {
 }
 
 // create point light w/ position
 PointLight::PointLight( const Vector3& position )
-    : _position( position ), _color( Color::White() ), _radianceScale( 1.0f )
+    : _position( position ),
+      _color( Color::White() ),
+      _radianceScale( 1.0f ),
+      _dThis( nullptr )
 {
     _castShadows = true;
-}
 
-// create point light w/ position components
-PointLight::PointLight( real64 x, real64 y, real64 z )
-    : _position( x, y, z ), _color( Color::White() ), _radianceScale( 1.0f )
-{
+    // create us on the device
+    _dThis = GC::DeviceAlloc<PointLight>( *this );
 }
 
 // destroy point light
 PointLight::~PointLight()
 {
     _radianceScale = 0.0f;
+    _dThis         = nullptr;
 }
 
 // get color
 const Color& PointLight::GetColor() const
 {
     return _color;
-}
-
-// get type
-LightType PointLight::GetType() const
-{
-    return LightType::PointLight;
 }
 
 // get position
@@ -56,19 +59,31 @@ real32 PointLight::GetRadianceScale() const
 }
 
 // get light direction
-Vector3 PointLight::GetLightDirection( ShadePoint& sp )
+__device__ Vector3 PointLight::GetLightDirection( ShadePoint& sp )
 {
     return Vector3::Normalize( _position - sp.HitPoint );
 }
 
+// get light on the device
+Light* PointLight::GetOnDevice()
+{
+    return static_cast<Light*>( _dThis );
+}
+
 // get radiance
-Color PointLight::GetRadiance( ShadePoint& sp )
+__device__ Color PointLight::GetRadiance( ShadePoint& sp )
 {
     return _radianceScale * _color;
 }
 
+// get type
+LightType PointLight::GetType() const
+{
+    return LightType::PointLight;
+}
+
 // check if in shadow
-bool PointLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
+__device__ bool PointLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 {
     // from Suffern, 300
 
@@ -90,34 +105,39 @@ bool PointLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 void PointLight::SetColor( const Color& color )
 {
     _color = color;
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PointLight ), cudaMemcpyHostToDevice );
 }
 
 // set color components
 void PointLight::SetColor( real32 r, real32 g, real32 b )
 {
-    _color.R = r;
-    _color.G = g;
-    _color.B = b;
+    SetColor( Color( r, g, b ) );
 }
 
 // set position
 void PointLight::SetPosition( const Vector3& position )
 {
     _position = position;
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PointLight ), cudaMemcpyHostToDevice );
 }
 
 // set position
 void PointLight::SetPosition( real64 x, real64 y, real64 z )
 {
-    _position.X = x;
-    _position.Y = y;
-    _position.Z = z;
+    SetPosition( Vector3( x, y, z ) );
 }
 
 // set radiance scale
 void PointLight::SetRadianceScale( real32 ls )
 {
     _radianceScale = ls;
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PointLight ), cudaMemcpyHostToDevice );
 }
 
 REX_NS_END

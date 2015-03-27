@@ -9,9 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\CUDA">
-      <UniqueIdentifier>{a4b8e409-08d6-480f-a2ba-f4838c7cd518}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{7862d328-8846-43e4-98a5-cbf740bce98b}</UniqueIdentifier>
     </Filter>
@@ -23,9 +20,6 @@
     </Filter>
     <Filter Include="Header Files\GL">
       <UniqueIdentifier>{64035ede-53d8-4770-95f0-49ee08b6082e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CUDA">
-      <UniqueIdentifier>{f979bdfd-7096-481f-979d-46849cfaced6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GL">
       <UniqueIdentifier>{91d46313-7f0a-4ab8-9afb-b6a05a594f42}</UniqueIdentifier>
@@ -131,6 +125,15 @@
     <CudaCompile Include="Image.cu">
       <Filter>Source Files\Utility</Filter>
     </CudaCompile>
+    <CudaCompile Include="GC.cu">
+      <Filter>Source Files\Utility</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Logger.cu">
+      <Filter>Source Files\Utility</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Timer.cu">
+      <Filter>Source Files\Utility</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx">
@@ -217,9 +220,6 @@
     <ClInclude Include="..\include\rex\Graphics\Lights\PointLight.hxx">
       <Filter>Header Files\Graphics\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\GC.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\rex\Graphics\Scene.hxx">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -231,6 +231,12 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\Graphics\ViewPlane.hxx">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\GC.hxx">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Lights\LightCollection.hxx">
+      <Filter>Header Files\Graphics\Lights</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,23 +251,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Timer.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="GLWindowHints.cxx">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
     <ClCompile Include="GLWindow.cxx">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cxx">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="GLContext.cxx">
       <Filter>Source Files\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="GC.cxx">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

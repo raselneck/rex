@@ -22,32 +22,32 @@ public:
     /// <summary>
     /// Creates a new timer.
     /// </summary>
-    Timer();
+    __host__ Timer();
 
     /// <summary>
     /// Destroys this timer.
     /// </summary>
-    ~Timer();
+    __host__ ~Timer();
 
     /// <summary>
     /// Checks to see if this timer is running.
     /// </summary>
-    bool IsRunning() const;
+    __host__ bool IsRunning() const;
 
     /// <summary>
     /// Gets the elapsed time, in seconds.
     /// </summary>
-    real64 GetElapsed() const;
+    __host__ real64 GetElapsed() const;
 
     /// <summary>
     /// Starts the timer.
     /// </summary>
-    void Start();
+    __host__ void Start();
 
     /// <summary>
     /// Stops the timer.
     /// </summary>
-    void Stop();
+    __host__ void Stop();
 };
 
 REX_NS_END

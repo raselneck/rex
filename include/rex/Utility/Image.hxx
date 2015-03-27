@@ -2,8 +2,6 @@
 
 #include "../Config.hxx"
 #include "../Graphics/Color.hxx"
-#include <thrust/device_vector.h>
-#include <thrust/host_vector.h>
 
 REX_NS_BEGIN
 
@@ -12,8 +10,10 @@ REX_NS_BEGIN
 /// </summary>
 class Image
 {
-    thrust::host_vector<Color>   _hostPixels;
-    thrust::device_vector<Color> _devicePixels;
+    REX_NONCOPYABLE_CLASS( Image );
+
+    Color* _hPixels;
+    Color* _dPixels;
     const uint16 _width;
     const uint16 _height;
 
@@ -23,12 +23,12 @@ public:
     /// </summary>
     /// <param name="width">The image's width.</param>
     /// <param name="height">The image's height.</param>
-    __both__ Image( uint16 width, uint16 height );
+    __host__ Image( uint16 width, uint16 height );
 
     /// <summary>
     /// Destroys this image.
     /// </summary>
-    __both__ ~Image();
+    __host__ ~Image();
 
     /// <summary>
     /// Gets this image's width.
@@ -44,17 +44,17 @@ public:
     /// Saves this image as a PNG to the given file.
     /// </summary>
     /// <param name="fname">The file name.</param>
-    __both__ bool Save( const char* fname ) const;
+    __host__ bool Save( const char* fname ) const;
 
     /// <summary>
     /// Copies the host pixels to the device.
     /// </summary>
-    __both__ void CopyHostToDevice();
+    __host__ void CopyHostToDevice();
 
     /// <summary>
     /// Copies the device pixels to the host.
     /// </summary>
-    __both__ void CopyDeviceToHost();
+    __host__ void CopyDeviceToHost();
 
     /// <summary>
     /// Sets the host pixel at the given coordinates with bounds checking.

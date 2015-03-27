@@ -9,7 +9,7 @@ Camera::Camera()
 {
     _up             = Vector3( 0.0, 1.0, 0.0 );
     _target         = Vector3( 0.0, 0.0, 1.0 );
-    _viewPlaneDist  = 1000.0f;
+    _viewPlaneDist  = 1000.0;
 }
 
 // destroy camera

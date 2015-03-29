@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../Config.hxx"
 #include "../../Math/Ray.hxx"
 #include "../../Math/Vector3.hxx"
 #include "../Color.hxx"
@@ -24,8 +23,32 @@ enum class LightType
 /// </summary>
 class Light
 {
+    REX_NONCOPYABLE_CLASS( Light );
+
 protected:
     bool _castShadows;
+
+
+    friend class Scene;
+
+    /// <summary>
+    /// Checks to see if the given ray is in shadow when viewed from this light.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="sp">Current hit point information.</param>
+    __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const = 0;
+
+    /// <summary>
+    /// Gets the direction of the incoming light at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) = 0;
+
+    /// <summary>
+    /// Gets the incident radiance at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Color GetRadiance( ShadePoint& sp ) = 0;
 
 public:
     /// <summary>
@@ -44,33 +67,14 @@ public:
     __both__ bool CastsShadows() const;
 
     /// <summary>
+    /// Gets this light on the device.
+    /// </summary>
+    __host__ virtual const Light* GetOnDevice() const = 0;
+
+    /// <summary>
     /// Gets this light's type.
     /// </summary>
     __both__ virtual LightType GetType() const = 0;
-
-    /// <summary>
-    /// Checks to see if the given ray is in shadow when viewed from this light.
-    /// </summary>
-    /// <param name="ray">The ray to check.</param>
-    /// <param name="sp">Current hit point information.</param>
-    __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const = 0;
-
-    /// <summary>
-    /// Gets the direction of the incoming light at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) = 0;
-
-    /// <summary>
-    /// Gets this light on the device.
-    /// </summary>
-    __host__ virtual Light* GetOnDevice() = 0;
-
-    /// <summary>
-    /// Gets the incident radiance at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Color GetRadiance( ShadePoint& sp ) = 0;
 
     /// <summary>
     /// Sets whether or not this light should cast shadows.

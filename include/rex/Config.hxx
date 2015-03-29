@@ -25,17 +25,13 @@
 #define REX_XSTRINGIFY(x) REX_STRINGIFY(x)
 
 /// <summary>
-/// A macro for easily implementing a static class.
+/// A macro for easily implementing a non-movable class.
 /// </summary>
 /// <param name="cname">The class name.</param>
-#define REX_STATIC_CLASS(cname) \
+#define REX_NONMOVABLE_CLASS(cname) \
     private: \
-        cname() = delete; \
-        cname(const cname&) = delete; \
-        cname(cname&&) = delete; \
-        ~cname() = delete; \
-        cname& operator=(const cname&) = delete; \
-        cname& operator=(cname&&) = delete /* no semicolon here to make the macro look like a function */
+        cname( cname&& ) = delete; \
+        cname& operator=( cname&& ) = delete  /* no semicolon here to make the macro look like a function */
 
 /// <summary>
 /// A macro for easily implementing a non-copyable class.
@@ -49,11 +45,26 @@
         cname& operator=( cname&& ) = delete  /* no semicolon here to make the macro look like a function */
 
 /// <summary>
+/// A macro for easily implementing a static class.
+/// </summary>
+/// <param name="cname">The class name.</param>
+#define REX_STATIC_CLASS(cname) \
+    private: \
+        cname() = delete; \
+        cname(const cname&) = delete; \
+        cname(cname&&) = delete; \
+        ~cname() = delete; \
+        cname& operator=(const cname&) = delete; \
+        cname& operator=(cname&&) = delete /* no semicolon here to make the macro look like a function */
+
+
+
+/// <summary>
 /// A macro for easily getting the offset of a pointer.
 /// </summary>
 /// <param name="base">The base pointer.</param>
 /// <param name="offs">The offset.</param>
-#define REX_OFFSET(base, offs) static_cast<void*>( static_cast<uint8*>( base ) + ( offs ) )
+#define REX_OFFSET(base, offs) static_cast<void*>( reinterpret_cast<uint8*>( base ) + ( offs ) )
 
 
 #if defined( NDEBUG )
@@ -78,6 +89,7 @@ typedef float    real32;
 typedef double   real64;
 
 
+#include <memory>
 #include <string>
 REX_NS_BEGIN
 
@@ -85,5 +97,10 @@ REX_NS_BEGIN
 /// The string type used by Rex.
 /// </summary>
 typedef std::string String;
+
+/// <summary>
+/// The handle type used by Rex.
+/// </summary>
+template<typename T> using Handle = std::shared_ptr<T>;
 
 REX_NS_END

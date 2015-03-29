@@ -1,6 +1,7 @@
 #include <rex/Utility/Image.hxx>
 #include <rex/Utility/Logger.hxx>
 #include <rex/Math/Math.hxx>
+#include <vector>
 
 // include STB image write header
 #pragma warning( push )
@@ -85,16 +86,18 @@ uint16 Image::GetHeight() const
 // save image
 bool Image::Save( const char* fname ) const
 {
-    // convert our floating-point colors into 8-bit colors
+    // prepare our converted data array
     std::vector<uint8> converted;
     converted.resize( _width * _height * 3 );
-    size_t convInd = 0;
-    for ( auto iter = _hPixels.begin(); iter != _hPixels.end(); ++iter, convInd += 3 )
+
+    // convert 32-bit floating point color components into 8-bit components
+    const uint32 count = _width * _height;
+    for ( uint32 i = 0; i < count; ++i )
     {
-        Color c = *iter;
-        converted[ convInd + 0 ] = static_cast<uint8>( Math::Clamp( c.R, 0.0f, 1.0f ) * 255 );
-        converted[ convInd + 1 ] = static_cast<uint8>( Math::Clamp( c.G, 0.0f, 1.0f ) * 255 );
-        converted[ convInd + 2 ] = static_cast<uint8>( Math::Clamp( c.B, 0.0f, 1.0f ) * 255 );
+        Color& c = _hPixels[ i ];
+        converted[ i * 3 + 0 ] = static_cast<uint8>( Math::Clamp( c.R, 0.0f, 1.0f ) * 255 );
+        converted[ i * 3 + 1 ] = static_cast<uint8>( Math::Clamp( c.G, 0.0f, 1.0f ) * 255 );
+        converted[ i * 3 + 2 ] = static_cast<uint8>( Math::Clamp( c.B, 0.0f, 1.0f ) * 255 );
     }
 
     // now write out the image as a PNG
@@ -105,14 +108,14 @@ bool Image::Save( const char* fname ) const
 void Image::CopyHostToDevice()
 {
     uint32 size = _width * _height * sizeof( Color );
-    memcpy( _dPixels, _hPixels, cudaMemcpyHostToDevice );
+    cudaMemcpy( _dPixels, _hPixels, size, cudaMemcpyHostToDevice );
 }
 
 // copy device pixels to host
 void Image::CopyDeviceToHost()
 {
     uint32 size = _width * _height * sizeof( Color );
-    memcpy( _hPixels, _dPixels, cudaMemcpyDeviceToHost );
+    cudaMemcpy( _hPixels, _dPixels, size, cudaMemcpyDeviceToHost );
 }
 
 // set host pixel w/ bounds checking

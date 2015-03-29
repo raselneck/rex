@@ -46,6 +46,12 @@ const Color& PointLight::GetColor() const
     return _color;
 }
 
+// get light on the device
+const Light* PointLight::GetOnDevice() const
+{
+    return static_cast<Light*>( _dThis );
+}
+
 // get position
 const Vector3& PointLight::GetPosition() const
 {
@@ -62,12 +68,6 @@ real32 PointLight::GetRadianceScale() const
 __device__ Vector3 PointLight::GetLightDirection( ShadePoint& sp )
 {
     return Vector3::Normalize( _position - sp.HitPoint );
-}
-
-// get light on the device
-Light* PointLight::GetOnDevice()
-{
-    return static_cast<Light*>( _dThis );
 }
 
 // get radiance

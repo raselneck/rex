@@ -2,6 +2,8 @@
 #include <rex/Rex.hxx>
 #include <thread>
 
+#define cudaCheck(x, code) { cudaError_t __err = (x); if (__err != cudaSuccess) { rex::Logger::Log("'", #x, "' failed with error code ", __err); } code }
+
 using namespace rex;
 
 /// <summary>

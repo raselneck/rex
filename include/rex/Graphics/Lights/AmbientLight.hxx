@@ -13,31 +13,8 @@ class AmbientLight : public Light
     real32 _radianceScale;
     void*  _dThis;
 
-public:
-    /// <summary>
-    /// Creates a new ambient light.
-    /// </summary>
-    __both__ AmbientLight();
-
-    /// <summary>
-    /// Destroys this ambient light.
-    /// </summary>
-    __both__ virtual ~AmbientLight();
-
-    /// <summary>
-    /// Gets this ambient light's color.
-    /// </summary>
-    __both__ const Color& GetColor() const;
-
-    /// <summary>
-    /// Gets this ambient light's radiance scale.
-    /// </summary>
-    __both__ real32 GetRadianceScale() const;
-
-    /// <summary>
-    /// Gets this light's type.
-    /// </summary>
-    __both__ virtual LightType GetType() const;
+protected:
+    friend class Scene;
 
     /// <summary>
     /// Checks to see if the given ray is in shadow when viewed from this light.
@@ -53,27 +30,53 @@ public:
     __device__ virtual Vector3 GetLightDirection( ShadePoint& sp );
 
     /// <summary>
-    /// Gets this light on the device.
-    /// </summary>
-    __host__ virtual Light* GetOnDevice();
-
-    /// <summary>
     /// Gets the incident radiance at a hit point.
     /// </summary>
     /// <param name="sp">The shading point information containing hit data.</param>
     __device__ virtual Color GetRadiance( ShadePoint& sp );
 
+public:
+    /// <summary>
+    /// Creates a new ambient light.
+    /// </summary>
+    __host__ AmbientLight();
+
+    /// <summary>
+    /// Destroys this ambient light.
+    /// </summary>
+    __host__ virtual ~AmbientLight();
+
+    /// <summary>
+    /// Gets this ambient light's color.
+    /// </summary>
+    __both__ const Color& GetColor() const;
+
+    /// <summary>
+    /// Gets this light on the device.
+    /// </summary>
+    __host__ virtual const Light* GetOnDevice() const;
+
+    /// <summary>
+    /// Gets this ambient light's radiance scale.
+    /// </summary>
+    __both__ real32 GetRadianceScale() const;
+
+    /// <summary>
+    /// Gets this light's type.
+    /// </summary>
+    __both__ virtual LightType GetType() const;
+
     /// <summary>
     /// Sets whether or not this light should cast shadows.
     /// </summary>
     /// <param name="value">The new value.</param>
-    __both__ virtual void SetCastShadows( bool value );
+    __host__ virtual void SetCastShadows( bool value );
 
     /// <summary>
     /// Sets this ambient light's color.
     /// </summary>
     /// <param name="color">The new color.</param>
-    __both__ void SetColor( const Color& color );
+    __host__ void SetColor( const Color& color );
 
     /// <summary>
     /// Sets this ambient light's color.
@@ -81,13 +84,13 @@ public:
     /// <param name="r">The new color's red component.</param>
     /// <param name="g">The new color's green component.</param>
     /// <param name="b">The new color's blue component.</param>
-    __both__ void SetColor( real32 r, real32 g, real32 b );
+    __host__ void SetColor( real32 r, real32 g, real32 b );
 
     /// <summary>
     /// Sets this ambient light's radiance scale.
     /// </summary>
     /// <param name="ls">The new radiance scale.</param>
-    __both__ void SetRadianceScale( real32 ls );
+    __host__ void SetRadianceScale( real32 ls );
 };
 
 REX_NS_END

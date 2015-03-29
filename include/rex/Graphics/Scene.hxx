@@ -22,6 +22,27 @@ class Scene
     Image*          _image;
     LightCollection _lights;
     
+    /// <summary>
+    /// This scene's render kernel.
+    /// </summary>
+    /// <param name="lights">The lights on the device.</param>
+    /// <param name="lightCount">The number of lights.</param>
+    /// <param name=""></param>
+    __global__ void RenderKernel( const Light** lights, uint32 lightCount );
+
+    /// <summary>
+    /// Hits all of the objects in this scene with the given ray.
+    /// </summary>
+    /// <param name="ray">The ray to hit with.</param>
+    /// <param name="sp">The shade point object to fill data with.</param>
+    __device__ void HitObjects( const Ray& ray, ShadePoint& sp ) const;
+
+    /// <summary>
+    /// Shadow-hits all of the objects in this scene with the given ray.
+    /// </summary>
+    /// <param name="ray">The ray to hit with.</param>
+    __device__ bool ShadowHitObjects( const Ray& ray ) const;
+
 public:
     /// <summary>
     /// Creates a new scene.
@@ -44,19 +65,6 @@ public:
     /// Renders this scene.
     /// </summary>
     __host__ void Render();
-
-    /// <summary>
-    /// Hits all of the objects in this scene with the given ray.
-    /// </summary>
-    /// <param name="ray">The ray to hit with.</param>
-    /// <param name="sp">The shade point object to fill data with.</param>
-    __device__ void HitObjects( const Ray& ray, ShadePoint& sp ) const;
-
-    /// <summary>
-    /// Shadow-hits all of the objects in this scene with the given ray.
-    /// </summary>
-    /// <param name="ray">The ray to hit with.</param>
-    __device__ bool ShadowHitObjects( const Ray& ray ) const;
 };
 
 REX_NS_END

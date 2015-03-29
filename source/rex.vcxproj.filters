@@ -134,6 +134,9 @@
     <CudaCompile Include="Timer.cu">
       <Filter>Source Files\Utility</Filter>
     </CudaCompile>
+    <CudaCompile Include="LightCollection.cu">
+      <Filter>Source Files\Graphics\Lights</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx">

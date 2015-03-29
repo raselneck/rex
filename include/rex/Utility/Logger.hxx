@@ -15,6 +15,18 @@ class Logger
 
     static std::mutex _mutex;
 
+    /// <summary>
+    /// Converts the given value into a string.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    template<typename T> static __host__ String ToString( const T& value );
+
+    /// <summary>
+    /// Merges a given list of strings.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    __host__ static String Merge( std::initializer_list<String> list );
+
 public:
     /// <summary>
     /// Logs the given arguments to the console.

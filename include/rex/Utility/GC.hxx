@@ -57,7 +57,7 @@ public:
     /// Allocates memory for an array of the given type on the device.
     /// </summary>
     /// <param name="count">The number of items to allocate for.</param>
-    template<typename T> __host__ static T** DeviceAllocArray( uint32 count );
+    template<typename T> __host__ static T* DeviceAllocArray( uint32 count );
 };
 
 REX_NS_END

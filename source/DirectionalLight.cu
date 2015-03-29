@@ -50,6 +50,12 @@ const Vector3& DirectionalLight::GetDirection() const
     return _direction;
 }
 
+// get light on the device
+const Light* DirectionalLight::GetOnDevice() const
+{
+    return static_cast<Light*>( _dThis );
+}
+
 // get radiance scale
 real32 DirectionalLight::GetRadianceScale() const
 {
@@ -60,12 +66,6 @@ real32 DirectionalLight::GetRadianceScale() const
 __device__ Vector3 DirectionalLight::GetLightDirection( ShadePoint& sp )
 {
     return _direction;
-}
-
-// get light on the device
-Light* DirectionalLight::GetOnDevice()
-{
-    return static_cast<Light*>( _dThis );
 }
 
 // get radiance

@@ -1,6 +1,7 @@
 #include <rex/Graphics/Materials/PhongMaterial.hxx>
 #include <rex/Graphics/Scene.hxx>
 #include <rex/Graphics/ShadePoint.hxx>
+#include <rex/Utility/GC.hxx>
 
 REX_NS_BEGIN
 
@@ -18,8 +19,11 @@ PhongMaterial::PhongMaterial( const Color& color )
 
 // create material w/ color, ambient coefficient, diffuse coefficient, specular coefficient, specular power
 PhongMaterial::PhongMaterial( const Color& color, real32 ka, real32 kd, real32 ks, real32 pow )
-    : MatteMaterial( color, ka, kd ), _specular( ks, color, pow )
+    : MatteMaterial( color, ka, kd, false ),
+      _specular( ks, color, pow )
 {
+    // allocate us on the device
+    _dThis = GC::DeviceAlloc<PhongMaterial>( *this );
 }
 
 // destroy material
@@ -39,31 +43,63 @@ real32 PhongMaterial::GetSpecularPower() const
     return _specular.GetSpecularPower();
 }
 
+// get material type
+MaterialType PhongMaterial::GetType() const
+{
+    return MaterialType::Phong;
+}
+
+// set ambient coefficient
+void PhongMaterial::SetAmbientCoefficient( real32 ka )
+{
+    _ambient.SetDiffuseCoefficient( ka );
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
+}
+
 // set color
 void PhongMaterial::SetColor( const Color& color )
 {
-    MatteMaterial::SetColor( color );
-
+    _ambient.SetDiffuseColor( color );
+    _diffuse.SetDiffuseColor( color );
     _specular.SetSpecularColor( color );
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set color w/ components
 void PhongMaterial::SetColor( real32 r, real32 g, real32 b )
 {
-    Color color( r, g, b );
-    SetColor( r, g, b );
+    SetColor( Color( r, g, b ) );
+}
+
+// set diffuse coefficient
+void PhongMaterial::SetDiffuseCoefficient( real32 kd )
+{
+    _diffuse.SetDiffuseCoefficient( kd );
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set specular coefficient
 void PhongMaterial::SetSpecularCoefficient( real32 ks )
 {
     _specular.SetSpecularCoefficient( ks );
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set specular power
 void PhongMaterial::SetSpecularPower( real32 pow )
 {
     _specular.SetSpecularPower( pow );
+
+    // update us on the device
+    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // get shaded color

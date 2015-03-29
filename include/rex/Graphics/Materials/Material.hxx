@@ -8,26 +8,47 @@ REX_NS_BEGIN
 struct ShadePoint;
 
 /// <summary>
+/// An enumeration of possible material types.
+/// </summary>
+enum class MaterialType
+{
+    Matte,
+    Phong
+};
+
+/// <summary>
 /// Defines the base for all materials.
 /// </summary>
 class Material
 {
+    REX_NONCOPYABLE_CLASS( Material );
+
 public:
     /// <summary>
     /// Creates a new material.
     /// </summary>
-    __both__ Material();
+    __host__ Material();
 
     /// <summary>
     /// Destroys this material.
     /// </summary>
-    __both__ virtual ~Material();
+    __host__ virtual ~Material();
+
+    /// <summary>
+    /// Gets this material on the device.
+    /// </summary>
+    __host__ virtual const Material* GetOnDevice() const = 0;
+
+    /// <summary>
+    /// Gets this material's type.
+    /// </summary>
+    __both__ virtual MaterialType GetType() const = 0;
 
     /// <summary>
     /// Gets a shaded color given hit point data.
     /// </summary>
     /// <param name="sp">The hit point data.</param>
-    __both__ virtual Color Shade( ShadePoint& sp );
+    __device__ virtual Color Shade( ShadePoint& sp );
 };
 
 REX_NS_END

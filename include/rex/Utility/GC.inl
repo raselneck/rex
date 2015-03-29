@@ -3,13 +3,13 @@
 REX_NS_BEGIN
 
 // the default host cleanup callback
-template<typename T> static void GC::HostCleanupCallback( void* data )
+template<typename T> void GC::HostCleanupCallback( void* data )
 {
     delete static_cast<T*>( data );
 }
 
 // allocate memory for type on host
-template<typename T, typename ... Args> static T* GC::HostAlloc( const Args& ... args )
+template<typename T, typename ... Args> T* GC::HostAlloc( const Args& ... args )
 {
     // attempt to allocate the memory
     T* object = new ( std::nothrow ) T( args... );
@@ -32,11 +32,11 @@ template<typename T, typename ... Args> static T* GC::HostAlloc( const Args& ...
 }
 
 // allocate memory for an object on the device
-template<typename T> static T* GC::DeviceAlloc( const T& source )
+template<typename T> T* GC::DeviceAlloc( const T& source )
 {
     // attempt to allocate the memory
     T*          memory  = nullptr;
-    cudaError_t err     = cudaMalloc( static_cast<void**>( &memory ), sizeof( T ) );
+    cudaError_t err     = cudaMalloc( reinterpret_cast<void**>( &memory ), sizeof( T ) );
 
     // if the memory was allocated, register it and set it
     if ( err == cudaSuccess )
@@ -57,11 +57,11 @@ template<typename T> static T* GC::DeviceAlloc( const T& source )
     }
 
     // return the memory
-    return memory
+    return memory;
 }
 
 // allocate space for an array
-template<typename T> static T* GC::DeviceAllocArray( uint32 count )
+template<typename T> T* GC::DeviceAllocArray( uint32 count )
 {
     // attempt to allocate the memory
     T*          memory  = nullptr;

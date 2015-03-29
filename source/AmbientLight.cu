@@ -28,6 +28,12 @@ const Color& AmbientLight::GetColor() const
     return _color;
 }
 
+// get light on the device
+const Light* AmbientLight::GetOnDevice() const
+{
+    return static_cast<Light*>( _dThis );
+}
+
 // get radiance scale
 real32 AmbientLight::GetRadianceScale() const
 {

@@ -30,7 +30,7 @@ public:
     /// </summary>
     /// <param name="min">The "minimum" corner.</param>
     /// <param name="max">The "maximum" corner.</param>
-    __both__ BoundingBox( const Vector3& min, const Vector3& max );
+    __host__ BoundingBox( const Vector3& min, const Vector3& max );
 
     /// <summary>
     /// Creates a new bounding box.
@@ -41,13 +41,13 @@ public:
     /// <param name="maxX">The "maximum" corner's X.</param>
     /// <param name="maxY">The "maximum" corner's Y.</param>
     /// <param name="maxZ">The "maximum" corner's Z.</param>
-    __both__ BoundingBox( real64 minX, real64 minY, real64 minZ,
-                               real64 maxX, real64 maxY, real64 maxZ );
+    __host__ BoundingBox( real64 minX, real64 minY, real64 minZ,
+                          real64 maxX, real64 maxY, real64 maxZ );
 
     /// <summary>
     /// Destroys this bounding box.
     /// </summary>
-    __both__ ~BoundingBox();
+    __host__ ~BoundingBox();
 
     /// <summary>
     /// Checks to see if this bounding box contains the given bounding box.
@@ -86,13 +86,13 @@ public:
     /// Sets this bounding box's "minimum" corner.
     /// </summary>
     /// <param name="min">The new "minimum" corner.</param>
-    __both__ void SetMin( const Vector3& min );
+    __host__ void SetMin( const Vector3& min );
 
     /// <summary>
     /// Sets this bounding box's "maximum" corner.
     /// </summary>
     /// <param name="max">The new "maximum" corner.</param>
-    __both__ void SetMax( const Vector3& max );
+    __host__ void SetMax( const Vector3& max );
 };
 
 REX_NS_END

@@ -25,15 +25,6 @@
 #define REX_XSTRINGIFY(x) REX_STRINGIFY(x)
 
 /// <summary>
-/// A macro for easily implementing a non-movable class.
-/// </summary>
-/// <param name="cname">The class name.</param>
-#define REX_NONMOVABLE_CLASS(cname) \
-    private: \
-        cname( cname&& ) = delete; \
-        cname& operator=( cname&& ) = delete  /* no semicolon here to make the macro look like a function */
-
-/// <summary>
 /// A macro for easily implementing a non-copyable class.
 /// </summary>
 /// <param name="cname">The class name.</param>

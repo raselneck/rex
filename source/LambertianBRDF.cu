@@ -22,13 +22,13 @@ LambertianBRDF::~LambertianBRDF()
 }
 
 // get bi-hemispherical reflectance
-Color LambertianBRDF::GetBHR( const ShadePoint& sp, const Vector3& wo ) const
+__device__ Color LambertianBRDF::GetBHR( const ShadePoint& sp, const Vector3& wo ) const
 {
     return _kd * _dc;
 }
 
 // get BRDF
-Color LambertianBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const
+__device__ Color LambertianBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const
 {
     return _kd * _dc * static_cast<real32>( Math::InvPi() );
 }

@@ -15,9 +15,10 @@ class LightCollection
 {
     REX_NONCOPYABLE_CLASS( LightCollection );
 
-    std::vector<Light*> _hLights;
-    AmbientLight*       _hAmbientLight;
-    Light**             _dLights;
+    std::vector<Light*>         _hLights;
+    std::vector<const Light*>   _dLights;
+    AmbientLight*               _hAmbientLight;
+    Light**                     _dLightArray;
 
     /// <summary>
     /// Updates the device array.

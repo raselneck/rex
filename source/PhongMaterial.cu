@@ -103,16 +103,15 @@ void PhongMaterial::SetSpecularPower( real32 pow )
 }
 
 // get shaded color
-Color PhongMaterial::Shade( ShadePoint& sp )
+__device__ Color PhongMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount )
 {
     // from Suffern, 285
-
     Vector3 wo      = -sp.Ray.Direction;
     Color   color   = _ambient.GetBHR( sp, wo );
-    auto&   lights  = sp.Scene->GetLights();
 
-    for ( auto& light : lights )
+    for ( uint32 i = 0; i < lightCount; ++i )
     {
+        Light* light = const_cast<Light*>( lights[ i ] );
         Vector3 wi = light->GetLightDirection( sp );
         real32  angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
 

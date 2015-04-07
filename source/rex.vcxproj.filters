@@ -36,9 +36,6 @@
     <Filter Include="Header Files\Graphics\BRDFs">
       <UniqueIdentifier>{baed13ac-1b20-4516-a204-27f26f151e00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\Geometry">
-      <UniqueIdentifier>{5b0d056d-b817-44d5-b10c-aee1bdad5646}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Graphics\Materials">
       <UniqueIdentifier>{cb6f6759-b707-4d1b-b92c-07bb5c2be03f}</UniqueIdentifier>
     </Filter>
@@ -56,6 +53,9 @@
     </Filter>
     <Filter Include="Source Files\Graphics\Lights">
       <UniqueIdentifier>{625c231d-1537-4b6c-8a7e-94d615d58c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Geometry">
+      <UniqueIdentifier>{5b0d056d-b817-44d5-b10c-aee1bdad5646}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +136,24 @@
     </CudaCompile>
     <CudaCompile Include="LightCollection.cu">
       <Filter>Source Files\Graphics\Lights</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Scene.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Scene.Render.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Octree.cu">
+      <Filter>Source Files\Graphics\Geometry</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Geometry.cu">
+      <Filter>Source Files\Graphics\Geometry</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Sphere.cu">
+      <Filter>Source Files\Graphics\Geometry</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GeometryCollection.cu">
+      <Filter>Source Files\Graphics\Geometry</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +259,18 @@
     <ClInclude Include="..\include\rex\Graphics\Lights\LightCollection.hxx">
       <Filter>Header Files\Graphics\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Geometry\Octree.hxx">
+      <Filter>Header Files\Graphics\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Geometry\Geometry.hxx">
+      <Filter>Header Files\Graphics\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Geometry\Sphere.hxx">
+      <Filter>Header Files\Graphics\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Geometry\GeometryCollection.hxx">
+      <Filter>Header Files\Graphics\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Math\Math.inl">
@@ -251,6 +281,12 @@
     </None>
     <None Include="..\include\rex\Utility\GC.inl">
       <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\include\rex\Graphics\Geometry\Geometry.inl">
+      <Filter>Header Files\Graphics\Geometry</Filter>
+    </None>
+    <None Include="..\include\rex\Graphics\Geometry\Sphere.inl">
+      <Filter>Header Files\Graphics\Geometry</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

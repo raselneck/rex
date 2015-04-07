@@ -85,6 +85,10 @@ LightType PointLight::GetType() const
 // check if in shadow
 __device__ bool PointLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 {
+#if __DEBUG__
+    // TODO : DirectionalLight::IsInShadow
+    return false;
+#else
     // from Suffern, 300
 
     real64 t = 0.0;
@@ -99,6 +103,7 @@ __device__ bool PointLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) c
     }
 
     return false;
+#endif
 }
 
 // set color

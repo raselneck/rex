@@ -2,6 +2,7 @@
 
 #include "../Config.hxx"
 #include "../Graphics/Color.hxx"
+#include <vector>
 
 REX_NS_BEGIN
 
@@ -12,7 +13,7 @@ class Image
 {
     REX_NONCOPYABLE_CLASS( Image );
 
-    Color* _hPixels;
+    std::vector<Color> _hPixels;
     Color* _dPixels;
     const uint16 _width;
     const uint16 _height;

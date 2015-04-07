@@ -112,17 +112,17 @@ void MatteMaterial::SetDiffuseCoefficient( real32 kd )
 }
 
 // get shaded color
-Color MatteMaterial::Shade( ShadePoint& sp )
+__device__ Color MatteMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount )
 {
     // from Suffern, 271
+    Vector3 wo    = -sp.Ray.Direction;
+    Color   color = _ambient.GetBHR( sp, wo );
 
-    Vector3 wo      = -sp.Ray.Direction;
-    Color   color   = _ambient.GetBHR( sp, wo );
-    auto&   lights  = sp.Scene->GetLights();
-
-    for ( auto& light : lights )
+    // go through all of the lights in the scene
+    for ( uint32 i = 0; i < lightCount; ++i )
     {
-        Vector3 wi = light->GetLightDirection( sp );
+        Light*  light = const_cast<Light*>( lights[ i ] ); // TODO : BAD
+        Vector3 wi    = light->GetLightDirection( sp );
         real32  angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
 
         if ( angle > 0.0 )

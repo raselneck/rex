@@ -1,4 +1,5 @@
 #include <rex/Graphics/Materials/Material.hxx>
+#include <rex/Graphics/ShadePoint.hxx>
 
 REX_NS_BEGIN
 
@@ -13,7 +14,7 @@ Material::~Material()
 }
 
 // (ray cast) shade
-Color Material::Shade( ShadePoint& sp )
+__device__ Color Material::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount )
 {
     return Color::Magenta();
 }

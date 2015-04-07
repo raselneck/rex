@@ -6,7 +6,7 @@ REX_NS_BEGIN
 
 // create new light collection
 LightCollection::LightCollection()
-    : _dLights( nullptr )
+    : _dLightArray( nullptr )
 {
     // create our ambient light
     _hAmbientLight = GC::HostAlloc<AmbientLight>();
@@ -18,10 +18,10 @@ LightCollection::LightCollection()
 // destroy this light collection
 LightCollection::~LightCollection()
 {
-    if ( _dLights )
+    if ( _dLightArray )
     {
-        cudaFree( _dLights );
-        _dLights = nullptr;
+        cudaFree( _dLightArray );
+        _dLightArray = nullptr;
     }
 
     _hAmbientLight = nullptr;
@@ -49,7 +49,7 @@ const std::vector<Light*>& LightCollection::GetLights() const
 const Light** LightCollection::GetDeviceLights() const
 {
     // the CUDA compiler makes me do the cast :(
-    return (const Light**)( _dLights );
+    return (const Light**)( _dLightArray );
 }
 
 // add directional light
@@ -59,6 +59,7 @@ DirectionalLight* LightCollection::AddDirectionalLight()
     if ( light )
     {
         _hLights.push_back( light );
+        _dLights.push_back( light->GetOnDevice() );
         UpdateDeviceArray();
     }
     return light;
@@ -71,6 +72,7 @@ DirectionalLight* LightCollection::AddDirectionalLight( const Vector3& direction
     if ( light )
     {
         _hLights.push_back( light );
+        _dLights.push_back( light->GetOnDevice() );
         UpdateDeviceArray();
     }
     return light;
@@ -83,6 +85,7 @@ DirectionalLight* LightCollection::AddDirectionalLight( real64 x, real64 y, real
     if ( light )
     {
         _hLights.push_back( light );
+        _dLights.push_back( light->GetOnDevice() );
         UpdateDeviceArray();
     }
     return light;
@@ -95,6 +98,7 @@ PointLight* LightCollection::AddPointLight()
     if ( light )
     {
         _hLights.push_back( light );
+        _dLights.push_back( light->GetOnDevice() );
         UpdateDeviceArray();
     }
     return light;
@@ -107,6 +111,7 @@ PointLight* LightCollection::AddPointLight( const Vector3& position )
     if ( light )
     {
         _hLights.push_back( light );
+        _dLights.push_back( light->GetOnDevice() );
         UpdateDeviceArray();
     }
     return light;
@@ -119,6 +124,7 @@ PointLight* LightCollection::AddPointLight( real64 x, real64 y, real64 z )
     if ( light )
     {
         _hLights.push_back( light );
+        _dLights.push_back( light->GetOnDevice() );
         UpdateDeviceArray();
     }
     return light;
@@ -140,15 +146,16 @@ void LightCollection::SetAmbientColor( real32 r, real32 g, real32 b )
 void LightCollection::UpdateDeviceArray()
 {
     // cleanup the old array
-    if ( _dLights )
+    if ( _dLightArray )
     {
-        cudaFree( _dLights );
+        cudaFree( _dLightArray );
+        _dLightArray = nullptr;
     }
 
 
     // create the array
-    cudaError_t err = cudaMalloc( reinterpret_cast<void**>( &_dLights ),
-                                  _hLights.size() * sizeof( Light* ) );
+    const uint32 byteCount = _hLights.size() * sizeof( Light* );
+    cudaError_t  err       = cudaMalloc( reinterpret_cast<void**>( &_dLightArray ), byteCount );
     if ( err != cudaSuccess )
     {
         Logger::Log( "Failed to allocate space for light collection on device." );
@@ -156,18 +163,15 @@ void LightCollection::UpdateDeviceArray()
     }
 
 
-    // now we need to go through all of our lights and copy over their device pointers
-    for ( uint32 i = 0; i < _hLights.size(); ++i )
+    // copy over the device pointers
+    if ( _dLights.size() > 0 )
     {
-        const Light* dLight = _hLights[ i ]->GetOnDevice();
-        const void*  src    = static_cast<const void*>( &dLight );
-        void*        dst    = REX_OFFSET( _dLights, i * sizeof( Light* ) );
-
-        // TODO : Make sure this memcpy is doing what I think it's doing
-        err = cudaMemcpy( dst, src, sizeof( Light* ), cudaMemcpyHostToDevice );
+        err = cudaMemcpy( _dLightArray, &( _dLights[ 0 ] ), byteCount, cudaMemcpyHostToDevice );
         if ( err != cudaSuccess )
         {
-            Logger::Log( "Failed to add light at index ", i, " to device array." );
+            Logger::Log( "Allocated light collection on device, but failed to copy data." );
+            cudaFree( _dLightArray );
+            _dLightArray = nullptr;
         }
     }
 }

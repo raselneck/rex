@@ -1,4 +1,5 @@
 #include <rex/Utility/Image.hxx>
+#include <rex/Utility/GC.hxx>
 #include <rex/Utility/Logger.hxx>
 #include <rex/Math/Math.hxx>
 #include <vector>
@@ -16,11 +17,10 @@ REX_NS_BEGIN
 Image::Image( uint16 width, uint16 height )
     : _width( width ),
       _height( height ),
-      _hPixels( nullptr ),
       _dPixels( nullptr )
 {
     // ensure the given sizes are okay
-    if ( width > 2048 || height > 2048 )
+    if ( width > 1024 || height > 1024 )
     {
         Logger::Log( "Cannot create an image of size ", _width, "x", _height, " (max size is 2048x2048)." );
         return;
@@ -29,46 +29,16 @@ Image::Image( uint16 width, uint16 height )
 
     // create host pixels
     const uint32 arraySize = _width * _height;
-    _hPixels = new Color[ arraySize ];
-
-    // fill host pixels with black
-    for ( uint32 i = 0; i < arraySize; ++i )
-    {
-        _hPixels[ i ] = Color::Black();
-    }
+    _hPixels.resize( arraySize );
 
 
     // create device pixels
-    cudaError_t err = cudaMalloc( reinterpret_cast<void**>( &_dPixels ), arraySize * sizeof( Color ) );
-    if ( err == cudaSuccess )
-    {
-        // try to copy over the color data
-        err = cudaMemcpy( _dPixels, _hPixels, arraySize * sizeof( Color ), cudaMemcpyHostToDevice );
-        if ( err != cudaSuccess )
-        {
-            // erase the memory
-            cudaFree( _dPixels );
-            _dPixels = nullptr;
-
-            // print out an error
-            Logger::Log( "Failed to copy host image data to device." );
-        }
-    }
-    else
-    {
-        _dPixels = nullptr;
-        Logger::Log( "Failed to allocate space for device image." );
-    }
+    _dPixels = GC::DeviceAllocArray( arraySize, &_hPixels[ 0 ] );
 }
 
 // destroy image
 Image::~Image()
 {
-    uint16* p = const_cast<uint16*>( &_width );
-    *p = 0;
-
-    p = const_cast<uint16*>( &_height );
-    *p = 0;
 }
 
 // get image width
@@ -94,7 +64,7 @@ bool Image::Save( const char* fname ) const
     const uint32 count = _width * _height;
     for ( uint32 i = 0; i < count; ++i )
     {
-        Color& c = _hPixels[ i ];
+        const Color& c = _hPixels[ i ];
         converted[ i * 3 + 0 ] = static_cast<uint8>( Math::Clamp( c.R, 0.0f, 1.0f ) * 255 );
         converted[ i * 3 + 1 ] = static_cast<uint8>( Math::Clamp( c.G, 0.0f, 1.0f ) * 255 );
         converted[ i * 3 + 2 ] = static_cast<uint8>( Math::Clamp( c.B, 0.0f, 1.0f ) * 255 );
@@ -107,15 +77,15 @@ bool Image::Save( const char* fname ) const
 // copy host pixels to device
 void Image::CopyHostToDevice()
 {
-    uint32 size = _width * _height * sizeof( Color );
-    cudaMemcpy( _dPixels, _hPixels, size, cudaMemcpyHostToDevice );
+    uint32 size = _hPixels.size() * sizeof( Color );
+    cudaMemcpy( _dPixels, &_hPixels[ 0 ], size, cudaMemcpyHostToDevice );
 }
 
 // copy device pixels to host
 void Image::CopyDeviceToHost()
 {
-    uint32 size = _width * _height * sizeof( Color );
-    cudaMemcpy( _hPixels, _dPixels, size, cudaMemcpyDeviceToHost );
+    uint32 size = _hPixels.size() * sizeof( Color );
+    cudaMemcpy( &_hPixels[ 0 ], _dPixels, size, cudaMemcpyDeviceToHost );
 }
 
 // set host pixel w/ bounds checking

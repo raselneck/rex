@@ -1,3 +1,5 @@
+#pragma once
+
 REX_NS_BEGIN
 
 // get minimum

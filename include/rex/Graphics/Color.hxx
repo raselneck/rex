@@ -142,6 +142,7 @@ struct Color
 
 };
 
+__both__ Color operator*( const Color& c1, const Color& c2 );
 __both__ Color operator*( const Color& c, real32 s );
 __both__ Color operator*( real32 s, const Color& c );
 

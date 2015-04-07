@@ -22,13 +22,13 @@ GlossySpecularBRDF::~GlossySpecularBRDF()
 }
 
 // get bi-hemispherical reflectance (rho)
-Color GlossySpecularBRDF::GetBHR( const ShadePoint& sp, const Vector3& wo ) const
+__device__ Color GlossySpecularBRDF::GetBHR( const ShadePoint& sp, const Vector3& wo ) const
 {
     return Color::Magenta();
 }
 
 // get BRDF (f)
-Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const
+__device__ Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const
 {
     // from Suffern, 284
 

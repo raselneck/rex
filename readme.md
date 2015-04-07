@@ -11,10 +11,10 @@ To build and run the current version of Rex, you will need to check the
 following:
 
 1.   Make sure you have an NVIDIA GPU.
-2.   Make sure your GPU supports CUDA 6.5+.
-3.   Make sure your GPU supports OpenGL 4.0+.
-4.   Have the CUDA SDK v6.5 installed.
-     * A newer version of CUDA may work, but I use 6.5.
+2.   Make sure your GPU supports CUDA 7.0.
+3.   Make sure your GPU supports OpenGL 4.0.
+4.   Have the CUDA SDK v7.0 installed.
+     * Later or earlier versions of CUDA may work, but I use 7.0.
 5.   Have Visual Studio 2013 installed.
      * This may work with an earlier version of VS, but I use 2013.
      * This may work on Linux and/or Mac, but I use Windows.
@@ -25,7 +25,7 @@ to open up the solution file in Visual Studio and compile/run Rex.
 If you don't have one or more of the above steps complete, then you're on
 your own. Sorry. I don't have enough time to test this everywhere I can.
 
-### What happened to the CPU version??
+## What happened to the CPU version??
 
 Not to fear! If you don't want to play around with CUDA, you can still
 access the CPU-based version of Rex [here](https://github.com/fastinvsqrt/rex/tree/CPU)!

@@ -83,12 +83,18 @@ LightType DirectionalLight::GetType() const
 // check if in shadow
 __device__ bool DirectionalLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 {
+#if __DEBUG__
+    // TODO : DirectionalLight::IsInShadow
+    return false;
+#else
+
     // I'm guessing at this implementation, as Suffern does not provide one.
     // it seems to work, so if the glove fits...
 
     Ray ray2( ray.Origin, _direction );
     bool inShadow = sp.Scene->ShadowHitObjects( ray2 );
     return inShadow;
+#endif
 }
 
 // set color

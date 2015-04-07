@@ -179,6 +179,13 @@ Color& Color::operator/=( real32 s )
     return *this;
 }
 
+Color operator*( const Color& c1, const Color& c2 )
+{
+    return Color( c1.R * c2.R,
+                  c1.G * c2.G,
+                  c1.B * c2.B );
+}
+
 Color operator*( const Color& c, real32 s )
 {
     return Color( c.R * s,

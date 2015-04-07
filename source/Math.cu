@@ -11,7 +11,6 @@ REX_NS_BEGIN
 #define MATH_HUGE_VALUE  ( 1.0E10 )
 
 
-
 // get pi
 real64 Math::Pi()
 {
@@ -54,32 +53,34 @@ real64 Math::HugeValue()
     return MATH_HUGE_VALUE;
 }
 
-
-
 // take 32-bit floor
 int32 Math::Floor( real32 value )
 {
     // derived from http://www.codeproject.com/Tips/700780/Fast-floor-ceiling-functions
-    return static_cast<int32>( value + 1.0f ) - 1;
+    int32  floor = static_cast<int32>( value + 64.0f ) - 64;
+    return floor;
 }
 
 // take 32-bit ceiling
 int32 Math::Ceiling( real32 value )
 {
     // derived from http://www.codeproject.com/Tips/700780/Fast-floor-ceiling-functions
-    return 1 - static_cast<int32>( 1.0f - value );
+    int32  ceiling = 64 - static_cast<int32>( 64.0f - value );
+    return ceiling;
 }
 
 // take 64-bit floor
 int64 Math::Floor( real64 value )
 {
-    return static_cast<int64>( value + 1.0 ) - 1;
+    int64  floor = static_cast<int64>( value + 64.0 ) - 64;
+    return floor;
 }
 
 // take 64-bit ceiling
 int64 Math::Ceiling( real64 value )
 {
-    return 1 - static_cast<int64>( 1.0 - value );
+    int64  ceiling = 64 - static_cast<int64>( 64.0 - value );
+    return ceiling;
 }
 
 // round real32

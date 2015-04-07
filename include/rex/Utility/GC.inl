@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Logger.hxx"
 
 REX_NS_BEGIN
@@ -65,7 +67,7 @@ template<typename T> T* GC::DeviceAllocArray( uint32 count )
 {
     // attempt to allocate the memory
     T*          memory  = nullptr;
-    cudaError_t err     = cudaMalloc( static_cast<void**>( &memory ), sizeof( T ) * count );
+    cudaError_t err     = cudaMalloc( reinterpret_cast<void**>( &memory ), sizeof( T ) * count );
 
     // if the memory was allocated, register it
     if ( err == cudaSuccess )
@@ -76,6 +78,26 @@ template<typename T> T* GC::DeviceAllocArray( uint32 count )
     else
     {
         Logger::Log( "Failed to allocate device memory for ", REX_XSTRINGIFY( T ), " array." );
+    }
+
+    // return the memory
+    return memory;
+}
+
+// allocate space for an array and copy data from a source
+template<typename T> T* GC::DeviceAllocArray( uint32 count, const T* source )
+{
+    // allocate the memory
+    T* memory = DeviceAllocArray<T>( count );
+
+    // if the memory was allocated, copy over the data
+    if ( memory )
+    {
+        cudaError_t err = cudaMemcpy( memory, source, count * sizeof( T ), cudaMemcpyHostToDevice );
+        if ( err != cudaSuccess )
+        {
+            Logger::Log( "Allocated array of ", REX_XSTRINGIFY( T ), ", but failed to copy from source." );
+        }
     }
 
     // return the memory

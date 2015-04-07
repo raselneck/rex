@@ -35,10 +35,10 @@ class GC
     // ------------------------------
     GC();
     ~GC();
-    GC( const GC& ) = delete;
-    GC( GC&& ) = delete;
-    GC& operator=( GC&& ) = delete;
-    GC& operator=( const GC& ) = delete;
+    GC( const GC& )             = delete;
+    GC( GC&& )                  = delete;
+    GC& operator=( GC&& )       = delete;
+    GC& operator=( const GC& )  = delete;
 
 public:
     /// <summary>
@@ -58,6 +58,13 @@ public:
     /// </summary>
     /// <param name="count">The number of items to allocate for.</param>
     template<typename T> __host__ static T* DeviceAllocArray( uint32 count );
+
+    /// <summary>
+    /// Allocates memory for an array of the given type on the device and copies data from an initial source.
+    /// </summary>
+    /// <param name="count">The number of items to allocate for.</param>
+    /// <param name="source">The source to copy from.</param>
+    template<typename T> __host__ static T* DeviceAllocArray( uint32 count, const T* source );
 };
 
 REX_NS_END

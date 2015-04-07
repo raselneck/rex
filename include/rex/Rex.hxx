@@ -5,6 +5,8 @@
 #include "GL/Shader.hxx"
 #include "Graphics/BRDFs/GlossySpecularBRDF.hxx"
 #include "Graphics/BRDFs/LambertianBRDF.hxx"
+#include "Graphics/Geometry/Geometry.hxx"
+#include "Graphics/Geometry/Octree.hxx"
 #include "Graphics/Lights/AmbientLight.hxx"
 #include "Graphics/Lights/DirectionalLight.hxx"
 #include "Graphics/Lights/LightCollection.hxx"

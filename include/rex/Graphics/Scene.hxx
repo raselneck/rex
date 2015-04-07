@@ -2,6 +2,8 @@
 
 #include "../Config.hxx"
 #include "../Utility/Image.hxx"
+#include "Geometry/Octree.hxx"
+#include "Geometry/GeometryCollection.hxx"
 #include "Lights/LightCollection.hxx"
 #include "Camera.hxx"
 #include "ShadePoint.hxx"
@@ -16,32 +18,13 @@ class Scene
 {
     REX_NONCOPYABLE_CLASS( Scene );
 
-    ViewPlane*      _viewPlane;
-    Color*          _backgroundColor;
-    Camera*         _camera;
-    Image*          _image;
-    LightCollection _lights;
-    
-    /// <summary>
-    /// This scene's render kernel.
-    /// </summary>
-    /// <param name="lights">The lights on the device.</param>
-    /// <param name="lightCount">The number of lights.</param>
-    /// <param name=""></param>
-    __global__ void RenderKernel( const Light** lights, uint32 lightCount );
-
-    /// <summary>
-    /// Hits all of the objects in this scene with the given ray.
-    /// </summary>
-    /// <param name="ray">The ray to hit with.</param>
-    /// <param name="sp">The shade point object to fill data with.</param>
-    __device__ void HitObjects( const Ray& ray, ShadePoint& sp ) const;
-
-    /// <summary>
-    /// Shadow-hits all of the objects in this scene with the given ray.
-    /// </summary>
-    /// <param name="ray">The ray to hit with.</param>
-    __device__ bool ShadowHitObjects( const Ray& ray ) const;
+    ViewPlane           _viewPlane;
+    Color               _backgroundColor;
+    Camera              _camera;
+    Handle<Image>       _image;
+    LightCollection     _lights;
+    GeometryCollection  _geometry;
+    Handle<Octree>      _octree;
 
 public:
     /// <summary>
@@ -59,7 +42,7 @@ public:
     /// </summary>
     /// <param name="width">The width of the rendered scene. The maximum width is 2048.</param>
     /// <param name="height">The height of the rendered scene. The maximum height is 2048.</param>
-    __host__ void Build( uint16 width, uint16 height );
+    __host__ bool Build( uint16 width, uint16 height );
 
     /// <summary>
     /// Renders this scene.

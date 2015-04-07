@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <sstream>
 
@@ -9,15 +11,16 @@ REX_NS_BEGIN
 #pragma warning( disable : 4789 )
 
 // convert item to string
-template<typename T> String Logger::ToString( const T& value )
+template<typename T> inline String Logger::ToString( const T& value )
 {
     std::ostringstream stream;
+    stream.precision( 16 );
     stream << value;
     return stream.str();
 }
 
 // merge list of strings
-String Logger::Merge( std::initializer_list<String> list )
+inline String Logger::Merge( std::initializer_list<String> list )
 {
     std::ostringstream stream;
     for ( const String& s : list )
@@ -28,7 +31,7 @@ String Logger::Merge( std::initializer_list<String> list )
 }
 
 // log arguments to the console
-template<typename ... Args> void Logger::Log( const Args& ... args )
+template<typename ... Args> inline void Logger::Log( const Args& ... args )
 {
     std::lock_guard<std::mutex> lock( _mutex );
 

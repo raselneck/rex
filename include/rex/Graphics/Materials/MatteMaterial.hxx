@@ -104,7 +104,9 @@ public:
     /// Gets a shaded color given hit point data.
     /// </summary>
     /// <param name="sp">The hit point data.</param>
-    __device__ virtual Color Shade( ShadePoint& sp );
+    /// <param name="lights">All of the lights in the scene.</param>
+    /// <param name="lightCount">The number of lights in the scene</param>
+    __device__ virtual Color Shade( ShadePoint& sp, const Light** lights, uint32 lightCount );
 };
 
 REX_NS_END

@@ -13,7 +13,6 @@ class AmbientLight : public Light
 
     Color  _color;
     real32 _radianceScale;
-    void*  _dThis;
 
 public:
     /// <summary>
@@ -42,6 +41,18 @@ public:
     __both__ real32 GetRadianceScale() const;
 
     /// <summary>
+    /// Gets the direction of the incoming light at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) const;
+
+    /// <summary>
+    /// Gets the incident radiance at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Color GetRadiance( ShadePoint& sp ) const;
+
+    /// <summary>
     /// Gets this light's type.
     /// </summary>
     __both__ virtual LightType GetType() const;
@@ -52,18 +63,6 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="sp">Current hit point information.</param>
     __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const;
-
-    /// <summary>
-    /// Gets the direction of the incoming light at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp );
-
-    /// <summary>
-    /// Gets the incident radiance at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Color GetRadiance( ShadePoint& sp );
 
     /// <summary>
     /// Sets whether or not this light should cast shadows.

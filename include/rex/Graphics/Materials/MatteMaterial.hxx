@@ -11,9 +11,10 @@ REX_NS_BEGIN
 class MatteMaterial : public Material
 {
 protected:
+    friend class Geometry;
+
     LambertianBRDF _ambient;
     LambertianBRDF _diffuse;
-    void*          _dThis;
 
     /// <summary>
     /// Creates a new matte material.
@@ -23,6 +24,11 @@ protected:
     /// <param name="kd">The initial diffuse coefficient.</param>
     /// <param name="allocOnDevice">True to allocate this on the device, false to not.</param>
     __host__ MatteMaterial( const Color& color, real32 ka, real32 kd, bool allocOnDevice );
+
+    /// <summary>
+    /// Copies this material for geometry.
+    /// </summary>
+    __host__ virtual Material* Copy() const;
 
 public:
     /// <summary>
@@ -106,7 +112,7 @@ public:
     /// <param name="sp">The hit point data.</param>
     /// <param name="lights">All of the lights in the scene.</param>
     /// <param name="lightCount">The number of lights in the scene</param>
-    __device__ virtual Color Shade( ShadePoint& sp, const Light** lights, uint32 lightCount );
+    __device__ virtual Color Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const;
 };
 
 REX_NS_END

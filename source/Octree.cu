@@ -6,9 +6,142 @@
 
 
 #define DEFAULT_MAX_ITEM_COUNT 12
+#include <stdio.h>
 
 
 REX_NS_BEGIN
+
+
+/// <summary>
+/// Creates a new bounding box / geometry pair.
+/// </summary>
+/// <param name="bounds">The bounding box to use.</param>
+/// <param name="geom">The geometry to use.</param>
+__host__ static BoundsGeometryPair MakePair( const BoundingBox& bounds, const Geometry* geom )
+{
+    BoundsGeometryPair pair;
+    pair.Bounds = bounds;
+    pair.Geometry = geom;
+    return pair;
+}
+
+
+// create a new bounding box / geometry pair
+BoundsGeometryPair::BoundsGeometryPair()
+    : Bounds( Vector3(), Vector3() )
+{
+}
+
+
+
+// create a new device octree
+DeviceOctree::DeviceOctree()
+    : Bounds( Vector3(), Vector3() )
+{
+    // set the children to null
+    for ( uint32 i = 0; i < 8; ++i )
+    {
+        Children[ i ] = nullptr;
+    }
+
+    // register that we have no objects
+    Objects     = nullptr;
+    ObjectCount = 0;
+}
+
+// query the intersections of the given ray and return the closest hit object
+__device__ const Geometry* DeviceOctree::QueryIntersections( const Ray& ray, real64& dist ) const
+{
+    // reset the distance
+    dist = Math::HugeValue();
+
+
+    // make sure the ray even intersects us
+    real64 tempDist = 0.0;
+    if ( Bounds.Intersects( ray, tempDist ) )
+    {
+        return QueryIntersectionsForReal( ray, dist );
+    }
+
+
+    // if we don't, then return nothing
+    return nullptr;
+}
+
+// queries the intersections for real this time
+__device__ const Geometry* DeviceOctree::QueryIntersectionsForReal( const Ray& ray, real64& dist ) const
+{
+    const Geometry* closest = nullptr;
+    real64          tempDist = 0.0;
+
+    // check our children first
+    if ( Children[ 0 ] != nullptr )
+    {
+        for ( uint32 i = 0; i < 8; ++i )
+        {
+            // have the child query for ray intersections
+            const DeviceOctree* child = Children[ i ];
+            const Geometry*     geom = child->QueryIntersections( ray, tempDist );
+
+            // check to see if the child intersected the ray
+            if ( ( geom != nullptr ) && ( tempDist < dist ) )
+            {
+                closest = geom;
+                dist = tempDist;
+            }
+        }
+    }
+
+    // now check our objects
+    for ( uint32 i = 0; i < ObjectCount; ++i )
+    {
+        BoundsGeometryPair& pair = Objects[ i ];
+        if ( pair.Bounds.Intersects( ray, tempDist ) && ( tempDist < dist ) )
+        {
+            closest = pair.Geometry;
+            dist    = tempDist;
+        }
+    }
+
+    return closest;
+}
+
+// queries the intersections of the given ray for shadows
+__device__ bool DeviceOctree::QueryShadowRay( const Ray& ray ) const
+{
+    // ensure the ray even intersects our bounds
+    real64 dist = 0.0;
+    if ( !Bounds.Intersects( ray, dist ) )
+    {
+        return false;
+    }
+
+    // check the children first if we have subdivided
+    if ( Children[ 0 ] != nullptr )
+    {
+        for ( uint32 i = 0; i < 8; ++i )
+        {
+            if ( Children[ i ]->QueryShadowRay( ray ) )
+            {
+                return true;
+            }
+        }
+    }
+
+    // now check all of our objects
+    for ( uint32 i = 0; i < 8; ++i )
+    {
+        if ( Objects[ i ].Geometry->ShadowHit( ray, dist ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
 
 // create an octree w/ bounds
 Octree::Octree( const BoundingBox& bounds )
@@ -27,20 +160,19 @@ Octree::Octree( const Vector3& min, const Vector3& max, uint32 maxItemCount )
     : _bounds( min, max ),
       _countBeforeSubivide( maxItemCount ),
       _isDevicePointerStale( true ),
-      _dObjectArray( nullptr ),
-      _dObjectCount( 0 ),
-      _dThis( nullptr )
+      _dThis( nullptr ),
+      _dThisObjects( nullptr )
 {
     // clear out the children
     for ( uint32 i = 0; i < 8; ++i )
     {
         _hChildren[ i ] = nullptr;
-        _dChildren[ i ] = nullptr;
     }
 
 
     // allocate our "this" pointer
-    _dThis = GC::DeviceAlloc<Octree>( *this );
+    DeviceOctree dThis;
+    _dThis = GC::DeviceAlloc<DeviceOctree>( dThis );
 
 
     // create the initial device array
@@ -50,7 +182,12 @@ Octree::Octree( const Vector3& min, const Vector3& max, uint32 maxItemCount )
 // destroy this octree
 Octree::~Octree()
 {
-    // TODO : Do we need anything here?
+    // we need to free the object list before the device pointer itself (handled by GC)
+    if ( _dThisObjects )
+    {
+        cudaFree( _dThisObjects );
+        _dThisObjects = nullptr;
+    }
 }
 
 // get the octree's bounds
@@ -66,14 +203,14 @@ bool Octree::HasSubdivided() const
 }
 
 // get this octree on the device
-const Octree* Octree::GetOnDevice()
+const DeviceOctree* Octree::GetOnDevice()
 {
     if ( _isDevicePointerStale )
     {
         UpdateDeviceArray();
     }
 
-    return (const Octree*)( _dThis );
+    return (const DeviceOctree*)( _dThis );
 }
 
 // add the given piece of geometry to this octree
@@ -94,8 +231,8 @@ bool Octree::Add( const Geometry* geometry )
     bool added = false;
     if ( ( _hObjects.size() < _countBeforeSubivide ) && ( !HasSubdivided() ) )
     {
-        _hObjects.push_back( std::make_pair( bounds, geometry ) );
-        _dObjects.push_back( std::make_pair( bounds, geometry->GetOnDevice() ) );
+        _hObjects.push_back( MakePair( bounds, geometry ) );
+        _dObjects.push_back( MakePair( bounds, geometry->GetOnDevice() ) );
 
         added = true;
     }
@@ -120,8 +257,8 @@ bool Octree::Add( const Geometry* geometry )
         // now we just add the object to us if no child took it
         if ( !added )
         {
-            _hObjects.push_back( std::make_pair( bounds, geometry ) );
-            _dObjects.push_back( std::make_pair( bounds, geometry->GetOnDevice() ) );
+            _hObjects.push_back( MakePair( bounds, geometry ) );
+            _dObjects.push_back( MakePair( bounds, geometry->GetOnDevice() ) );
 
             added = true;
         }
@@ -131,95 +268,6 @@ bool Octree::Add( const Geometry* geometry )
     // update our cache flag and return whether or not the piece of geometry was added
     _isDevicePointerStale = true;
     return added;
-}
-
-// query the intersections of the given ray and return the closest hit object
-__device__ const Geometry* Octree::QueryIntersections( const Ray& ray, real64& dist ) const
-{
-    // reset the distance
-    dist = Math::HugeValue();
-
-    // make sure the ray even intersects us
-    real64 tempDist = 0.0;
-    if ( _bounds.Intersects( ray, tempDist ) )
-    {
-        return QueryIntersectionsForReal( ray, dist );
-    }
-
-    // if we don't, then return nothing
-    return nullptr;
-}
-
-// queries the intersections for real this time
-__device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, real64& dist ) const
-{
-    const Geometry* closest  = nullptr;
-    real64          tempDist = 0.0;
-
-    // check our children first
-    if ( _dChildren[ 0 ] != nullptr )
-    {
-        for ( uint32 i = 0; i < 8; ++i )
-        {
-            // have the child query for ray intersections
-            Octree* child = _dChildren[ i ];
-            const Geometry* geom = child->QueryIntersections( ray, tempDist );
-
-            // check to see if the child intersected the ray
-            if ( ( geom != nullptr ) && ( tempDist < dist ) )
-            {
-                closest = geom;
-                dist    = tempDist;
-            }
-        }
-    }
-
-    // now check our objects
-    for ( uint32 i = 0; i < _dObjectCount; ++i )
-    {
-        BoundsGeometryPair* pair = _dObjectArray[ i ];
-        if ( pair->first.Intersects( ray, tempDist ) && ( tempDist < dist ) )
-        {
-            closest = pair->second;
-            dist    = tempDist;
-        }
-    }
-
-    return closest;
-}
-
-// queries the intersections of the given ray for shadows
-__device__ bool Octree::QueryShadowRay( const Ray& ray ) const
-{
-    // ensure the ray even intersects our bounds
-    real64 dist = 0.0;
-    if ( !_bounds.Intersects( ray, dist ) )
-    {
-        return false;
-    }
-
-    // check the children first if we have subdivided
-    if ( _dChildren[ 0 ] != nullptr )
-    {
-        for ( uint32 i = 0; i < 8; ++i )
-        {
-            if ( _dChildren[ i ]->QueryShadowRay( ray ) )
-            {
-                return true;
-            }
-        }
-    }
-
-    // now check all of our objects
-    for ( uint32 i = 0; i < 8; ++i )
-    {
-        if ( _dObjectArray[ i ]->second->ShadowHit( ray, dist ) )
-        {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 // subdivides this octree
@@ -257,7 +305,7 @@ void Octree::Subdivide()
         // check each child to see if we can move the object
         for ( uint32 ci = 0; ci < 8; ++ci )
         {
-            if ( _hChildren[ ci ]->Add( obj.second ) )
+            if ( _hChildren[ ci ]->Add( obj.Geometry ) )
             {
                 _hObjects.erase( _hObjects.begin() + oi );
                 _dObjects.erase( _dObjects.begin() + oi );
@@ -265,12 +313,6 @@ void Octree::Subdivide()
                 break;
             }
         }
-    }
-
-    // get our children pointers
-    for ( uint32 i = 0; i < 8; ++i )
-    {
-        _dChildren[ i ] = reinterpret_cast<Octree*>( _hChildren[ i ]->_dThis );
     }
 
     _isDevicePointerStale = true;
@@ -286,44 +328,18 @@ void Octree::UpdateDeviceArray()
     }
 
 
-    // cleanup the old array
-    if ( _dObjectArray )
+
+    // free our old memory if necessary
+    if ( _dThisObjects )
     {
-        cudaFree( _dObjectArray );
-        _dObjectArray = nullptr;
+        GC::UnregisterDeviceMemory( _dThisObjects );
+        cudaFree( _dThisObjects );
+        _dThisObjects = nullptr;
     }
 
 
-    // set the object count for when we copy over
-    _dObjectCount = static_cast<uint32>( _hObjects.size() );
 
-
-
-    // create the array
-    const uint32 byteCount = _hObjects.size() * sizeof( BoundsGeometryPair );
-    cudaError_t err = cudaMalloc( reinterpret_cast<void**>( &_dObjectArray ), byteCount );
-    if ( err != cudaSuccess )
-    {
-        Logger::Log( "Failed to allocate space for the octree's object array on device." );
-        return;
-    }
-
-
-    // now copy over all of the information to the device
-    if ( _dObjects.size() > 0 )
-    {
-        err = cudaMemcpy( _dObjectArray, &( _dObjects[ 0 ] ), byteCount, cudaMemcpyHostToDevice );
-        if ( err != cudaSuccess )
-        {
-            Logger::Log( "Allocated octree object collection on device, but failed to copy data." );
-            cudaFree( _dObjectArray );
-            _dObjectArray = nullptr;
-            return;
-        }
-    }
-
-
-    // now tell all of our children to update their device arrays
+    // first tell our children to update their arrays
     if ( HasSubdivided() )
     {
         for ( uint32 i = 0; i < 8; ++i )
@@ -334,19 +350,37 @@ void Octree::UpdateDeviceArray()
 
 
 
-    // update our "this" pointer
-    err = cudaMemcpy( _dThis, this, sizeof( Octree ), cudaMemcpyHostToDevice );
-    if ( err != cudaSuccess )
+    // setup our device pointer
+    DeviceOctree dThis;
+    dThis.Bounds = _bounds;
+    dThis.ObjectCount = _dObjects.size();
+    if ( HasSubdivided() )
     {
-        Logger::Log( "Failed to update octree self pointer on device." );
-        cudaFree( _dObjectArray );
-        _dObjectArray = nullptr;
-        return;
+        for ( uint32 i = 0; i < 8; ++i )
+        {
+            dThis.Children[ i ] = _hChildren[ i ]->_dThis;
+        }
+    }
+
+    // allocate space for the objects on the device and copy over the data
+    cudaError_t err;
+    if ( _dObjects.size() > 0 )
+    {
+        dThis.Objects = GC::DeviceAllocArray<BoundsGeometryPair>( _dObjects.size(), &( _dObjects[ 0 ] ) );
+        _dThisObjects = dThis.Objects;
     }
 
 
-    // reset our cache flag
+
+    // copy over us to the device
     _isDevicePointerStale = false;
+    err = cudaMemcpy( _dThis, &dThis, sizeof( DeviceOctree ), cudaMemcpyHostToDevice );
+    if ( err != cudaSuccess )
+    {
+        REX_DEBUG_LOG( "Failed to copy device octree's objects." );
+        _isDevicePointerStale = true;
+        return;
+    }
 }
 
 REX_NS_END

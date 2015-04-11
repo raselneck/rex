@@ -14,4 +14,9 @@ Geometry::~Geometry()
     _dMaterial = nullptr;
 }
 
+// default callback for changing the material
+void Geometry::OnChangeMaterial()
+{
+}
+
 REX_NS_END

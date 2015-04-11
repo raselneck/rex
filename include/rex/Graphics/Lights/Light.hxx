@@ -28,7 +28,8 @@ class Light
     friend class Scene;
 
 protected:
-    bool _castShadows;
+    bool  _castShadows;
+    void* _dThis;
 
 public:
     /// <summary>
@@ -52,6 +53,18 @@ public:
     __host__ virtual const Light* GetOnDevice() const = 0;
 
     /// <summary>
+    /// Gets the direction of the incoming light at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) const = 0;
+
+    /// <summary>
+    /// Gets the incident radiance at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Color GetRadiance( ShadePoint& sp ) const = 0;
+
+    /// <summary>
     /// Gets this light's type.
     /// </summary>
     __both__ virtual LightType GetType() const = 0;
@@ -62,18 +75,6 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="sp">Current hit point information.</param>
     __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const = 0;
-
-    /// <summary>
-    /// Gets the direction of the incoming light at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) = 0;
-
-    /// <summary>
-    /// Gets the incident radiance at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Color GetRadiance( ShadePoint& sp ) = 0;
 
     /// <summary>
     /// Sets whether or not this light should cast shadows.

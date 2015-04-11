@@ -65,6 +65,18 @@ public:
     /// <param name="count">The number of items to allocate for.</param>
     /// <param name="source">The source to copy from.</param>
     template<typename T> __host__ static T* DeviceAllocArray( uint32 count, const T* source );
+
+    /// <summary>
+    /// Registers the given device memory pointer to be handled.
+    /// </summary>
+    /// <param name="mem">The device memory pointer.</param>
+    static void RegisterDeviceMemory( void* mem );
+
+    /// <summary>
+    /// Unregisters the given device memory pointer from being handled.
+    /// </summary>
+    /// <param name="mem">The device memory pointer.</param>
+    static void UnregisterDeviceMemory( void* mem );
 };
 
 REX_NS_END

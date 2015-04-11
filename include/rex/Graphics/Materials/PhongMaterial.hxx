@@ -11,7 +11,14 @@ REX_NS_BEGIN
 class PhongMaterial : public MatteMaterial
 {
 protected:
+    friend class Geometry;
+
     GlossySpecularBRDF _specular;
+
+    /// <summary>
+    /// Copies this material for geometry.
+    /// </summary>
+    __host__ virtual Material* Copy() const;
 
 public:
     /// <summary>
@@ -99,7 +106,7 @@ public:
     /// <param name="sp">The hit point data.</param>
     /// <param name="lights">All of the lights in the scene.</param>
     /// <param name="lightCount">The number of lights in the scene</param>
-    __device__ virtual Color Shade( ShadePoint& sp, const Light** lights, uint32 lightCount );
+    __device__ virtual Color Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const;
 };
 
 REX_NS_END

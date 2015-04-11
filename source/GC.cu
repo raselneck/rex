@@ -34,4 +34,23 @@ GC::~GC()
     _hostMem.clear();
 }
 
+// register device memory
+void GC::RegisterDeviceMemory( void* mem )
+{
+    _deviceMem.push_back( mem );
+}
+
+// unregister device memory
+void GC::UnregisterDeviceMemory( void* mem )
+{
+    for ( uint32 i = 0; i < _deviceMem.size(); ++i )
+    {
+        if ( _deviceMem[ i ] == mem )
+        {
+            _deviceMem.erase( _deviceMem.begin() + i );
+            break;
+        }
+    }
+}
+
 REX_NS_END

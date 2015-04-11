@@ -7,8 +7,7 @@ REX_NS_BEGIN
 // create ambient light
 AmbientLight::AmbientLight()
     : _radianceScale( 1.0f ),
-      _color( Color::White() ),
-      _dThis( nullptr )
+      _color( Color::White() )
 {
     _castShadows = false;
 
@@ -28,28 +27,28 @@ const Color& AmbientLight::GetColor() const
     return _color;
 }
 
+// get light direction
+__device__ Vector3 AmbientLight::GetLightDirection( ShadePoint& sp ) const
+{
+    return Vector3( 0.0 );
+}
+
 // get light on the device
 const Light* AmbientLight::GetOnDevice() const
 {
     return static_cast<Light*>( _dThis );
 }
 
+// get radiance
+__device__ Color AmbientLight::GetRadiance( ShadePoint& sp ) const
+{
+    return _radianceScale * _color;
+}
+
 // get radiance scale
 real32 AmbientLight::GetRadianceScale() const
 {
     return _radianceScale;
-}
-
-// get light direction
-__device__ Vector3 AmbientLight::GetLightDirection( ShadePoint& sp )
-{
-    return Vector3( 0.0 );
-}
-
-// get radiance
-__device__ Color AmbientLight::GetRadiance( ShadePoint& sp )
-{
-    return _radianceScale * _color;
 }
 
 // get type

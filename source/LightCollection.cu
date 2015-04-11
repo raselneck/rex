@@ -158,7 +158,7 @@ void LightCollection::UpdateDeviceArray()
     cudaError_t  err       = cudaMalloc( reinterpret_cast<void**>( &_dLightArray ), byteCount );
     if ( err != cudaSuccess )
     {
-        Logger::Log( "Failed to allocate space for light collection on device." );
+        REX_DEBUG_LOG( "Failed to allocate space for light collection on device." );
         return;
     }
 
@@ -169,7 +169,7 @@ void LightCollection::UpdateDeviceArray()
         err = cudaMemcpy( _dLightArray, &( _dLights[ 0 ] ), byteCount, cudaMemcpyHostToDevice );
         if ( err != cudaSuccess )
         {
-            Logger::Log( "Allocated light collection on device, but failed to copy data." );
+            REX_DEBUG_LOG( "Allocated light collection on device, but failed to copy data." );
             cudaFree( _dLightArray );
             _dLightArray = nullptr;
         }

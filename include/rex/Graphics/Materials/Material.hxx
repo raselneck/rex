@@ -24,6 +24,16 @@ class Material
 {
     REX_NONCOPYABLE_CLASS( Material );
 
+protected:
+    friend class Geometry;
+
+    void* _dThis;
+
+    /// <summary>
+    /// Copies this material for geometry.
+    /// </summary>
+    __host__ virtual Material* Copy() const = 0;
+
 public:
     /// <summary>
     /// Creates a new material.
@@ -51,7 +61,7 @@ public:
     /// <param name="sp">The hit point data.</param>
     /// <param name="lights">All of the lights in the scene.</param>
     /// <param name="lightCount">The number of lights in the scene</param>
-    __device__ virtual Color Shade( ShadePoint& sp, const Light** lights, uint32 lightCount );
+    __device__ virtual Color Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const;
 };
 
 REX_NS_END

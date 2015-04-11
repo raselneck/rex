@@ -5,6 +5,7 @@ REX_NS_BEGIN
 
 // create material
 Material::Material()
+    : _dThis( nullptr )
 {
 }
 
@@ -14,7 +15,7 @@ Material::~Material()
 }
 
 // (ray cast) shade
-__device__ Color Material::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount )
+__device__ Color Material::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const
 {
     return Color::Magenta();
 }

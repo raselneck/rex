@@ -26,7 +26,7 @@ template<typename T, typename ... Args> T* GC::HostAlloc( const Args& ... args )
     }
     else
     {
-        Logger::Log( "Failed to allocate host memory for type ", REX_XSTRINGIFY( T ), "." );
+        REX_DEBUG_LOG( "Failed to allocate host memory for type ", REX_XSTRINGIFY( T ), "." );
     }
 
     // return the memory
@@ -50,12 +50,12 @@ template<typename T> T* GC::DeviceAlloc( const T& source )
         err = cudaMemcpy( memory, &source, sizeof( T ), cudaMemcpyHostToDevice );
         if ( err != cudaSuccess )
         {
-            Logger::Log( "Allocated device memory for type ", REX_XSTRINGIFY( T ), " but failed to copy from source." );
+            REX_DEBUG_LOG( "Allocated device memory for type ", REX_XSTRINGIFY( T ), " but failed to copy from source." );
         }
     }
     else
     {
-        Logger::Log( "Failed to allocate device memory for type ", REX_XSTRINGIFY( T ), "." );
+        REX_DEBUG_LOG( "Failed to allocate device memory for type ", REX_XSTRINGIFY( T ), "." );
     }
 
     // return the memory
@@ -77,7 +77,7 @@ template<typename T> T* GC::DeviceAllocArray( uint32 count )
     }
     else
     {
-        Logger::Log( "Failed to allocate device memory for ", REX_XSTRINGIFY( T ), " array." );
+        REX_DEBUG_LOG( "Failed to allocate device memory for ", REX_XSTRINGIFY( T ), " array." );
     }
 
     // return the memory
@@ -96,7 +96,7 @@ template<typename T> T* GC::DeviceAllocArray( uint32 count, const T* source )
         cudaError_t err = cudaMemcpy( memory, source, count * sizeof( T ), cudaMemcpyHostToDevice );
         if ( err != cudaSuccess )
         {
-            Logger::Log( "Allocated array of ", REX_XSTRINGIFY( T ), ", but failed to copy from source." );
+            REX_DEBUG_LOG( "Allocated array of ", REX_XSTRINGIFY( T ), ", but failed to copy from source." );
         }
     }
 

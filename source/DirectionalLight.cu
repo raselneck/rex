@@ -23,8 +23,7 @@ DirectionalLight::DirectionalLight( real64 x, real64 y, real64 z )
 DirectionalLight::DirectionalLight( const Vector3& direction )
     : _direction( Vector3::Normalize( direction ) ),
       _color( Color::White() ),
-      _radianceScale( 1.0f ),
-      _dThis( nullptr )
+      _radianceScale( 1.0f )
 {
     _castShadows = true;
 
@@ -50,28 +49,28 @@ const Vector3& DirectionalLight::GetDirection() const
     return _direction;
 }
 
+// get direction of incoming light
+__device__ Vector3 DirectionalLight::GetLightDirection( ShadePoint& sp ) const
+{
+    return _direction;
+}
+
 // get light on the device
 const Light* DirectionalLight::GetOnDevice() const
 {
     return static_cast<Light*>( _dThis );
 }
 
+// get radiance
+__device__ Color DirectionalLight::GetRadiance( ShadePoint& sp ) const
+{
+    return _radianceScale * _color;
+}
+
 // get radiance scale
 real32 DirectionalLight::GetRadianceScale() const
 {
     return _radianceScale;
-}
-
-// get direction of incoming light
-__device__ Vector3 DirectionalLight::GetLightDirection( ShadePoint& sp )
-{
-    return _direction;
-}
-
-// get radiance
-__device__ Color DirectionalLight::GetRadiance( ShadePoint& sp )
-{
-    return _radianceScale * _color;
 }
 
 // get type

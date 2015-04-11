@@ -4,6 +4,8 @@
 #include <iostream>
 #include <mutex>
 
+#define REX_DEBUG_LOG(...) rex::Logger::Log( "(", rex::Logger::GetAbsoluteFileName( __FILE__ ), ":", __LINE__, ") ", __VA_ARGS__ )
+
 REX_NS_BEGIN
 
 /// <summary>
@@ -28,6 +30,12 @@ class Logger
     __host__ static String Merge( std::initializer_list<String> list );
 
 public:
+    /// <summary>
+    /// Gets the absolute file name for the given file path.
+    /// <summary>
+    /// <param name="fname">The file name.</param>
+    static String GetAbsoluteFileName( const char* fname );
+
     /// <summary>
     /// Logs the given arguments to the console.
     /// </summary>

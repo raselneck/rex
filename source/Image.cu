@@ -22,7 +22,7 @@ Image::Image( uint16 width, uint16 height )
     // ensure the given sizes are okay
     if ( width > 1024 || height > 1024 )
     {
-        Logger::Log( "Cannot create an image of size ", _width, "x", _height, " (max size is 2048x2048)." );
+        REX_DEBUG_LOG( "Cannot create an image of size ", _width, "x", _height, " (max size is 2048x2048)." );
         return;
     }
 

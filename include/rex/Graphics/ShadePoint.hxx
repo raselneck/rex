@@ -17,16 +17,16 @@ class Material;
 /// </summary>
 struct ShadePoint
 {
-    Ray                 Ray;
-    Vector3             HitPoint;
-    Vector3             LocalHitPoint;
-    Vector3             Normal;
-    Vector3             Direction; // same as ray direction??
-    real64              T;
-    const rex::Scene*   Scene;
-    rex::Material*      Material;
-    int32               RecursDepth;
-    bool                HasHit;
+    Ray                  Ray;
+    Vector3              HitPoint;
+    Vector3              LocalHitPoint;
+    Vector3              Normal;
+    Vector3              Direction; // TODO : Same as ray direction?
+    real64               T;
+    const rex::Scene*    Scene;
+    const rex::Material* Material;
+    int32                RecursDepth; // TODO : Needed?
+    bool                 HasHit;
 
     /// <summary>
     /// Creates a new shade point.

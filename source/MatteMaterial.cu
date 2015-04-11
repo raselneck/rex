@@ -24,7 +24,6 @@ MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd )
 
 // create material w/ color, ambient coefficient, diffuse coefficient
 MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd, bool allocOnDevice )
-    : _dThis( nullptr )
 {
     // set ambient info
     _ambient.SetDiffuseColor( color );
@@ -44,6 +43,17 @@ MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd, bool all
 // destroy material
 MatteMaterial::~MatteMaterial()
 {
+}
+
+// copy this material
+Material* MatteMaterial::Copy() const
+{
+    // create the copy of the material
+    MatteMaterial* mat = new (std::nothrow) MatteMaterial( _ambient.GetDiffuseColor(),
+                                                           _ambient.GetDiffuseCoefficient(),
+                                                           _diffuse.GetDiffuseCoefficient(),
+                                                           true );
+    return mat;
 }
 
 // get ka
@@ -112,7 +122,7 @@ void MatteMaterial::SetDiffuseCoefficient( real32 kd )
 }
 
 // get shaded color
-__device__ Color MatteMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount )
+__device__ Color MatteMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const
 {
     // from Suffern, 271
     Vector3 wo    = -sp.Ray.Direction;
@@ -121,9 +131,9 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const Light** lights, uin
     // go through all of the lights in the scene
     for ( uint32 i = 0; i < lightCount; ++i )
     {
-        Light*  light = const_cast<Light*>( lights[ i ] ); // TODO : BAD
-        Vector3 wi    = light->GetLightDirection( sp );
-        real32  angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
+        const Light*  light = lights[ i ];
+        Vector3       wi    = light->GetLightDirection( sp );
+        real32        angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
 
         if ( angle > 0.0 )
         {

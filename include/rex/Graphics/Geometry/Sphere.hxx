@@ -15,7 +15,12 @@ class Sphere : public Geometry
     Vector3 _center;
     real64  _radius;
     real64  _invRadius;
-    void*   _dThis;
+
+protected:
+    /// <summary>
+    /// Handles when this sphere's material is changed.
+    /// </summary>
+    virtual void OnChangeMaterial();
 
 public:
     /// <summary>
@@ -51,6 +56,11 @@ public:
     /// Gets this sphere on the device.
     /// </summary>
     __host__ virtual const Geometry* GetOnDevice() const;
+
+    /// <summary>
+    /// Gets sphere's material on the device.
+    /// </summary>
+    __device__ virtual const Material* GetDeviceMaterial() const;
 
     /// <summary>
     /// Checks to see if the given ray hits this sphere. If it does, the shading

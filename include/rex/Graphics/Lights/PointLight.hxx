@@ -14,7 +14,6 @@ class PointLight : public Light
     Vector3 _position;
     Color   _color;
     real32  _radianceScale;
-    void*   _dThis;
 
 public:
     /// <summary>
@@ -47,6 +46,12 @@ public:
     __both__ const Color& GetColor() const;
 
     /// <summary>
+    /// Gets the direction of the incoming light at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) const;
+
+    /// <summary>
     /// Gets this light on the device.
     /// </summary>
     __host__ virtual const Light* GetOnDevice() const;
@@ -55,6 +60,12 @@ public:
     /// Gets this light's position.
     /// </summary>
     __both__ const Vector3& GetPosition() const;
+
+    /// <summary>
+    /// Gets the incident radiance at a hit point.
+    /// </summary>
+    /// <param name="sp">The shading point information containing hit data.</param>
+    __device__ virtual Color GetRadiance( ShadePoint& sp ) const;
 
     /// <summary>
     /// Gets this light's radiance scale.
@@ -72,18 +83,6 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="sp">Current hit point information.</param>
     __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const;
-
-    /// <summary>
-    /// Gets the direction of the incoming light at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp );
-
-    /// <summary>
-    /// Gets the incident radiance at a hit point.
-    /// </summary>
-    /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Color GetRadiance( ShadePoint& sp );
 
     /// <summary>
     /// Sets this light's color.

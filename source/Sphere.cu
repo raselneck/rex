@@ -1,6 +1,7 @@
 #include <rex/Graphics/Geometry/Sphere.hxx>
 #include <rex/Graphics/ShadePoint.hxx>
 #include <rex/Math/Math.hxx>
+#include <rex/Utility/Logger.hxx>
 
 REX_NS_BEGIN
 
@@ -27,6 +28,12 @@ BoundingBox Sphere::GetBounds() const
 const Geometry* Sphere::GetOnDevice() const
 {
     return (const Geometry*)( _dThis );
+}
+
+// get this sphere's device material
+__device__ const Material* Sphere::GetDeviceMaterial() const
+{
+    return (const Material*)( _dMaterial );
 }
 
 // shade hit this sphere with a ray
@@ -111,6 +118,17 @@ __device__ bool Sphere::ShadowHit( const Ray& ray, real64& tmin ) const
     }
 
     return false;
+}
+
+// handle when the material is changed.
+void Sphere::OnChangeMaterial()
+{
+    // update our "this" pointer
+    cudaError_t err = cudaMemcpy( _dThis, this, sizeof( Sphere ), cudaMemcpyHostToDevice );
+    if ( err != cudaSuccess )
+    {
+        REX_DEBUG_LOG( "Failed to update sphere data on device." );
+    }
 }
 
 REX_NS_END

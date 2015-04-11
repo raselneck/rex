@@ -62,7 +62,7 @@ GLWindow::GLWindow( int32 width, int32 height, const String& title, const GLWind
     // ensure the window was created
     if ( !window )
     {
-        Logger::Log( "Failed to create GLFW window" );
+        REX_DEBUG_LOG( "Failed to create GLFW window" );
         return;
     }
 
@@ -75,7 +75,7 @@ GLWindow::GLWindow( int32 width, int32 height, const String& title, const GLWind
     // initialize GLEW and ensure we can support the graphics card
     if ( ( glewInit() != GLEW_OK ) && !GLEW_VERSION_4_0 )
     {
-        Logger::Log( "Failed to load OpenGL 4.0" );
+        REX_DEBUG_LOG( "Failed to load OpenGL 4.0" );
         glfwDestroyWindow( window );
         return;
     }
@@ -142,13 +142,13 @@ bool GLWindow::InitializeGlfw()
         // set the error callback
         glfwSetErrorCallback( []( int code, const char* err )
         {
-            Logger::Log( "GLFW Error: ", err, " (code: ", code, ")" );
+            REX_DEBUG_LOG( "GLFW Error: ", err, " (code: ", code, ")" );
         } );
 
         // try to initalize GLFW
         if ( glfwInit() != GL_TRUE )
         {
-            Logger::Log( "Failed to initialize GLFW" );
+            REX_DEBUG_LOG( "Failed to initialize GLFW" );
             return false;
         }
     }

@@ -4,7 +4,8 @@ REX_NS_BEGIN
 
 // create light
 Light::Light()
-    : _castShadows( false )
+    : _castShadows( false ),
+      _dThis( nullptr )
 {
 }
 

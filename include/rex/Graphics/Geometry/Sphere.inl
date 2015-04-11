@@ -8,8 +8,7 @@ REX_NS_BEGIN
 template<typename T> Sphere::Sphere( const T& material )
     : Geometry( material ),
       _radius( 0.0 ),
-      _invRadius( 0.0 ),
-      _dThis( nullptr )
+      _invRadius( 0.0 )
 {
     _dThis = GC::DeviceAlloc<Sphere>( *this );
 }
@@ -19,8 +18,7 @@ template<typename T> Sphere::Sphere( const T& material, const Vector3& center, r
     : Geometry( material ),
       _center( center ),
       _radius( radius ),
-      _invRadius( 1.0 / radius ),
-      _dThis( nullptr )
+      _invRadius( ( radius == 0.0f) ? 0.0f : 1.0 / radius )
 {
     _dThis = GC::DeviceAlloc<Sphere>( *this );
 }

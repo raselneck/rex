@@ -31,6 +31,18 @@ PhongMaterial::~PhongMaterial()
 {
 }
 
+// copy this material
+Material* PhongMaterial::Copy() const
+{
+    // create the copy of the material
+    PhongMaterial* mat = new (std::nothrow) PhongMaterial( _ambient.GetDiffuseColor(),
+                                                           _ambient.GetDiffuseCoefficient(),
+                                                           _diffuse.GetDiffuseCoefficient(),
+                                                           _specular.GetSpecularCoefficient(),
+                                                           _specular.GetSpecularPower() );
+    return mat;
+}
+
 // get specular coefficient
 real32 PhongMaterial::GetSpecularCoefficient() const
 {
@@ -103,17 +115,17 @@ void PhongMaterial::SetSpecularPower( real32 pow )
 }
 
 // get shaded color
-__device__ Color PhongMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount )
+__device__ Color PhongMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const
 {
     // from Suffern, 285
-    Vector3 wo      = -sp.Ray.Direction;
-    Color   color   = _ambient.GetBHR( sp, wo );
+    Vector3 wo    = -sp.Ray.Direction;
+    Color   color = _ambient.GetBHR( sp, wo );
 
     for ( uint32 i = 0; i < lightCount; ++i )
     {
-        Light* light = const_cast<Light*>( lights[ i ] );
-        Vector3 wi = light->GetLightDirection( sp );
-        real32  angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
+        const Light* light = lights[ i ];
+        Vector3      wi    = light->GetLightDirection( sp );
+        real32       angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
 
         if ( angle > 0.0 )
         {

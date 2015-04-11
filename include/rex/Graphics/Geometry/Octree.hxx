@@ -1,13 +1,62 @@
 #pragma once
 
 #include "../../Math/BoundingBox.hxx"
-#include <array>
-#include <utility> // std::pair
 #include <vector>
 
 REX_NS_BEGIN
 
 class Geometry;
+
+/// <summary>
+/// Defines a pairing between a bounding box and geometry.
+/// </summary>
+struct BoundsGeometryPair
+{
+    BoundingBox Bounds;
+    const Geometry* Geometry;
+
+    /// <summary>
+    /// Creates a new bounding box / geometry pairing.
+    /// </summary>
+    __host__ BoundsGeometryPair();
+};
+
+/// <summary>
+/// Defines a device octree.
+/// </summary>
+struct DeviceOctree
+{
+    const DeviceOctree* Children[ 8 ];
+    BoundingBox         Bounds;
+    BoundsGeometryPair* Objects;
+    uint32              ObjectCount;
+
+    /// <summary>
+    /// Creates a new device octree.
+    /// </summary>
+    __host__ DeviceOctree();
+
+    /// <summary>
+    /// Queries this octree for the nearest piece of geometry that a given ray intersects.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="dist">The distance to the piece of geometry.</param>
+    __device__ const Geometry* QueryIntersections( const Ray& ray, real64& dist ) const;
+
+    /// <summary>
+    /// Queries this octree to see if the given shadow ray intersects anything.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    __device__ bool QueryShadowRay( const Ray& ray ) const;
+
+private:
+    /// <summary>
+    /// Queries this octree for the nearest piece of geometry that a given ray intersects.
+    /// </summary>
+    /// <param name="ray">The ray to check.</param>
+    /// <param name="dist">The distance to the piece of geometry.</param>
+    __device__ const Geometry* QueryIntersectionsForReal( const Ray& ray, real64& dist ) const;
+};
 
 /// <summary>
 /// Defines an octree meant for spatially partitioning static objects based on their bounding boxes.
@@ -16,10 +65,7 @@ class Octree
 {
     REX_NONCOPYABLE_CLASS( Octree );
 
-    /// <summary>
-    /// A type that pairs a bounding box with its associated geometry.
-    /// </summary>
-    typedef std::pair<BoundingBox, const Geometry*> BoundsGeometryPair;
+    friend DeviceOctree;
 
     BoundingBox                     _bounds;
     const uint32                    _countBeforeSubivide;
@@ -27,10 +73,8 @@ class Octree
     Octree*                         _hChildren[ 8 ];
     std::vector<BoundsGeometryPair> _hObjects;
     std::vector<BoundsGeometryPair> _dObjects;
-    BoundsGeometryPair**            _dObjectArray;
-    uint32                          _dObjectCount;
-    Octree*                         _dChildren[ 8 ];
-    void*                           _dThis;
+    DeviceOctree*                   _dThis;
+    void*                           _dThisObjects;
 
     /// <summary>
     /// Checks to see if this octree has subdivided.
@@ -46,13 +90,6 @@ class Octree
     /// Updates the device array.
     /// </summary>
     __host__ void UpdateDeviceArray();
-
-    /// <summary>
-    /// Queries this octree for the nearest piece of geometry that a given ray intersects.
-    /// </summary>
-    /// <param name="ray">The ray to check.</param>
-    /// <param name="dist">The distance to the piece of geometry.</param>
-    __device__ const Geometry* QueryIntersectionsForReal( const Ray& ray, real64& dist ) const;
 
 public:
     /// <summary>
@@ -84,20 +121,7 @@ public:
     /// <summary>
     /// Gets this octree's bounds.
     /// </summary>
-    __both__ const BoundingBox& GetBounds() const;
-
-    /// <summary>
-    /// Queries this octree for the nearest piece of geometry that a given ray intersects.
-    /// </summary>
-    /// <param name="ray">The ray to check.</param>
-    /// <param name="dist">The distance to the piece of geometry.</param>
-    __device__ const Geometry* QueryIntersections( const Ray& ray, real64& dist ) const;
-
-    /// <summary>
-    /// Queries this octree to see if the given shadow ray intersects anything.
-    /// </summary>
-    /// <param name="ray">The ray to check.</param>
-    __device__ bool QueryShadowRay( const Ray& ray ) const;
+    __host__ const BoundingBox& GetBounds() const;
 
     /// <summary>
     /// Adds the given bounding box to this octree.
@@ -108,7 +132,7 @@ public:
     /// <summary>
     /// Gets this octree on the device.
     /// </summary>
-    __host__ const Octree* GetOnDevice();
+    __host__ const DeviceOctree* GetOnDevice();
 };
 
 REX_NS_END

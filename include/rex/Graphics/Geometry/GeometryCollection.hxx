@@ -4,6 +4,8 @@
 #include "Sphere.hxx"
 #include <vector>
 
+// TODO : This doesn't need to keep a copy of itself on the device
+
 REX_NS_BEGIN
 
 /// <summary>
@@ -15,12 +17,6 @@ class GeometryCollection
 
     std::vector<Geometry*>       _hGeometry;
     std::vector<const Geometry*> _dGeometry;
-    Geometry**                   _dGeometryArray;
-
-    /// <summary>
-    /// Updates the device array.
-    /// </summary>
-    __host__ void UpdateDeviceArray();
 
 public:
     /// <summary>
@@ -44,9 +40,9 @@ public:
     __host__ const std::vector<Geometry*>& GetGeometry() const;
 
     /// <summary>
-    /// Gets the array of geometric objects in this collection that is on the device.
+    /// Gets the array of geometric objects pointers on the device in this collection.
     /// </summary>
-    __host__ const Geometry** GetDeviceGeometry() const;
+    __host__ const std::vector<const Geometry*>& GetDeviceGeometry() const;
 
     /// <summary>
     /// Adds a sphere to this geometry collection.

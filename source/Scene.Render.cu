@@ -15,10 +15,8 @@ struct DeviceSceneData
     const Light**       Lights;
     uint32              LightCount;
     const AmbientLight* AmbientLight;
-    const Geometry**    Geometry;
-    uint32              GeometryCount;
     const Camera*       Camera;
-    const Octree*       Octree;
+    const DeviceOctree* Octree;
     Image*              Image;
     const ViewPlane*    ViewPlane;
     const Color*        BackgroundColor;
@@ -54,8 +52,11 @@ __device__ void SceneHitObjects( DeviceSceneData* sd, const Ray& ray, ShadePoint
     // iterate through the hit objects
     if ( geom )
     {
+        GeometryType geomType = geom->GetType();
+
         sp.HasHit   = true;
-        sp.Material = nullptr;
+        sp.Ray      = ray;
+        sp.Material = geom->GetDeviceMaterial();
         sp.HitPoint = ray.Origin + t * ray.Direction;
         sp.T        = t;
     }
@@ -78,14 +79,14 @@ __device__ bool SceneShadowHitObjects( DeviceSceneData* sd, const Ray& ray )
 __global__ void SceneRenderKernel( DeviceSceneData* sd )
 {
     // prepare for the tracing!!
-    Color            color = Color::Black();
     Ray              ray;
     Vector2          pp; // pixel sample point
-    Image*           image = sd->Image;
-    const Camera*    camera = sd->Camera;
-    const ViewPlane* vp = sd->ViewPlane;
+    Color            color      = Color::Black();
+    Image*           image      = sd->Image;
+    const Camera*    camera     = sd->Camera;
+    const ViewPlane* vp         = sd->ViewPlane;
     const real32     invSamples = 1.0f / sd->ViewPlane->SampleCount;
-    ShadePoint       sp( nullptr );
+    ShadePoint       sp         = nullptr;
 
     // set the ray's origin
     ray.Origin = camera->GetPosition();
@@ -122,7 +123,11 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
             if ( sp.HasHit )
             {
                 sp.Ray = ray;
-                color += sp.Material->Shade( sp, sd->Lights, sd->LightCount );
+
+                const Material* mat = sp.Material;
+                MaterialType    matType = mat->GetType();
+
+                color += mat->Shade( sp, sd->Lights, sd->LightCount );
             }
             else
             {
@@ -145,11 +150,9 @@ void Scene::Render()
     hsd.Lights          = _lights.GetDeviceLights();
     hsd.LightCount      = _lights.GetLightCount();
     hsd.AmbientLight    = reinterpret_cast<const AmbientLight*>( _lights.GetAmbientLight()->GetOnDevice() );
-    hsd.Geometry        = _geometry.GetDeviceGeometry();
-    hsd.GeometryCount   = _geometry.GetGeometryCount();
     hsd.Camera          = GC::DeviceAlloc<Camera>( _camera );
     hsd.Octree          = _octree->GetOnDevice();
-    hsd.Image           = GC::DeviceAlloc<Image>( *( _image.get() ) ); // TODO : Will this work? It *should* because the pointers will be preserved
+    hsd.Image           = GC::DeviceAlloc<Image>( *( _image.get() ) );
     hsd.ViewPlane       = GC::DeviceAlloc<ViewPlane>( _viewPlane );
     hsd.BackgroundColor = GC::DeviceAlloc<Color>( _backgroundColor );
 
@@ -179,7 +182,7 @@ void Scene::Render()
     cudaError_t err = cudaGetLastError();
     if ( err != cudaSuccess )
     {
-        Logger::Log( "Scene::Render kernel failed. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "Scene::Render kernel failed. Reason: ", cudaGetErrorString( err ) );
         return;
     }
 
@@ -187,7 +190,7 @@ void Scene::Render()
     err = cudaDeviceSynchronize();
     if ( err != cudaSuccess )
     {
-        Logger::Log( "Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
         return;
     }
 

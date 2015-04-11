@@ -18,7 +18,7 @@ bool Scene::Build( uint16 width, uint16 height )
     // make sure the image isn't too large
     if ( width > 1024 || height > 1024 )
     {
-        Logger::Log( "Image is too large. Max dimensions are 1024x1024, given ", width, "x", height, "." );
+        REX_DEBUG_LOG( "Image is too large. Max dimensions are 1024x1024, given ", width, "x", height, "." );
         return false;
     }
 
@@ -53,16 +53,24 @@ bool Scene::Build( uint16 width, uint16 height )
     s1->SetMaterial( white );
 
 
+
     // calculate the min and max of the bounds
     Vector3 min, max;
-    for ( auto& shape : _geometry.GetGeometry() )
+    for ( auto& geom : _geometry.GetGeometry() )
     {
-        min = Vector3::Min( min, shape->GetBounds().GetMin() );
-        max = Vector3::Max( max, shape->GetBounds().GetMax() );
+        min = Vector3::Min( min, geom->GetBounds().GetMin() );
+        max = Vector3::Max( max, geom->GetBounds().GetMax() );
     }
 
     // create the octree
     _octree.reset( new Octree( min, max ) );
+
+    // add the objects to the octree
+    for ( auto& geom : _geometry.GetGeometry() )
+    {
+        _octree->Add( geom );
+    }
+
 
 
     // configure the camera

@@ -25,8 +25,15 @@ class Geometry
 {
     REX_NONCOPYABLE_CLASS( Geometry );
 
-    Material* _hMaterial;
+protected:
+    Material*       _hMaterial;
     const Material* _dMaterial;
+    void*           _dThis;
+
+    /// <summary>
+    /// The function that is called when the material is changed.
+    /// </summary>
+    virtual void OnChangeMaterial(); // TODO : Is there a better way to do this? Make it more generic, like "UpdateDevicePointer"?
 
 public:
     /// <summary>
@@ -54,6 +61,11 @@ public:
     /// Gets this geometric object on the device.
     /// </summary>
     __host__ virtual const Geometry* GetOnDevice() const = 0;
+
+    /// <summary>
+    /// Gets this geometric object's material on the device.
+    /// </summary>
+    __device__ virtual const Material* GetDeviceMaterial() const = 0;
 
     /// <summary>
     /// Checks to see if the given ray hits this geometric object. If it does, the shading

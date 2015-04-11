@@ -24,8 +24,7 @@ PointLight::PointLight( real64 x, real64 y, real64 z )
 PointLight::PointLight( const Vector3& position )
     : _position( position ),
       _color( Color::White() ),
-      _radianceScale( 1.0f ),
-      _dThis( nullptr )
+      _radianceScale( 1.0f )
 {
     _castShadows = true;
 
@@ -46,6 +45,12 @@ const Color& PointLight::GetColor() const
     return _color;
 }
 
+// get light direction
+__device__ Vector3 PointLight::GetLightDirection( ShadePoint& sp ) const
+{
+    return Vector3::Normalize( _position - sp.HitPoint );
+}
+
 // get light on the device
 const Light* PointLight::GetOnDevice() const
 {
@@ -58,22 +63,16 @@ const Vector3& PointLight::GetPosition() const
     return _position;
 }
 
+// get radiance
+__device__ Color PointLight::GetRadiance( ShadePoint& sp ) const
+{
+    return _radianceScale * _color;
+}
+
 // get radiance scale
 real32 PointLight::GetRadianceScale() const
 {
     return _radianceScale;
-}
-
-// get light direction
-__device__ Vector3 PointLight::GetLightDirection( ShadePoint& sp )
-{
-    return Vector3::Normalize( _position - sp.HitPoint );
-}
-
-// get radiance
-__device__ Color PointLight::GetRadiance( ShadePoint& sp )
-{
-    return _radianceScale * _color;
 }
 
 // get type

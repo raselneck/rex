@@ -10,13 +10,13 @@ Vector2::Vector2()
 }
 
 // create 2D vector
-Vector2::Vector2( real64 all )
+Vector2::Vector2( real_t all )
     : Vector2( all, all )
 {
 }
 
 // create 2D vector
-Vector2::Vector2( real64 x, real64 y )
+Vector2::Vector2( real_t x, real_t y )
     : X( x ),
       Y( y )
 {
@@ -29,13 +29,13 @@ Vector2::~Vector2()
 }
 
 // get length
-real64 Vector2::Length() const
+real_t Vector2::Length() const
 {
-    return sqrt( LengthSq() );
+    return std::sqrt( LengthSq() );
 }
 
 // get length squared
-real64 Vector2::LengthSq() const
+real_t Vector2::LengthSq() const
 {
     return ( X * X ) + ( Y * Y );
 }
@@ -43,7 +43,7 @@ real64 Vector2::LengthSq() const
 // normalize a vector
 Vector2 Vector2::Normalize( const Vector2& vec )
 {
-    real64 invlen = 1.0 / vec.Length();
+    real_t invlen = real_t( 1.0 ) / vec.Length();
     return Vector2( vec.X * invlen,
                     vec.Y * invlen );
 }
@@ -99,7 +99,7 @@ Vector2& Vector2::operator-=( const Vector2& v )
 }
 
 // multiply assign by a scalar
-Vector2& Vector2::operator*=( real64 s )
+Vector2& Vector2::operator*=( real_t s )
 {
     X *= s;
     Y *= s;
@@ -107,43 +107,34 @@ Vector2& Vector2::operator*=( real64 s )
 }
 
 // divide assign by a scalar
-Vector2& Vector2::operator/=( real64 s )
+Vector2& Vector2::operator/=( real_t s )
 {
-    real64 invs = 1.0 / s;
+    real_t invs = real_t( 1.0 ) / s;
     X *= invs;
     Y *= invs;
     return *this;
 }
 
 // multiply 2D vector and scalar
-Vector2 operator*( const Vector2& v, real64 s )
+Vector2 operator*( const Vector2& v, real_t s )
 {
     return Vector2( v.X * s,
                     v.Y * s );
 }
 
 // multiply 2D vector and scalar
-Vector2 operator*( real64 s, const Vector2& v )
+Vector2 operator*( real_t s, const Vector2& v )
 {
     return Vector2( v.X * s,
                     v.Y * s );
 }
 
 // divide 2D vector and scalar
-Vector2 operator/( const Vector2& v, real64 s )
+Vector2 operator/( const Vector2& v, real_t s )
 {
-    real64 invs = 1.0 / s;
+    real_t invs = real_t( 1.0 ) / s;
     return Vector2( v.X * invs,
                     v.Y * invs );
 }
-
-// divide 2D vector and scalar
-Vector2 operator/( real64 s, const Vector2& v )
-{
-    real64 invs = 1.0 / s;
-    return Vector2( v.X * invs,
-                    v.Y * invs );
-}
-
 
 REX_NS_END

@@ -3,26 +3,32 @@
 REX_NS_BEGIN
 
 // create light
-Light::Light()
+__device__ Light::Light( LightType type )
     : _castShadows( false ),
-      _dThis( nullptr )
+      _type( type )
 {
 }
 
 // destroy light
-Light::~Light()
+__device__ Light::~Light()
 {
     _castShadows = 0;
 }
 
 // check if casts shadows
-bool Light::CastsShadows() const
+__device__ bool Light::CastsShadows() const
 {
     return _castShadows;
 }
 
+// get light type
+__device__ LightType Light::GetType() const
+{
+    return _type;
+}
+
 // set whether to cast shadows
-void Light::SetCastShadows( bool value )
+__device__ void Light::SetCastShadows( bool value )
 {
     _castShadows = value;
 }

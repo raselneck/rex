@@ -1,10 +1,10 @@
 #pragma once
 
 #include "../Config.hxx"
+#include "../CUDA/DeviceList.hxx"
 #include "../Utility/Image.hxx"
 #include "Geometry/Octree.hxx"
-#include "Geometry/GeometryCollection.hxx"
-#include "Lights/LightCollection.hxx"
+#include "Lights/AmbientLight.hxx"
 #include "Camera.hxx"
 #include "ShadePoint.hxx"
 #include "ViewPlane.hxx"
@@ -16,15 +16,16 @@ REX_NS_BEGIN
 /// </summary>
 class Scene
 {
-    REX_NONCOPYABLE_CLASS( Scene );
+    REX_NONCOPYABLE_CLASS( Scene )
 
-    ViewPlane           _viewPlane;
-    Color               _backgroundColor;
-    Camera              _camera;
-    Handle<Image>       _image;
-    LightCollection     _lights;
-    GeometryCollection  _geometry;
-    Handle<Octree>      _octree;
+    ViewPlane              _viewPlane;
+    Color                  _backgroundColor;
+    Camera                 _camera;
+    Handle<Image>          _image;
+    DeviceList<Light*>*    _lights;
+    AmbientLight*          _ambientLight;
+    DeviceList<Geometry*>* _geometry;
+    Octree*                _octree;
 
 public:
     /// <summary>
@@ -36,6 +37,12 @@ public:
     /// Destroys this scene.
     /// </summary>
     __host__ ~Scene();
+
+    /// <summary>
+    /// Saves this scene's image.
+    /// </summary>
+    /// <param name="fname">The file name.</param>
+    __host__ void SaveImage( const char* fname ) const;
 
     /// <summary>
     /// Builds this scene.

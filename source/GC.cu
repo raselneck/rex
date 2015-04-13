@@ -4,8 +4,6 @@ using namespace std;
 
 REX_NS_BEGIN
 
-vector<GC::MemoryPair> GC::_hostMem;
-vector<void*> GC::_deviceMem;
 GC GC::_instance;
 
 // create the garbage collector instance
@@ -37,17 +35,17 @@ GC::~GC()
 // register device memory
 void GC::RegisterDeviceMemory( void* mem )
 {
-    _deviceMem.push_back( mem );
+    _instance._deviceMem.push_back( mem );
 }
 
 // unregister device memory
 void GC::UnregisterDeviceMemory( void* mem )
 {
-    for ( uint32 i = 0; i < _deviceMem.size(); ++i )
+    for ( uint32 i = 0; i < _instance._deviceMem.size(); ++i )
     {
-        if ( _deviceMem[ i ] == mem )
+        if ( _instance._deviceMem[ i ] == mem )
         {
-            _deviceMem.erase( _deviceMem.begin() + i );
+            _instance._deviceMem.erase( _instance._deviceMem.begin() + i );
             break;
         }
     }

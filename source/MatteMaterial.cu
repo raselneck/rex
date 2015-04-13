@@ -5,133 +5,102 @@
 REX_NS_BEGIN
 
 // create material
-MatteMaterial::MatteMaterial()
-    : MatteMaterial( Color::White(), 0.0f, 0.0f, true )
+__device__ MatteMaterial::MatteMaterial()
+    : MatteMaterial( Color::White(), 0.0f, 0.0f, MaterialType::Matte )
 {
 }
 
 // create material w/ color
-MatteMaterial::MatteMaterial( const Color& color )
-    : MatteMaterial( color, 0.0f, 0.0f, true )
+__device__ MatteMaterial::MatteMaterial( const Color& color )
+    : MatteMaterial( color, 0.0f, 0.0f, MaterialType::Matte )
 {
 }
 
-// create material w/ color, ambient coefficient, diffuse coefficient
-MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd )
-    : MatteMaterial( color, ka, kd, true )
+// create material w/ color, ambient coefficient, and diffuse coefficient
+__device__ MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd )
+    : MatteMaterial( color, ka, kd, MaterialType::Matte )
 {
 }
 
-// create material w/ color, ambient coefficient, diffuse coefficient
-MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd, bool allocOnDevice )
+// create material w/ color, ambient coefficient, diffuse coefficient, and material type
+__device__ MatteMaterial::MatteMaterial( const Color& color, real_t ka, real_t kd, MaterialType type )
+    : Material( type ),
+      _ambient( ka, color ),
+      _diffuse( kd, color )
 {
-    // set ambient info
-    _ambient.SetDiffuseColor( color );
-    _ambient.SetDiffuseCoefficient( ka );
-
-    // set diffuse info
-    _diffuse.SetDiffuseColor( color );
-    _diffuse.SetDiffuseCoefficient( kd );
-
-    // check if we need to allocate us on the device
-    if ( allocOnDevice )
-    {
-        _dThis = GC::DeviceAlloc<MatteMaterial>( *this );
-    }
 }
 
 // destroy material
-MatteMaterial::~MatteMaterial()
+__device__ MatteMaterial::~MatteMaterial()
 {
 }
 
 // copy this material
-Material* MatteMaterial::Copy() const
+__device__ Material* MatteMaterial::Copy() const
 {
     // create the copy of the material
-    MatteMaterial* mat = new (std::nothrow) MatteMaterial( _ambient.GetDiffuseColor(),
-                                                           _ambient.GetDiffuseCoefficient(),
-                                                           _diffuse.GetDiffuseCoefficient(),
-                                                           true );
+    MatteMaterial* mat = new MatteMaterial( _ambient.GetDiffuseColor(),
+                                            _ambient.GetDiffuseCoefficient(),
+                                            _diffuse.GetDiffuseCoefficient() );
     return mat;
 }
 
 // get ka
-real32 MatteMaterial::GetAmbientCoefficient() const
+__device__ real32 MatteMaterial::GetAmbientCoefficient() const
 {
     return _ambient.GetDiffuseCoefficient();
 }
 
 // get color
-Color MatteMaterial::GetColor() const
+__device__ Color MatteMaterial::GetColor() const
 {
     // both ambient and diffuse have the same color
     return _ambient.GetDiffuseColor();
 }
 
 // get kd
-real32 MatteMaterial::GetDiffuseCoefficient() const
+__device__ real32 MatteMaterial::GetDiffuseCoefficient() const
 {
     return _diffuse.GetDiffuseCoefficient();
 }
 
-// get material on device
-const Material* MatteMaterial::GetOnDevice() const
-{
-    return static_cast<const Material*>( _dThis );
-}
-
-// get material type
-MaterialType MatteMaterial::GetType() const
-{
-    return MaterialType::Matte;
-}
-
 // set ka
-void MatteMaterial::SetAmbientCoefficient( real32 ka )
+__device__ void MatteMaterial::SetAmbientCoefficient( real32 ka )
 {
     _ambient.SetDiffuseCoefficient( ka );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( MatteMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set color
-void MatteMaterial::SetColor( const Color& color )
+__device__ void MatteMaterial::SetColor( const Color& color )
 {
     _ambient.SetDiffuseColor( color );
     _diffuse.SetDiffuseColor( color );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( MatteMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set color w/ components
-void MatteMaterial::SetColor( real32 r, real32 g, real32 b )
+__device__ void MatteMaterial::SetColor( real32 r, real32 g, real32 b )
 {
-    SetColor( Color( r, g, b ) );
+    Color color = Color( r, g, b );
+    SetColor( color );
 }
 
 // set kd
-void MatteMaterial::SetDiffuseCoefficient( real32 kd )
+__device__ void MatteMaterial::SetDiffuseCoefficient( real32 kd )
 {
     _diffuse.SetDiffuseCoefficient( kd );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( MatteMaterial ), cudaMemcpyHostToDevice );
 }
 
 // get shaded color
-__device__ Color MatteMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const
+__device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const
 {
     // from Suffern, 271
     Vector3 wo    = -sp.Ray.Direction;
     Color   color = _ambient.GetBHR( sp, wo );
 
     // go through all of the lights in the scene
-    for ( uint32 i = 0; i < lightCount; ++i )
+    for ( uint32 i = 0; i < lights->GetSize(); ++i )
     {
-        const Light*  light = lights[ i ];
+        const Light*  light = lights->operator[]( i );
         Vector3       wi    = light->GetLightDirection( sp );
         real32        angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
 
@@ -141,8 +110,8 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const Light** lights, uin
             bool isInShadow = false;
             if ( light->CastsShadows() )
             {
-                Ray shadowRay( sp.HitPoint, wi );
-                isInShadow = light->IsInShadow( shadowRay, sp );
+                Ray shadowRay = Ray( sp.HitPoint, wi );
+                isInShadow = light->IsInShadow( shadowRay, octree, sp );
             }
 
             // add the shadow-inclusive light information

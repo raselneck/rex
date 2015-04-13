@@ -1,22 +1,28 @@
 #include <rex/Graphics/Geometry/Geometry.hxx>
+#include <rex/Graphics/ShadePoint.hxx>
 
 REX_NS_BEGIN
 
 // destroys this piece of geometry
-Geometry::~Geometry()
+__device__ Geometry::~Geometry()
 {
-    if ( _hMaterial )
+    if ( _material )
     {
-        delete _hMaterial;
-        _hMaterial = nullptr;
+        delete _material;
+        _material = nullptr;
     }
-
-    _dMaterial = nullptr;
 }
 
-// default callback for changing the material
-void Geometry::OnChangeMaterial()
+// get device material
+__device__ const Material* Geometry::GetMaterial() const
 {
+    return _material;
+}
+
+// get geometry type
+__device__ GeometryType Geometry::GetType() const
+{
+    return _geometryType;
 }
 
 REX_NS_END

@@ -9,26 +9,28 @@ REX_NS_BEGIN
 /// </summary>
 class LambertianBRDF : public BRDF
 {
-    real32 _kd;
-    Color  _dc;
+    REX_IMPLEMENT_DEVICE_MEM_OPS()
+
+    Color  _color;
+    real_t _coefficient;
 
 public:
     /// <summary>
     /// Creates a new Lambertian BRDF.
     /// </summary>
-    __host__ LambertianBRDF();
+    __device__ LambertianBRDF();
 
     /// <summary>
     /// Creates a new Lambertian BRDF.
     /// </summary>
     /// <param name="kd">The diffuse reflection coefficient.</param>
     /// <param name="dc">The diffuse color.</param>
-    __host__ LambertianBRDF( real32 kd, const Color& dc );
+    __device__ LambertianBRDF( real32 kd, const Color& dc );
 
     /// <summary>
     /// Destroys this Lambertian BRDF.
     /// </summary>
-    __host__ ~LambertianBRDF();
+    __device__ ~LambertianBRDF();
 
     /// <summary>
     /// Gets the bi-hemispherical reflectance. (rho in Suffern.)
@@ -46,26 +48,26 @@ public:
     __device__ virtual Color GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const;
 
     /// <summary>
-    /// Gets the diffuse color.
+    /// Gets the color.
     /// </summary>
-    __both__ Color GetDiffuseColor() const;
+    __device__ Color GetDiffuseColor() const;
 
     /// <summary>
-    /// Gets the diffuse reflection coefficient.
+    /// Gets the reflection coefficient.
     /// </summary>
-    __both__ real32 GetDiffuseCoefficient() const;
+    __device__ real32 GetDiffuseCoefficient() const;
 
     /// <summary>
-    /// Sets the diffuse color.
+    /// Sets the color.
     /// </summary>
-    /// <param name="color">The new diffuse color.</param>
-    __host__ void SetDiffuseColor( const Color& color );
+    /// <param name="color">The new color.</param>
+    __device__ void SetDiffuseColor( const Color& color );
 
     /// <summary>
-    /// Sets the diffuse reflection coefficient.
+    /// Sets the reflection coefficient.
     /// </summary>
-    /// <param name="coeff">The new diffuse reflection coefficient.</param>
-    __host__ void SetDiffuseCoefficient( real32 coeff );
+    /// <param name="coeff">The new reflection coefficient.</param>
+    __device__ void SetDiffuseCoefficient( real32 coeff );
 };
 
 REX_NS_END

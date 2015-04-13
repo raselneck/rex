@@ -9,43 +9,43 @@ REX_NS_BEGIN
 /// </summary>
 class Math
 {
-    REX_STATIC_CLASS( Math );
+    REX_STATIC_CLASS( Math )
 
 public:
     /// <summary>
     /// Gets the constant Pi.
     /// </summary>
-    __both__ static real64 Pi();
+    __both__ static real_t Pi();
 
     /// <summary>
     /// Gets the constant 2 * Pi.
     /// </summary>
-    __both__ static real64 TwoPi();
+    __both__ static real_t TwoPi();
 
     /// <summary>
     /// Gets the constant Pi / 180.
     /// </summary>
-    __both__ static real64 PiOver180();
+    __both__ static real_t PiOver180();
 
     /// <summary>
     /// Gets the constant 1 / Pi.
     /// </summary>
-    __both__ static real64 InvPi();
+    __both__ static real_t InvPi();
 
     /// <summary>
     /// Gets the constant 1 / ( 2 * Pi ).
     /// </summary>
-    __both__ static real64 InvTwoPi();
+    __both__ static real_t InvTwoPi();
 
     /// <summary>
     /// Gets a really small value.
     /// </summary>
-    __both__ static real64 Epsilon();
+    __both__ static real_t Epsilon();
 
     /// <summary>
     /// Gets a really big value.
     /// </summary>
-    __both__ static real64 HugeValue();
+    __both__ static real_t HugeValue();
 
     /// <summary>
     /// Returns the floor of the given value.
@@ -82,6 +82,12 @@ public:
     /// </summary>
     /// <param name="value">The value to round.</param>
     __both__ static int64 Round( real64 value );
+
+    /// <summary>
+    /// Returns the absolute value of the given value.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    template<class T> __both__ static T Abs( T value );
 
     /// <summary>
     /// Returns the minimum of the two given values.

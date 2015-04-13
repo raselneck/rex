@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CUDA/DeviceList.hxx"
 #include "GL/GLWindow.hxx"
 #include "GL/GLWindowHints.hxx"
 #include "GL/Shader.hxx"
@@ -7,9 +8,9 @@
 #include "Graphics/BRDFs/LambertianBRDF.hxx"
 #include "Graphics/Geometry/Geometry.hxx"
 #include "Graphics/Geometry/Octree.hxx"
+#include "Graphics/Geometry/Sphere.hxx"
 #include "Graphics/Lights/AmbientLight.hxx"
 #include "Graphics/Lights/DirectionalLight.hxx"
-#include "Graphics/Lights/LightCollection.hxx"
 #include "Graphics/Lights/PointLight.hxx"
 #include "Graphics/Materials/MatteMaterial.hxx"
 #include "Graphics/Materials/PhongMaterial.hxx"

@@ -3,12 +3,12 @@
 REX_NS_BEGIN
 
 // create BRDF
-BRDF::BRDF()
+__device__ BRDF::BRDF()
 {
 }
 
 // destroy BRDF
-BRDF::~BRDF()
+__device__ BRDF::~BRDF()
 {
 }
 

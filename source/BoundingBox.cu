@@ -12,9 +12,13 @@ BoundingBox::BoundingBox( const Vector3& min, const Vector3& max )
 }
 
 // new bounding box
-BoundingBox::BoundingBox( real64 minX, real64 minY, real64 minZ, real64 maxX, real64 maxY, real64 maxZ )
-    : _min( minX, minY, minZ ), _max( maxX, maxY, maxZ )
+BoundingBox::BoundingBox( real_t minX, real_t minY, real_t minZ, real_t maxX, real_t maxY, real_t maxZ )
 {
+    Vector3 min = Vector3( minX, minY, minZ );
+    Vector3 max = Vector3( maxX, maxY, maxZ );
+
+    _min = Vector3::Min( min, max );
+    _max = Vector3::Max( min, max );
 }
 
 // destroy bounding box
@@ -74,29 +78,29 @@ Vector3 BoundingBox::GetSize() const
 }
 
 // check for ray-box intersection
-bool BoundingBox::Intersects( const Ray& ray, real64& dist ) const
+bool BoundingBox::Intersects( const Ray& ray, real_t& dist ) const
 {
     // adapted from http://gamedev.stackexchange.com/a/18459/46507
     // NOTE : We're assuming the ray direction is a unit vector here
 
     // get inverse of direction
     Vector3 dirfrac(
-        1.0 / ray.Direction.X,
-        1.0 / ray.Direction.Y,
-        1.0 / ray.Direction.Z
+        real_t( 1.0 ) / ray.Direction.X,
+        real_t( 1.0 ) / ray.Direction.Y,
+        real_t( 1.0 ) / ray.Direction.Z
     );
 
     // get helpers
-    real64 t1 = ( _min.X - ray.Origin.X ) * dirfrac.X;
-    real64 t2 = ( _max.X - ray.Origin.X ) * dirfrac.X;
-    real64 t3 = ( _min.Y - ray.Origin.Y ) * dirfrac.Y;
-    real64 t4 = ( _max.Y - ray.Origin.Y ) * dirfrac.Y;
-    real64 t5 = ( _min.Z - ray.Origin.Z ) * dirfrac.Z;
-    real64 t6 = ( _max.Z - ray.Origin.Z ) * dirfrac.Z;
+    real_t t1 = ( _min.X - ray.Origin.X ) * dirfrac.X;
+    real_t t2 = ( _max.X - ray.Origin.X ) * dirfrac.X;
+    real_t t3 = ( _min.Y - ray.Origin.Y ) * dirfrac.Y;
+    real_t t4 = ( _max.Y - ray.Origin.Y ) * dirfrac.Y;
+    real_t t5 = ( _min.Z - ray.Origin.Z ) * dirfrac.Z;
+    real_t t6 = ( _max.Z - ray.Origin.Z ) * dirfrac.Z;
 
 
-    real64 tmin = Math::Max( Math::Max( Math::Min( t1, t2 ), Math::Min( t3, t4 ) ), Math::Min( t5, t6 ) );
-    real64 tmax = Math::Min( Math::Min( Math::Max( t1, t2 ), Math::Max( t3, t4 ) ), Math::Max( t5, t6 ) );
+    real_t tmin = Math::Max( Math::Max( Math::Min( t1, t2 ), Math::Min( t3, t4 ) ), Math::Min( t5, t6 ) );
+    real_t tmax = Math::Min( Math::Min( Math::Max( t1, t2 ), Math::Max( t3, t4 ) ), Math::Max( t5, t6 ) );
 
 
     // if tmax < 0, ray (line) is intersecting box, but whole box is behind us

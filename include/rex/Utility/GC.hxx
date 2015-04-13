@@ -28,17 +28,18 @@ class GC
     /// <param name="data">The data to cleanup.</param>
     template<typename T> static void HostCleanupCallback( void* data );
 
-    static std::vector<void*> _deviceMem;
-    static std::vector<MemoryPair> _hostMem;
     static GC _instance;
+    std::vector<void*> _deviceMem;
+    std::vector<MemoryPair> _hostMem;
 
-    // ------------------------------
+    // ----------------------------------
     GC();
     ~GC();
     GC( const GC& )             = delete;
     GC( GC&& )                  = delete;
     GC& operator=( GC&& )       = delete;
     GC& operator=( const GC& )  = delete;
+    // ----------------------------------
 
 public:
     /// <summary>

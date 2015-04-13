@@ -17,7 +17,7 @@ class Camera
     Vector3 _orthoU;
     Vector3 _orthoV;
     Vector3 _orthoW;
-    real64  _viewPlaneDist;
+    real_t  _viewPlaneDist;
 
 public:
     /// <summary>
@@ -63,7 +63,7 @@ public:
     /// <param name="x">The new position's X component.</param>
     /// <param name="y">The new position's Y component.</param>
     /// <param name="z">The new position's Z component.</param>
-    __both__ void SetPosition( real64 x, real64 y, real64 z );
+    __both__ void SetPosition( real_t x, real_t y, real_t z );
 
     /// <summary>
     /// Sets this camera's target.
@@ -77,7 +77,7 @@ public:
     /// <param name="x">The new target's X component.</param>
     /// <param name="y">The new target's Y component.</param>
     /// <param name="z">The new target's Z component.</param>
-    __both__ void SetTarget( real64 x, real64 y, real64 z );
+    __both__ void SetTarget( real_t x, real_t y, real_t z );
 
     /// <summary>
     /// Sets the relative up vector.
@@ -91,13 +91,13 @@ public:
     /// <param name="x">The new up vector's X component.</param>
     /// <param name="y">The new up vector's Y component.</param>
     /// <param name="z">The new up vector's Z component.</param>
-    __both__ void SetUp( real64 x, real64 y, real64 z );
+    __both__ void SetUp( real_t x, real_t y, real_t z );
 
     /// <summary>
     /// Sets the view plane's distance.
     /// </summary>
     /// <param name="dist">The new distance.</param>
-    __both__ void SetViewPlaneDistance( real64 dist );
+    __both__ void SetViewPlaneDistance( real_t dist );
 };
 
 REX_NS_END

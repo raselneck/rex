@@ -11,7 +11,7 @@ REX_NS_BEGIN
 /// </summary>
 class Image
 {
-    REX_NONCOPYABLE_CLASS( Image );
+    REX_NONCOPYABLE_CLASS( Image )
 
     std::vector<Color> _hPixels;
     Color* _dPixels;

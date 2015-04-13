@@ -57,6 +57,9 @@
     <Filter Include="Header Files\Graphics\Geometry">
       <UniqueIdentifier>{5b0d056d-b817-44d5-b10c-aee1bdad5646}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\CUDA">
+      <UniqueIdentifier>{00f5640a-7ad1-458e-a7c1-9d3205ec4aeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Color.cu">
@@ -134,9 +137,6 @@
     <CudaCompile Include="Timer.cu">
       <Filter>Source Files\Utility</Filter>
     </CudaCompile>
-    <CudaCompile Include="LightCollection.cu">
-      <Filter>Source Files\Graphics\Lights</Filter>
-    </CudaCompile>
     <CudaCompile Include="Scene.cu">
       <Filter>Source Files\Graphics</Filter>
     </CudaCompile>
@@ -152,8 +152,8 @@
     <CudaCompile Include="Sphere.cu">
       <Filter>Source Files\Graphics\Geometry</Filter>
     </CudaCompile>
-    <CudaCompile Include="GeometryCollection.cu">
-      <Filter>Source Files\Graphics\Geometry</Filter>
+    <CudaCompile Include="Scene.Build.cu">
+      <Filter>Source Files\Graphics</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -253,12 +253,6 @@
     <ClInclude Include="..\include\rex\Graphics\ViewPlane.hxx">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Utility\GC.hxx">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Graphics\Lights\LightCollection.hxx">
-      <Filter>Header Files\Graphics\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\rex\Graphics\Geometry\Octree.hxx">
       <Filter>Header Files\Graphics\Geometry</Filter>
     </ClInclude>
@@ -268,8 +262,11 @@
     <ClInclude Include="..\include\rex\Graphics\Geometry\Sphere.hxx">
       <Filter>Header Files\Graphics\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Graphics\Geometry\GeometryCollection.hxx">
-      <Filter>Header Files\Graphics\Geometry</Filter>
+    <ClInclude Include="..\include\rex\CUDA\DeviceList.hxx">
+      <Filter>Header Files\CUDA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Utility\GC.hxx">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -279,14 +276,17 @@
     <None Include="..\include\rex\Utility\Logger.inl">
       <Filter>Header Files\Utility</Filter>
     </None>
-    <None Include="..\include\rex\Utility\GC.inl">
-      <Filter>Header Files\Utility</Filter>
-    </None>
     <None Include="..\include\rex\Graphics\Geometry\Geometry.inl">
       <Filter>Header Files\Graphics\Geometry</Filter>
     </None>
     <None Include="..\include\rex\Graphics\Geometry\Sphere.inl">
       <Filter>Header Files\Graphics\Geometry</Filter>
+    </None>
+    <None Include="..\include\rex\CUDA\DeviceList.inl">
+      <Filter>Header Files\CUDA</Filter>
+    </None>
+    <None Include="..\include\rex\Utility\GC.inl">
+      <Filter>Header Files\Utility</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -13,17 +13,17 @@ struct Color
     /// <summary>
     /// This color's red component.
     /// </summary>
-    real32 R;
+    real_t R;
 
     /// <summary>
     /// This color's green component.
     /// </summary>
-    real32 G;
+    real_t G;
 
     /// <summary>
     /// This color's blue component.
     /// </summary>
-    real32 B;
+    real_t B;
 
     /// <summary>
     /// Creates a new color.
@@ -34,7 +34,7 @@ struct Color
     /// Creates a new color.
     /// </summary>
     /// <param name="all">The value to use for all components.</param>
-    __both__ Color( real32 all );
+    __both__ Color( real_t all );
 
     /// <summary>
     /// Creates a new color.
@@ -42,7 +42,7 @@ struct Color
     /// <param name="r">The color's red component.</param>
     /// <param name="g">The color's green component.</param>
     /// <param name="b">The color's blue component.</param>
-    __both__ Color( real32 r, real32 g, real32 b );
+    __both__ Color( real_t r, real_t g, real_t b );
 
     /// <summary>
     /// Destroys this color.
@@ -55,28 +55,28 @@ struct Color
     /// <param name="c1">The first color.</param>
     /// <param name="c2">The second color.</param>
     /// <param name="amount">The amount to lerp the colors.</param>
-    __both__ static Color Lerp( const Color& c1, const Color& c2, real32 amount );
+    __both__ static Color Lerp( const Color& c1, const Color& c2, real_t amount );
 
     /// <summary>
     /// Darkens the given color.
     /// </summary>
     /// <param name="color">The color.</param>
     /// <param name="amount">The amount to darken the color.</param>
-    __both__ static Color Darken( const Color& color, real32 amount );
+    __both__ static Color Darken( const Color& color, real_t amount );
 
     /// <summary>
     /// Lighten the given color.
     /// </summary>
     /// <param name="color">The color.</param>
     /// <param name="amount">The amount to lighten the color.</param>
-    __both__ static Color Lighten( const Color& color, real32 amount );
+    __both__ static Color Lighten( const Color& color, real_t amount );
 
     /// <summary>
     /// Raises the given color to the given power.
     /// </summary>
     /// <param name="color">The color.</param>
     /// <param name="exp">The exponent.</param>
-    __both__ static Color Pow( const Color& color, real32 exp );
+    __both__ static Color Pow( const Color& color, real_t exp );
 
 #pragma region Pre-defined Colors
 
@@ -131,20 +131,20 @@ struct Color
 
     __both__ Color operator+( const Color& c ) const;
     __both__ Color operator-( const Color& c ) const;
-    __both__ Color operator/( real32 s ) const;
+    __both__ Color operator/( real_t s ) const;
 
     __both__ Color& operator+=( const Color& c );
     __both__ Color& operator-=( const Color& c );
-    __both__ Color& operator*=( real32 s );
-    __both__ Color& operator/=( real32 s );
+    __both__ Color& operator*=( real_t s );
+    __both__ Color& operator/=( real_t s );
 
 #pragma endregion
 
 };
 
 __both__ Color operator*( const Color& c1, const Color& c2 );
-__both__ Color operator*( const Color& c, real32 s );
-__both__ Color operator*( real32 s, const Color& c );
+__both__ Color operator*( const Color& c, real_t s );
+__both__ Color operator*( real_t s, const Color& c );
 
 __host__ std::ostream& operator<<( std::ostream& stream, const Color& color );
 

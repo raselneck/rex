@@ -9,7 +9,6 @@ ShadePoint::ShadePoint( rex::Scene* scene )
     T           = 0.0;
     Scene       = nullptr;
     Material    = nullptr;
-    RecursDepth = 0;
     HasHit      = 0;
 }
 
@@ -19,7 +18,6 @@ ShadePoint::~ShadePoint()
     T           = 0.0;
     Scene       = nullptr;
     Material    = nullptr;
-    RecursDepth = 0;
     HasHit      = 0;
 }
 

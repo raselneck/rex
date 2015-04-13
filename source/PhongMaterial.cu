@@ -6,126 +6,104 @@
 REX_NS_BEGIN
 
 // create material
-PhongMaterial::PhongMaterial()
+__device__ PhongMaterial::PhongMaterial()
     : PhongMaterial( Color::White(), 0.0f, 0.0f, 0.0f, 0.0f )
 {
 }
 
 // create material w/ color
-PhongMaterial::PhongMaterial( const Color& color )
+__device__ PhongMaterial::PhongMaterial( const Color& color )
     : PhongMaterial( color, 0.0f, 0.0f, 0.0f, 0.0f )
 {
 }
 
 // create material w/ color, ambient coefficient, diffuse coefficient, specular coefficient, specular power
-PhongMaterial::PhongMaterial( const Color& color, real32 ka, real32 kd, real32 ks, real32 pow )
-    : MatteMaterial( color, ka, kd, false ),
+__device__ PhongMaterial::PhongMaterial( const Color& color, real_t ka, real_t kd, real_t ks, real_t pow )
+    : MatteMaterial( color, ka, kd, MaterialType::Phong ),
       _specular( ks, color, pow )
 {
-    // allocate us on the device
-    _dThis = GC::DeviceAlloc<PhongMaterial>( *this );
 }
 
 // destroy material
-PhongMaterial::~PhongMaterial()
+__device__ PhongMaterial::~PhongMaterial()
 {
 }
 
 // copy this material
-Material* PhongMaterial::Copy() const
+__device__ Material* PhongMaterial::Copy() const
 {
     // create the copy of the material
-    PhongMaterial* mat = new (std::nothrow) PhongMaterial( _ambient.GetDiffuseColor(),
-                                                           _ambient.GetDiffuseCoefficient(),
-                                                           _diffuse.GetDiffuseCoefficient(),
-                                                           _specular.GetSpecularCoefficient(),
-                                                           _specular.GetSpecularPower() );
+    PhongMaterial* mat = new PhongMaterial( _ambient.GetDiffuseColor(),
+                                            _ambient.GetDiffuseCoefficient(),
+                                            _diffuse.GetDiffuseCoefficient(),
+                                            _specular.GetSpecularCoefficient(),
+                                            _specular.GetSpecularPower() );
     return mat;
 }
 
 // get specular coefficient
-real32 PhongMaterial::GetSpecularCoefficient() const
+__device__ real_t PhongMaterial::GetSpecularCoefficient() const
 {
     return _specular.GetSpecularCoefficient();
 }
 
 // get specular power
-real32 PhongMaterial::GetSpecularPower() const
+__device__ real_t PhongMaterial::GetSpecularPower() const
 {
     return _specular.GetSpecularPower();
 }
 
-// get material type
-MaterialType PhongMaterial::GetType() const
-{
-    return MaterialType::Phong;
-}
-
 // set ambient coefficient
-void PhongMaterial::SetAmbientCoefficient( real32 ka )
+__device__ void PhongMaterial::SetAmbientCoefficient( real_t ka )
 {
     _ambient.SetDiffuseCoefficient( ka );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set color
-void PhongMaterial::SetColor( const Color& color )
+__device__ void PhongMaterial::SetColor( const Color& color )
 {
     _ambient.SetDiffuseColor( color );
     _diffuse.SetDiffuseColor( color );
     _specular.SetSpecularColor( color );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set color w/ components
-void PhongMaterial::SetColor( real32 r, real32 g, real32 b )
+__device__ void PhongMaterial::SetColor( real_t r, real_t g, real_t b )
 {
-    SetColor( Color( r, g, b ) );
+    Color color = Color( r, g, b );
+    SetColor( color );
 }
 
 // set diffuse coefficient
-void PhongMaterial::SetDiffuseCoefficient( real32 kd )
+__device__ void PhongMaterial::SetDiffuseCoefficient( real32 kd )
 {
     _diffuse.SetDiffuseCoefficient( kd );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set specular coefficient
-void PhongMaterial::SetSpecularCoefficient( real32 ks )
+__device__ void PhongMaterial::SetSpecularCoefficient( real_t ks )
 {
     _specular.SetSpecularCoefficient( ks );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // set specular power
-void PhongMaterial::SetSpecularPower( real32 pow )
+__device__ void PhongMaterial::SetSpecularPower( real_t pow )
 {
     _specular.SetSpecularPower( pow );
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( PhongMaterial ), cudaMemcpyHostToDevice );
 }
 
 // get shaded color
-__device__ Color PhongMaterial::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const
+__device__ Color PhongMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const
 {
     // from Suffern, 285
     Vector3 wo    = -sp.Ray.Direction;
     Color   color = _ambient.GetBHR( sp, wo );
 
-    for ( uint32 i = 0; i < lightCount; ++i )
+    for ( uint32 i = 0; i < lights->GetSize(); ++i )
     {
-        const Light* light = lights[ i ];
+        const Light* light = lights->operator[]( i );
         Vector3      wi    = light->GetLightDirection( sp );
-        real32       angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
+        real_t       angle = Vector3::Dot( sp.Normal, wi );
 
         if ( angle > 0.0 )
         {
@@ -134,7 +112,7 @@ __device__ Color PhongMaterial::Shade( ShadePoint& sp, const Light** lights, uin
             if ( light->CastsShadows() )
             {
                 Ray shadowRay( sp.HitPoint, wi );
-                isInShadow = light->IsInShadow( shadowRay, sp );
+                isInShadow = light->IsInShadow( shadowRay, octree, sp );
             }
 
             // add the shadow-inclusive light information

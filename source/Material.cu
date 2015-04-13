@@ -4,18 +4,24 @@
 REX_NS_BEGIN
 
 // create material
-Material::Material()
-    : _dThis( nullptr )
+__device__ Material::Material( MaterialType type )
+    : _type( type )
 {
 }
 
 // destroy material
-Material::~Material()
+__device__ Material::~Material()
 {
 }
 
-// (ray cast) shade
-__device__ Color Material::Shade( ShadePoint& sp, const Light** lights, uint32 lightCount ) const
+// get material type
+__device__ MaterialType Material::GetType() const
+{
+    return _type;
+}
+
+// default shade is an ugly color
+__device__ Color Material::Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const
 {
     return Color::Magenta();
 }

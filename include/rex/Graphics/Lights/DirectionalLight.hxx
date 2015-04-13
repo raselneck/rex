@@ -9,23 +9,23 @@ REX_NS_BEGIN
 /// </summary>
 class DirectionalLight : public Light
 {
-    friend class Scene;
+    REX_IMPLEMENT_DEVICE_MEM_OPS()
 
     Vector3 _direction;
     Color   _color;
-    real32  _radianceScale;
+    real_t  _radianceScale;
 
 public:
     /// <summary>
     /// Creates a new directional light.
     /// </summary>
-    __host__ DirectionalLight();
+    __device__ DirectionalLight();
 
     /// <summary>
     /// Creates a new directional light.
     /// </summary>
     /// <param name="direction">The light's direction.</param>
-    __host__ DirectionalLight( const Vector3& direction );
+    __device__ DirectionalLight( const Vector3& direction );
 
     /// <summary>
     /// Creates a new directional light.
@@ -33,33 +33,28 @@ public:
     /// <param name="x">The light's X direction.</param>
     /// <param name="y">The light's Y direction.</param>
     /// <param name="z">The light's Z direction.</param>
-    __host__ DirectionalLight( real64 x, real64 y, real64 z );
+    __device__ DirectionalLight( real_t x, real_t y, real_t z );
 
     /// <summary>
     /// Destroys this directional light.
     /// </summary>
-    __host__ virtual ~DirectionalLight();
+    __device__ virtual ~DirectionalLight();
 
     /// <summary>
     /// Gets this light's color.
     /// </summary>
-    __both__ const Color& GetColor() const;
+    __device__ const Color& GetColor() const;
 
     /// <summary>
     /// Gets this light's direction.
     /// </summary>
-    __both__ const Vector3& GetDirection() const;
+    __device__ const Vector3& GetDirection() const;
 
     /// <summary>
     /// Gets the direction of the incoming light at a hit point.
     /// </summary>
     /// <param name="sp">The shading point information containing hit data.</param>
     __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) const;
-
-    /// <summary>
-    /// Gets this light on the device.
-    /// </summary>
-    __host__ virtual const Light* GetOnDevice() const;
 
     /// <summary>
     /// Gets the incident radiance at a hit point.
@@ -70,25 +65,21 @@ public:
     /// <summary>
     /// Gets this light's radiance scale.
     /// </summary>
-    __both__ real32 GetRadianceScale() const;
-
-    /// <summary>
-    /// Gets this light's type.
-    /// </summary>
-    __both__ virtual LightType GetType() const;
+    __device__ real_t GetRadianceScale() const;
 
     /// <summary>
     /// Checks to see if the given ray is in shadow when viewed from this light.
     /// </summary>
     /// <param name="ray">The ray to check.</param>
+    /// <param name="octree">The octree containing all of the geometry to check for.</param>
     /// <param name="sp">Current hit point information.</param>
-    __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const;
+    __device__ virtual bool IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const;
 
     /// <summary>
     /// Sets this light's color.
     /// </summary>
     /// <param name="color">The new color.</param>
-    __host__ void SetColor( const Color& color );
+    __device__ void SetColor( const Color& color );
 
     /// <summary>
     /// Sets this light's color.
@@ -96,13 +87,13 @@ public:
     /// <param name="r">The new color's red component.</param>
     /// <param name="g">The new color's green component.</param>
     /// <param name="b">The new color's blue component.</param>
-    __host__ void SetColor( real32 r, real32 g, real32 b );
+    __device__ void SetColor( real_t r, real_t g, real_t b );
 
     /// <summary>
     /// Sets this light's direction.
     /// </summary>
     /// <param name="direction">The new direction.</param>
-    __host__ void SetDirection( const Vector3& direction );
+    __device__ void SetDirection( const Vector3& direction );
 
     /// <summary>
     /// Sets this light's direction.
@@ -110,13 +101,13 @@ public:
     /// <param name="x">The new direction's X component.</param>
     /// <param name="y">The new direction's Y component.</param>
     /// <param name="z">The new direction's Z component.</param>
-    __host__ void SetDirection( real64 x, real64 y, real64 z );
+    __device__ void SetDirection( real_t x, real_t y, real_t z );
 
     /// <summary>
     /// Sets this light's radiance scale.
     /// </summary>
     /// <param name="ls">The new radiance scale.</param>
-    __host__ void SetRadianceScale( real32 ls );
+    __device__ void SetRadianceScale( real_t ls );
 };
 
 REX_NS_END

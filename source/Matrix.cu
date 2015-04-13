@@ -82,7 +82,7 @@ Matrix operator*( const Matrix& l, const Matrix& r )
     {
         for ( int x = 0; x < 4; x++ )
         {
-            real64 sum = 0.0;
+            real_t sum = 0.0;
 
             for ( int j = 0; j < 4; j++ )
             {
@@ -97,7 +97,7 @@ Matrix operator*( const Matrix& l, const Matrix& r )
 }
 
 // multiply matrix by scalar
-Matrix operator*( const Matrix& m, real64 s )
+Matrix operator*( const Matrix& m, real_t s )
 {
     Matrix m2;
 
@@ -113,15 +113,15 @@ Matrix operator*( const Matrix& m, real64 s )
 }
 
 // multiply matrix by scalar
-Matrix operator*( real64 s, const Matrix& m )
+Matrix operator*( real_t s, const Matrix& m )
 {
     return m * s;
 }
 
 // divide matrix by scalar
-Matrix operator/( const Matrix& m, real64 s )
+Matrix operator/( const Matrix& m, real_t s )
 {
-    real64 invs = 1.0 / s;
+    real_t invs = 1.0f / s;
     return m * invs;
 }
 

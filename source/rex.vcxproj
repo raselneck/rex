@@ -114,6 +114,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,6 +136,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -159,6 +161,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -184,6 +187,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -195,12 +199,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="DirectionalLight.cu" />
     <CudaCompile Include="GC.cu" />
     <CudaCompile Include="Geometry.cu" />
-    <CudaCompile Include="GeometryCollection.cu" />
     <CudaCompile Include="GlossySpecularBRDF.cu" />
     <CudaCompile Include="Image.cu" />
     <CudaCompile Include="LambertianBRDF.cu" />
     <CudaCompile Include="Light.cu" />
-    <CudaCompile Include="LightCollection.cu" />
     <CudaCompile Include="Logger.cu" />
     <CudaCompile Include="Main.cu" />
     <CudaCompile Include="Material.cu" />
@@ -211,6 +213,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="PhongMaterial.cu" />
     <CudaCompile Include="PointLight.cu" />
     <CudaCompile Include="Ray.cu" />
+    <CudaCompile Include="Scene.Build.cu" />
     <CudaCompile Include="Scene.cu" />
     <CudaCompile Include="Scene.Render.cu" />
     <CudaCompile Include="ShadePoint.cu" />
@@ -223,6 +226,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="..\include\rex\Config.hxx" />
     <ClInclude Include="..\include\rex\CUDA.hxx" />
+    <ClInclude Include="..\include\rex\CUDA\DeviceList.hxx" />
     <ClInclude Include="..\include\rex\GL\GLContext.hxx" />
     <ClInclude Include="..\include\rex\GL\GLWindow.hxx" />
     <ClInclude Include="..\include\rex\GL\GLWindowHints.hxx" />
@@ -233,13 +237,11 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\Camera.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Color.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Geometry\Geometry.hxx" />
-    <ClInclude Include="..\include\rex\Graphics\Geometry\GeometryCollection.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Geometry\Octree.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Geometry\Sphere.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\AmbientLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\DirectionalLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\Light.hxx" />
-    <ClInclude Include="..\include\rex\Graphics\Lights\LightCollection.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\PointLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\Material.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\MatteMaterial.hxx" />
@@ -261,6 +263,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Utility\Timer.hxx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\include\rex\CUDA\DeviceList.inl" />
     <None Include="..\include\rex\Graphics\Geometry\Geometry.inl" />
     <None Include="..\include\rex\Graphics\Geometry\Sphere.inl" />
     <None Include="..\include\rex\Math\Math.inl" />

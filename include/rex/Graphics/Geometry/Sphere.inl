@@ -1,26 +1,18 @@
-#pragma once
-
-#include "../../Utility/GC.hxx"
-
 REX_NS_BEGIN
 
 // create new sphere
-template<typename T> Sphere::Sphere( const T& material )
-    : Geometry( material ),
-      _radius( 0.0 ),
-      _invRadius( 0.0 )
+template<typename T> __device__ Sphere::Sphere( const T& material )
+    : Geometry( GeometryType::Sphere, material ),
+      _radius ( 0.0 )
 {
-    _dThis = GC::DeviceAlloc<Sphere>( *this );
 }
 
 // create new sphere
-template<typename T> Sphere::Sphere( const T& material, const Vector3& center, real64 radius )
-    : Geometry( material ),
-      _center( center ),
-      _radius( radius ),
-      _invRadius( ( radius == 0.0f) ? 0.0f : 1.0 / radius )
+template<typename T> __device__ Sphere::Sphere( const T& material, const Vector3& center, real_t radius )
+    : Geometry( GeometryType::Sphere, material ),
+      _center ( center ),
+      _radius ( radius )
 {
-    _dThis = GC::DeviceAlloc<Sphere>( *this );
 }
 
 REX_NS_END

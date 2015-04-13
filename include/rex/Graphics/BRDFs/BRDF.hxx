@@ -11,16 +11,18 @@ REX_NS_BEGIN
 /// </summary>
 class BRDF
 {
+    REX_IMPLEMENT_DEVICE_MEM_OPS()
+
 public:
     /// <summary>
     /// Creates a new BRDF.
     /// </summary>
-    __host__ BRDF();
+    __device__ BRDF();
 
     /// <summary>
     /// Destroys this BRDF.
     /// </summary>
-    __host__ virtual ~BRDF();
+    __device__ virtual ~BRDF();
 
     /// <summary>
     /// Gets the BRDF itself.

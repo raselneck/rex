@@ -2,85 +2,116 @@
 
 REX_NS_BEGIN
 
+/// <summary>
+/// Defines a set of scene cleanup data.
+/// </summary>
+struct SceneCleanupData
+{
+    DeviceList<Light*>*    Lights;
+    AmbientLight*          AmbientLight;
+    DeviceList<Geometry*>* Geometry;
+    Octree*                Octree;
+};
+
+
+/// <summary>
+/// The scene cleanup kernel.
+/// </summary>
+/// <param name="data">The data to cleanup.</param>
+__global__ void SceneCleanupKernel( SceneCleanupData* data )
+{
+    if ( data->Geometry )
+    {
+        for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
+        {
+            Geometry* geom = data->Geometry->operator[]( i );
+            delete    geom;
+        }
+        delete data->Geometry;
+    }
+
+    if ( data->Lights )
+    {
+        for ( uint32 i = 0; i < data->Lights->GetSize(); ++i )
+        {
+            Light* light = data->Lights->operator[]( i );
+            delete light;
+        }
+        delete data->Lights;
+    }
+
+    if ( data->AmbientLight )
+    {
+        delete data->AmbientLight;
+    }
+
+    if ( data->Octree )
+    {
+        delete data->Octree;
+    }
+}
+
+
 // create a new scene
 Scene::Scene()
+    : _lights  ( nullptr ),
+      _geometry( nullptr ),
+      _octree  ( nullptr )
 {
 }
 
 // destroy this scene
 Scene::~Scene()
 {
+    Logger::Log( "Cleaning up scene..." );
+
+    SceneCleanupData  sdHost = { _lights, _ambientLight, _geometry, _octree };
+    SceneCleanupData* sdDevice = nullptr;
+
+    // allocate and copy the cleanup information
+    if ( cudaSuccess != cudaMalloc( (void**)( &sdDevice ), sizeof( SceneCleanupData ) ) )
+    {
+        Logger::Log( "  Failed to allocate space for data." );
+        return;
+    }
+    if ( cudaSuccess != cudaMemcpy( sdDevice, &sdHost, sizeof( SceneCleanupData ), cudaMemcpyHostToDevice ) )
+    {
+        Logger::Log( "  Failed to initialize device data." );
+        return;
+    }
+
+    // call the kernel
+    SceneCleanupKernel<<<1, 1>>>( sdDevice );
+
+    // check for errors
+    if ( cudaSuccess != cudaGetLastError() )
+    {
+        Logger::Log( "  Scene cleanup failed. Reason: ", cudaGetErrorString( cudaGetLastError() ) );
+        return;
+    }
+
+    // wait for the kernel to finish executing
+    if ( cudaSuccess != cudaDeviceSynchronize() )
+    {
+        Logger::Log( "  Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
+        return;
+    }
+
+
+    // now set everything to null :D
+    _lights       = nullptr;
+    _ambientLight = nullptr;
+    _geometry     = nullptr;
+    _octree       = nullptr;
 }
 
-// build the scene
-bool Scene::Build( uint16 width, uint16 height )
+// saves this scene's image
+void Scene::SaveImage( const char* fname ) const
 {
-    // make sure the image isn't too large
-    if ( width > 1024 || height > 1024 )
+    if ( _image )
     {
-        REX_DEBUG_LOG( "Image is too large. Max dimensions are 1024x1024, given ", width, "x", height, "." );
-        return false;
+        _image->Save( fname );
     }
-
-    // create the image
-    _image.reset( new Image( width, height ) );
-
-    // set the background color
-    _backgroundColor = Color( 0.0725f );
-
-    // setup the view plane
-    _viewPlane.Width        = width;
-    _viewPlane.Height       = height;
-    _viewPlane.Gamma        = 1.0f;
-    _viewPlane.InvGamma     = 1.0f / _viewPlane.Gamma;
-    _viewPlane.SampleCount  = 4;
-
-
-    // add some lights
-    auto d1 = _lights.AddDirectionalLight( 1.0, 1.0, 2.0 );
-    d1->SetColor( Color::Red() );
-    d1->SetRadianceScale( 1.5f );
-
-    // prepare a material
-    const real32 ka     = 0.25f;
-    const real32 kd     = 0.75f;
-    const real32 ks     = 0.30f;
-    const real32 kpow   = 2.00f;
-    const PhongMaterial white( Color( 1.00f, 1.00f, 1.00f ), ka, kd, ks, kpow );
-
-    // add a sphere
-    auto s1 = _geometry.AddSphere( Vector3(), 10.0f );
-    s1->SetMaterial( white );
-
-
-
-    // calculate the min and max of the bounds
-    Vector3 min, max;
-    for ( auto& geom : _geometry.GetGeometry() )
-    {
-        min = Vector3::Min( min, geom->GetBounds().GetMin() );
-        max = Vector3::Max( max, geom->GetBounds().GetMax() );
-    }
-
-    // create the octree
-    _octree.reset( new Octree( min, max ) );
-
-    // add the objects to the octree
-    for ( auto& geom : _geometry.GetGeometry() )
-    {
-        _octree->Add( geom );
-    }
-
-
-
-    // configure the camera
-    _camera.SetPosition( 0.0, 0.0, 40.0  );
-    _camera.SetTarget  ( 0.0, 0.0, 0.0   );
-    _camera.SetUp      ( 0.0, 1.0, 0.0   );
-    _camera.SetViewPlaneDistance( 2000.0 );
-    _camera.CalculateOrthonormalVectors();
-
-    return true;
 }
 
 REX_NS_END

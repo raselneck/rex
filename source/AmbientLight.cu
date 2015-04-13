@@ -5,24 +5,22 @@
 REX_NS_BEGIN
 
 // create ambient light
-AmbientLight::AmbientLight()
-    : _radianceScale( 1.0f ),
+__device__ AmbientLight::AmbientLight()
+    : Light( LightType::Ambient ),
+      _radianceScale( 1.0f ),
       _color( Color::White() )
 {
     _castShadows = false;
-
-    // create us on the device
-    _dThis = GC::DeviceAlloc<AmbientLight>( *this );
 }
 
 // destroy ambient light
-AmbientLight::~AmbientLight()
+__device__ AmbientLight::~AmbientLight()
 {
     _radianceScale = 0.0f;
 }
 
 // get color
-const Color& AmbientLight::GetColor() const
+__device__ const Color& AmbientLight::GetColor() const
 {
     return _color;
 }
@@ -33,12 +31,6 @@ __device__ Vector3 AmbientLight::GetLightDirection( ShadePoint& sp ) const
     return Vector3( 0.0 );
 }
 
-// get light on the device
-const Light* AmbientLight::GetOnDevice() const
-{
-    return static_cast<Light*>( _dThis );
-}
-
 // get radiance
 __device__ Color AmbientLight::GetRadiance( ShadePoint& sp ) const
 {
@@ -46,51 +38,41 @@ __device__ Color AmbientLight::GetRadiance( ShadePoint& sp ) const
 }
 
 // get radiance scale
-real32 AmbientLight::GetRadianceScale() const
+__device__ real32 AmbientLight::GetRadianceScale() const
 {
     return _radianceScale;
 }
 
-// get type
-LightType AmbientLight::GetType() const
-{
-    return LightType::AmbientLight;
-}
-
 // check if in shadow
-__device__ bool AmbientLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
+__device__ bool AmbientLight::IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const
 {
     return false;
 }
 
 // set casts shadows
-void AmbientLight::SetCastShadows( bool value )
+__device__ void AmbientLight::SetCastShadows( bool value )
 {
     // do nothing
 }
 
 // set color
-void AmbientLight::SetColor( const Color& color )
+__device__ void AmbientLight::SetColor( const Color& color )
 {
     _color = color;
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( AmbientLight ), cudaMemcpyHostToDevice );
 }
 
 // set color by components
-void AmbientLight::SetColor( real32 r, real32 g, real32 b )
+__device__ void AmbientLight::SetColor( real32 r, real32 g, real32 b )
 {
-    SetColor( Color( r, g, b ) );
+    _color.R = r;
+    _color.G = g;
+    _color.B = b;
 }
 
 // set radiance scale
-void AmbientLight::SetRadianceScale( real32 ls )
+__device__ void AmbientLight::SetRadianceScale( real32 ls )
 {
     _radianceScale = ls;
-
-    // update us on the device
-    cudaMemcpy( _dThis, this, sizeof( AmbientLight ), cudaMemcpyHostToDevice );
 }
 
 REX_NS_END

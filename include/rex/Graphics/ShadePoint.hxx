@@ -22,10 +22,9 @@ struct ShadePoint
     Vector3              LocalHitPoint;
     Vector3              Normal;
     Vector3              Direction; // TODO : Same as ray direction?
-    real64               T;
+    real_t               T;
     const rex::Scene*    Scene;
     const rex::Material* Material;
-    int32                RecursDepth; // TODO : Needed?
     bool                 HasHit;
 
     /// <summary>

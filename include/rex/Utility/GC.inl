@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Logger.hxx"
 
 REX_NS_BEGIN
@@ -20,9 +18,9 @@ template<typename T, typename ... Args> T* GC::HostAlloc( const Args& ... args )
     if ( object )
     {
         CleanupCallback cleanup = HostCleanupCallback<T>;
-        void*           memory  = static_cast<void*>( object );
+        void*           memory = static_cast<void*>( object );
 
-        _hostMem.push_back( std::make_pair( memory, cleanup ) );
+        _instance._hostMem.push_back( std::make_pair( memory, cleanup ) );
     }
     else
     {
@@ -37,14 +35,14 @@ template<typename T, typename ... Args> T* GC::HostAlloc( const Args& ... args )
 template<typename T> T* GC::DeviceAlloc( const T& source )
 {
     // attempt to allocate the memory
-    T*          memory  = nullptr;
-    cudaError_t err     = cudaMalloc( reinterpret_cast<void**>( &memory ), sizeof( T ) );
+    T*          memory = nullptr;
+    cudaError_t err = cudaMalloc( reinterpret_cast<void**>( &memory ), sizeof( T ) );
 
     // if the memory was allocated, register it and set it
     if ( err == cudaSuccess )
     {
         // register memory
-        _deviceMem.push_back( memory );
+        _instance._deviceMem.push_back( memory );
 
         // copy it
         err = cudaMemcpy( memory, &source, sizeof( T ), cudaMemcpyHostToDevice );
@@ -66,14 +64,14 @@ template<typename T> T* GC::DeviceAlloc( const T& source )
 template<typename T> T* GC::DeviceAllocArray( uint32 count )
 {
     // attempt to allocate the memory
-    T*          memory  = nullptr;
-    cudaError_t err     = cudaMalloc( reinterpret_cast<void**>( &memory ), sizeof( T ) * count );
+    T*          memory = nullptr;
+    cudaError_t err = cudaMalloc( reinterpret_cast<void**>( &memory ), sizeof( T ) * count );
 
     // if the memory was allocated, register it
     if ( err == cudaSuccess )
     {
         // register memory
-        _deviceMem.push_back( memory );
+        _instance._deviceMem.push_back( memory );
     }
     else
     {

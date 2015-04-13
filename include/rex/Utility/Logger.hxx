@@ -13,7 +13,7 @@ REX_NS_BEGIN
 /// </summary>
 class Logger
 {
-    REX_STATIC_CLASS( Logger );
+    REX_STATIC_CLASS( Logger )
 
     static std::mutex _mutex;
 

@@ -9,9 +9,9 @@ REX_NS_BEGIN
 /// </summary>
 struct Vector3
 {
-    real64 X;
-    real64 Y;
-    real64 Z;
+    real_t X;
+    real_t Y;
+    real_t Z;
 
     /// <summary>
     /// Creates a new 3D vector.
@@ -22,7 +22,7 @@ struct Vector3
     /// Creates a new 3D vector.
     /// </summary>
     /// <param name="all">The value to use for all components.</param>
-    __both__ Vector3( real64 all );
+    __both__ Vector3( real_t all );
 
     /// <summary>
     /// Creates a new 3D vector.
@@ -30,7 +30,7 @@ struct Vector3
     /// <param name="x">The initial X component.</param>
     /// <param name="y">The initial Y component.</param>
     /// <param name="z">The initial Z component.</param>
-    __both__ Vector3( real64 x, real64 y, real64 z );
+    __both__ Vector3( real_t x, real_t y, real_t z );
 
     /// <summary>
     /// Destroys this 3D vector.
@@ -40,12 +40,12 @@ struct Vector3
     /// <summary>
     /// Gets the length of this 3D vector.
     /// </summary>
-    __both__ real64 Length() const;
+    __both__ real_t Length() const;
 
     /// <summary>
     /// Gets the length squared of this 3D vector.
     /// </summary>
-    __both__ real64 LengthSq() const;
+    __both__ real_t LengthSq() const;
 
     /// <summary>
     /// Gets the cross product of two vectors.
@@ -59,21 +59,21 @@ struct Vector3
     /// </summary>
     /// <param name="v1">The first vector.</param>
     /// <param name="v2">The second vector.</param>
-    __both__ static real64 Distance( const Vector3& v1, const Vector3& v2 );
+    __both__ static real_t Distance( const Vector3& v1, const Vector3& v2 );
 
     /// <summary>
     /// Gets the distance squared between two vectors.
     /// </summary>
     /// <param name="v1">The first vector.</param>
     /// <param name="v2">The second vector.</param>
-    __both__ static real64 DistanceSq( const Vector3& v1, const Vector3& v2 );
+    __both__ static real_t DistanceSq( const Vector3& v1, const Vector3& v2 );
 
     /// <summary>
     /// Gets the dot product of two vectors.
     /// </summary>
     /// <param name="v1">The first vector.</param>
     /// <param name="v2">The second vector.</param>
-    __both__ static real64 Dot( const Vector3& v1, const Vector3& v2 );
+    __both__ static real_t Dot( const Vector3& v1, const Vector3& v2 );
 
     /// <summary>
     /// Gets a vector containing the minimum components of each given vector.
@@ -104,12 +104,12 @@ struct Vector3
 
     __both__ Vector3& operator+=( const Vector3& );
     __both__ Vector3& operator-=( const Vector3& );
-    __both__ Vector3& operator*=( real64 );
-    __both__ Vector3& operator/=( real64 );
+    __both__ Vector3& operator*=( real_t );
+    __both__ Vector3& operator/=( real_t );
 };
 
-__both__ Vector3 operator*( const Vector3&, real64 );
-__both__ Vector3 operator*( real64, const Vector3& );
-__both__ Vector3 operator/( const Vector3&, real64 );
+__both__ Vector3 operator*( const Vector3&, real_t );
+__both__ Vector3 operator*( real_t, const Vector3& );
+__both__ Vector3 operator/( const Vector3&, real_t );
 
 REX_NS_END

@@ -3,8 +3,6 @@
 #include <math.h>
 #include <stdio.h>
 
-// TODO : Make the DeviceSceneData struct public? Rename it to just DeviceScene?
-
 REX_NS_BEGIN
 
 /// <summary>
@@ -12,14 +10,13 @@ REX_NS_BEGIN
 /// </summary>
 struct DeviceSceneData
 {
-    const Light**       Lights;
-    uint32              LightCount;
-    const AmbientLight* AmbientLight;
-    const Camera*       Camera;
-    const DeviceOctree* Octree;
-    Image*              Image;
-    const ViewPlane*    ViewPlane;
-    const Color*        BackgroundColor;
+    const DeviceList<Light*>* Lights;
+    const AmbientLight*       AmbientLight;
+    const Camera*             Camera;
+    const Octree*             Octree;
+    Image*                    Image;
+    const ViewPlane*          ViewPlane;
+    const Color*              BackgroundColor;
 };
 
 /// <summary>
@@ -44,32 +41,23 @@ static int32 GetNextPowerOfTwo( int32 number )
 __device__ void SceneHitObjects( DeviceSceneData* sd, const Ray& ray, ShadePoint& sp )
 {
     // prepare to check objects
-    real64 t = 0.0;
+    real_t t = 0.0;
+
 
     // only get the objects that the ray hits
-    const Geometry* geom = sd->Octree->QueryIntersections( ray, t );
+    const Octree*   octree = sd->Octree;
+    const Geometry* geom = octree->QueryIntersections( ray, t );
+
 
     // iterate through the hit objects
-    if ( geom )
+    if ( geom && geom->Hit( ray, t, sp ) )
     {
-        GeometryType geomType = geom->GetType();
-
         sp.HasHit   = true;
         sp.Ray      = ray;
-        sp.Material = geom->GetDeviceMaterial();
+        sp.Material = geom->GetMaterial();
         sp.HitPoint = ray.Origin + t * ray.Direction;
         sp.T        = t;
     }
-}
-
-/// <summary>
-/// Shadow hits objects in a scene.
-/// </summary>
-/// <param name="sd">The scene data.</param>
-/// <param name="ray">The shadow ray to check.</param>
-__device__ bool SceneShadowHitObjects( DeviceSceneData* sd, const Ray& ray )
-{
-    return sd->Octree->QueryShadowRay( ray );
 }
 
 /// <summary>
@@ -85,7 +73,7 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
     Image*           image      = sd->Image;
     const Camera*    camera     = sd->Camera;
     const ViewPlane* vp         = sd->ViewPlane;
-    const real32     invSamples = 1.0f / sd->ViewPlane->SampleCount;
+    const real_t     invSamples = 1.0f / sd->ViewPlane->SampleCount;
     ShadePoint       sp         = nullptr;
 
     // set the ray's origin
@@ -104,14 +92,14 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
 
     // SAMPLE
     int32  n    = static_cast<int32>( sqrtf( sd->ViewPlane->SampleCount ) );
-    real64 invn = 1.0 / n;
+    real_t invn = 1.0 / n;
     for ( int32 sy = 0; sy < n; ++sy )
     {
         for ( int32 sx = 0; sx < n; ++sx )
         {
             // get the pixel point
-            pp.X = x - 0.5 * vp->Width  + ( sx + 0.5 ) * invn;
-            pp.Y = y - 0.5 * vp->Height + ( sy + 0.5 ) * invn;
+            pp.X = x - real_t( 0.5 ) * vp->Width  + ( sx + real_t( 0.5 ) ) * invn;
+            pp.Y = y - real_t( 0.5 ) * vp->Height + ( sy + real_t( 0.5 ) ) * invn;
 
             // set the ray direction
             ray.Direction = camera->GetRayDirection( pp );
@@ -127,7 +115,7 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
                 const Material* mat = sp.Material;
                 MaterialType    matType = mat->GetType();
 
-                color += mat->Shade( sp, sd->Lights, sd->LightCount );
+                color += mat->Shade( sp, sd->Lights, sd->Octree );
             }
             else
             {
@@ -145,13 +133,14 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
 // renders the scene
 void Scene::Render()
 {
+    Logger::Log( "Rendering scene..." );
+
     // create the host scene data
     DeviceSceneData hsd;
-    hsd.Lights          = _lights.GetDeviceLights();
-    hsd.LightCount      = _lights.GetLightCount();
-    hsd.AmbientLight    = reinterpret_cast<const AmbientLight*>( _lights.GetAmbientLight()->GetOnDevice() );
+    hsd.Lights          = _lights;
+    hsd.AmbientLight    = _ambientLight;
     hsd.Camera          = GC::DeviceAlloc<Camera>( _camera );
-    hsd.Octree          = _octree->GetOnDevice();
+    hsd.Octree          = _octree;
     hsd.Image           = GC::DeviceAlloc<Image>( *( _image.get() ) );
     hsd.ViewPlane       = GC::DeviceAlloc<ViewPlane>( _viewPlane );
     hsd.BackgroundColor = GC::DeviceAlloc<Color>( _backgroundColor );
@@ -169,13 +158,12 @@ void Scene::Render()
     }
 
 
-    // TODO : This will not work with images with any dimension greater than 1024
     // now call the render kernel
     int32 imgWidth  = GetNextPowerOfTwo( _image->GetWidth() );
     int32 imgHeight = GetNextPowerOfTwo( _image->GetHeight() );
-    dim3  blocks    = dim3( 16, 16 );
+    dim3  blocks    = dim3( 4, 4 );
     dim3  grid      = dim3( imgHeight / blocks.x + ( ( imgHeight % blocks.x ) == 0 ? 0 : 1 ),
-                             imgWidth  / blocks.y + ( ( imgWidth  % blocks.y ) == 0 ? 0 : 1 ) );
+                            imgWidth  / blocks.y + ( ( imgWidth  % blocks.y ) == 0 ? 0 : 1 ) );
     SceneRenderKernel<<<grid, blocks>>>( dsd );
 
     // check for errors
@@ -197,7 +185,6 @@ void Scene::Render()
 
     // copy our image's contents back to the host
     _image->CopyDeviceToHost();
-    _image->Save( "render.png" );
 }
 
 REX_NS_END

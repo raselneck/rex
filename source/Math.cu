@@ -2,62 +2,12 @@
 
 REX_NS_BEGIN
 
-#define MATH_PI          ( 3.14159265358979323846264338327950 )
-#define MATH_TWO_PI      ( 6.28318530717958647692528676655900 )
-#define MATH_PI_OVER_180 ( 0.01745329251994329576923690768489 )
-#define MATH_INV_PI      ( 0.31830988618379067153776752674503 )
-#define MATH_INV_TWO_PI  ( 0.15915494309189533576888376337251 )
-#define MATH_EPSILON     ( 0.0001 )
-#define MATH_HUGE_VALUE  ( 1.0E10 )
-
-
-// get pi
-real64 Math::Pi()
-{
-    return MATH_PI;
-}
-
-// get 2 * pi
-real64 Math::TwoPi()
-{
-    return MATH_TWO_PI;
-}
-
-// get pi / 180
-real64 Math::PiOver180()
-{
-    return MATH_PI_OVER_180;
-}
-
-// get 1 / pi
-real64 Math::InvPi()
-{
-    return MATH_INV_PI;
-}
-
-// get 1 / ( 2 * pi )
-real64 Math::InvTwoPi()
-{
-    return MATH_INV_TWO_PI;
-}
-
-// get a really small value
-real64 Math::Epsilon()
-{
-    return MATH_EPSILON;
-}
-
-// get a huge value
-real64 Math::HugeValue()
-{
-    return MATH_HUGE_VALUE;
-}
-
 // take 32-bit floor
 int32 Math::Floor( real32 value )
 {
     // derived from http://www.codeproject.com/Tips/700780/Fast-floor-ceiling-functions
-    int32  floor = static_cast<int32>( value + 64.0f ) - 64;
+    int32  c     = static_cast<int32>( Math::Abs( value ) ) + 1;
+    int32  floor = static_cast<int32>( value + c ) - c;
     return floor;
 }
 
@@ -65,21 +15,24 @@ int32 Math::Floor( real32 value )
 int32 Math::Ceiling( real32 value )
 {
     // derived from http://www.codeproject.com/Tips/700780/Fast-floor-ceiling-functions
-    int32  ceiling = 64 - static_cast<int32>( 64.0f - value );
+    int32  c       = static_cast<int32>( Math::Abs( value ) ) + 1;
+    int32  ceiling = c - static_cast<int32>( c - value );
     return ceiling;
 }
 
 // take 64-bit floor
 int64 Math::Floor( real64 value )
 {
-    int64  floor = static_cast<int64>( value + 64.0 ) - 64;
+    int64  c     = static_cast<int32>( Math::Abs( value ) ) + 1;
+    int64  floor = static_cast<int64>( value + c ) - c;
     return floor;
 }
 
 // take 64-bit ceiling
 int64 Math::Ceiling( real64 value )
 {
-    int64  ceiling = 64 - static_cast<int64>( 64.0 - value );
+    int32  c       = static_cast<int32>( Math::Abs( value ) ) + 1;
+    int64  ceiling = c - static_cast<int64>( c - value );
     return ceiling;
 }
 
@@ -98,6 +51,5 @@ int64 Math::Round( real64 value )
         ? Math::Floor( value + 0.5 )
         : Math::Ceiling( value - 0.5 );
 }
-
 
 REX_NS_END

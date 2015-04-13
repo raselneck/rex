@@ -9,13 +9,13 @@ Camera::Camera()
 {
     _up             = Vector3( 0.0, 1.0, 0.0 );
     _target         = Vector3( 0.0, 0.0, 1.0 );
-    _viewPlaneDist  = 1000.0;
+    _viewPlaneDist  = real_t( 1000.0 );
 }
 
 // destroy camera
 Camera::~Camera()
 {
-    _viewPlaneDist = 0.0f;
+    _viewPlaneDist = real_t( 0.0 );
 }
 
 // get camera position
@@ -76,7 +76,7 @@ void Camera::SetPosition( const Vector3& position )
 }
 
 // set camera position
-void Camera::SetPosition( real64 x, real64 y, real64 z )
+void Camera::SetPosition( real_t x, real_t y, real_t z )
 {
     _position = Vector3( x, y, z );
 }
@@ -88,7 +88,7 @@ void Camera::SetTarget( const Vector3& target )
 }
 
 // set camera target
-void Camera::SetTarget( real64 x, real64 y, real64 z )
+void Camera::SetTarget( real_t x, real_t y, real_t z )
 {
     _target = Vector3( x, y, z );
 }
@@ -100,13 +100,13 @@ void Camera::SetUp( const Vector3& up )
 }
 
 // set camera up
-void Camera::SetUp( real64 x, real64 y, real64 z )
+void Camera::SetUp( real_t x, real_t y, real_t z )
 {
     _up = Vector3( x, y, z );
 }
 
 // set camera view plane distance
-void Camera::SetViewPlaneDistance( real64 dist )
+void Camera::SetViewPlaneDistance( real_t dist )
 {
     _viewPlaneDist = dist;
 }

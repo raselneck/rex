@@ -30,7 +30,7 @@ public:
     /// </summary>
     /// <param name="min">The "minimum" corner.</param>
     /// <param name="max">The "maximum" corner.</param>
-    __host__ BoundingBox( const Vector3& min, const Vector3& max );
+    __both__ BoundingBox( const Vector3& min, const Vector3& max );
 
     /// <summary>
     /// Creates a new bounding box.
@@ -41,13 +41,13 @@ public:
     /// <param name="maxX">The "maximum" corner's X.</param>
     /// <param name="maxY">The "maximum" corner's Y.</param>
     /// <param name="maxZ">The "maximum" corner's Z.</param>
-    __host__ BoundingBox( real64 minX, real64 minY, real64 minZ,
-                          real64 maxX, real64 maxY, real64 maxZ );
+    __both__ BoundingBox( real_t minX, real_t minY, real_t minZ,
+                          real_t maxX, real_t maxY, real_t maxZ );
 
     /// <summary>
     /// Destroys this bounding box.
     /// </summary>
-    __host__ ~BoundingBox();
+    __both__ ~BoundingBox();
 
     /// <summary>
     /// Checks to see if this bounding box contains the given bounding box.
@@ -80,19 +80,19 @@ public:
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the collision.</param>
-    __both__ bool Intersects( const Ray& ray, real64& dist ) const;
+    __both__ bool Intersects( const Ray& ray, real_t& dist ) const;
 
     /// <summary>
     /// Sets this bounding box's "minimum" corner.
     /// </summary>
     /// <param name="min">The new "minimum" corner.</param>
-    __host__ void SetMin( const Vector3& min );
+    __both__ void SetMin( const Vector3& min );
 
     /// <summary>
     /// Sets this bounding box's "maximum" corner.
     /// </summary>
     /// <param name="max">The new "maximum" corner.</param>
-    __host__ void SetMax( const Vector3& max );
+    __both__ void SetMax( const Vector3& max );
 };
 
 REX_NS_END

@@ -19,19 +19,16 @@ struct ShadePoint
 {
     Ray                  Ray;
     Vector3              HitPoint;
-    Vector3              LocalHitPoint;
     Vector3              Normal;
     Vector3              Direction; // TODO : Same as ray direction?
     real_t               T;
-    const rex::Scene*    Scene;
     const rex::Material* Material;
     bool                 HasHit;
 
     /// <summary>
     /// Creates a new shade point.
     /// </summary>
-    /// <param name="scene">The scene this shade point is in.</param>
-    __both__ ShadePoint( rex::Scene* scene );
+    __both__ ShadePoint();
 
     /// <summary>
     /// Destroys this shade point.

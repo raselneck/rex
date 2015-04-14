@@ -12,7 +12,6 @@ struct ShadePoint;
 /// </summary>
 enum class GeometryType
 {
-    Plane,
     Sphere,
     Triangle,
     Mesh

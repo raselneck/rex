@@ -3,11 +3,9 @@
 REX_NS_BEGIN
 
 // create new shade point information
-ShadePoint::ShadePoint( rex::Scene* scene )
-    : Scene( scene )
+ShadePoint::ShadePoint()
 {
     T           = 0.0;
-    Scene       = nullptr;
     Material    = nullptr;
     HasHit      = 0;
 }
@@ -16,7 +14,6 @@ ShadePoint::ShadePoint( rex::Scene* scene )
 ShadePoint::~ShadePoint()
 {
     T           = 0.0;
-    Scene       = nullptr;
     Material    = nullptr;
     HasHit      = 0;
 }

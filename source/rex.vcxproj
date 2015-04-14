@@ -219,6 +219,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="ShadePoint.cu" />
     <CudaCompile Include="Sphere.cu" />
     <CudaCompile Include="Timer.cu" />
+    <CudaCompile Include="Triangle.cu" />
     <CudaCompile Include="Vector2.cu" />
     <CudaCompile Include="Vector3.cu" />
     <CudaCompile Include="ViewPlane.cu" />
@@ -238,6 +239,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\Color.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Geometry\Geometry.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Geometry\Octree.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Geometry\Triangle.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Geometry\Sphere.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\AmbientLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\DirectionalLight.hxx" />
@@ -266,6 +268,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <None Include="..\include\rex\CUDA\DeviceList.inl" />
     <None Include="..\include\rex\Graphics\Geometry\Geometry.inl" />
     <None Include="..\include\rex\Graphics\Geometry\Sphere.inl" />
+    <None Include="..\include\rex\Graphics\Geometry\Triangle.inl" />
     <None Include="..\include\rex\Math\Math.inl" />
     <None Include="..\include\rex\Utility\GC.inl" />
     <None Include="..\include\rex\Utility\Logger.inl" />

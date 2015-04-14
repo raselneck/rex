@@ -98,6 +98,18 @@ Color Color::Cyan()
     return Color( 0.0f, 1.0f, 1.0f );
 }
 
+// get orange
+Color Color::Orange()
+{
+    return Color( 1.0f, 0.5f, 0.0f );
+}
+
+// get purple
+Color Color::Purple()
+{
+    return Color( 0.5f, 0.0f, 1.0f );
+}
+
 // get white
 Color Color::White()
 {

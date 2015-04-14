@@ -9,6 +9,7 @@
 #include "Graphics/Geometry/Geometry.hxx"
 #include "Graphics/Geometry/Octree.hxx"
 #include "Graphics/Geometry/Sphere.hxx"
+#include "Graphics/Geometry/Triangle.hxx"
 #include "Graphics/Lights/AmbientLight.hxx"
 #include "Graphics/Lights/DirectionalLight.hxx"
 #include "Graphics/Lights/PointLight.hxx"

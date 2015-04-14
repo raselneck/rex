@@ -113,6 +113,16 @@ struct Color
     __both__ static Color Cyan();
 
     /// <summary>
+    /// Gets the color orange.
+    /// </summary>
+    __both__ static Color Orange();
+
+    /// <summary>
+    /// Gets the color purple.
+    /// </summary>
+    __both__ static Color Purple();
+
+    /// <summary>
     /// Gets the color white.
     /// </summary>
     __both__ static Color White();

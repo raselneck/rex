@@ -24,11 +24,11 @@ __device__ bool Sphere::Hit( const Ray& ray, real_t& tmin, ShadePoint& sp ) cons
     // from Suffern, 58
 
     // this is basically using the quadratic equation solved for x where x = t
-    real_t  t = 0.0;
+    real_t  t    = 0.0;
     Vector3 temp = ray.Origin - _center;
-    real_t  a = Vector3::Dot( ray.Direction, ray.Direction );
-    real_t  b = Vector3::Dot( temp, ray.Direction ) * 2.0;
-    real_t  c = Vector3::Dot( temp, temp ) - _radius * _radius;
+    real_t  a    = Vector3::Dot( ray.Direction, ray.Direction );
+    real_t  b    = Vector3::Dot( temp, ray.Direction ) * 2.0;
+    real_t  c    = Vector3::Dot( temp, temp ) - _radius * _radius;
     real_t  disc = b * b - 4.0 * a * c; // discriminant
 
     // check if the ray misses completely
@@ -38,14 +38,15 @@ __device__ bool Sphere::Hit( const Ray& ray, real_t& tmin, ShadePoint& sp ) cons
     }
 
     // now we need to check the smaller root (b^2 - 4ac)
-    real_t e = sqrt( disc );
+    real_t e     = sqrt( disc );
     real_t denom = 1.0 / ( 2.0 * a );
     t = ( -b - e ) * denom;
     if ( t > Math::Epsilon() )
     {
-        tmin = t;
-        sp.Normal = ( temp + t * ray.Direction ) / _radius;
-        sp.LocalHitPoint = ray.Origin + t * ray.Direction;
+        tmin        = t;
+        sp.Normal   = ( temp + t * ray.Direction ) / _radius;
+        sp.HitPoint = ray.Origin + t * ray.Direction;
+        sp.Material = _material;
 
         return true;
     }
@@ -54,9 +55,10 @@ __device__ bool Sphere::Hit( const Ray& ray, real_t& tmin, ShadePoint& sp ) cons
     t = ( -b + e ) * denom;
     if ( t > Math::Epsilon() )
     {
-        tmin = t;
-        sp.Normal = ( temp + t * ray.Direction ) / _radius;
-        sp.LocalHitPoint = ray.Origin + t * ray.Direction;
+        tmin        = t;
+        sp.Normal   = ( temp + t * ray.Direction ) / _radius;
+        sp.HitPoint = ray.Origin + t * ray.Direction;
+        sp.Material = _material;
 
         return true;
     }
@@ -68,11 +70,11 @@ __device__ bool Sphere::Hit( const Ray& ray, real_t& tmin, ShadePoint& sp ) cons
 __device__ bool Sphere::ShadowHit( const Ray& ray, real_t& tmin ) const
 {
     // this is basically using the quadratic equation solved for x where x = t
-    real_t  t = 0.0;
+    real_t  t    = 0.0;
     Vector3 temp = ray.Origin - _center;
-    real_t  a = Vector3::Dot( ray.Direction, ray.Direction );
-    real_t  b = Vector3::Dot( temp, ray.Direction ) * 2.0;
-    real_t  c = Vector3::Dot( temp, temp ) - _radius * _radius;
+    real_t  a    = Vector3::Dot( ray.Direction, ray.Direction );
+    real_t  b    = Vector3::Dot( temp, ray.Direction ) * 2.0;
+    real_t  c    = Vector3::Dot( temp, temp ) - _radius * _radius;
     real_t  disc = b * b - 4.0 * a * c; // discriminant
 
     // check if the ray misses completely
@@ -82,7 +84,7 @@ __device__ bool Sphere::ShadowHit( const Ray& ray, real_t& tmin ) const
     }
 
     // now we need to check the smaller root (b^2 - 4ac)
-    real_t e = sqrt( disc );
+    real_t e     = sqrt( disc );
     real_t denom = 1.0 / ( 2.0 * a );
     t = ( -b - e ) * denom;
     if ( t > Math::Epsilon() )

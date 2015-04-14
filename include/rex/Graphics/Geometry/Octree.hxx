@@ -6,6 +6,7 @@
 REX_NS_BEGIN
 
 class Geometry;
+struct ShadePoint;
 
 /// <summary>
 /// Defines a pairing between a bounding box and geometry.
@@ -49,7 +50,8 @@ class Octree
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the piece of geometry.</param>
-    __device__ const Geometry* QueryIntersectionsForReal( const Ray& ray, real_t& dist ) const;
+    /// <param name="sp">The shade point data.</param>
+    __device__ const Geometry* QueryIntersectionsForReal( const Ray& ray, real_t& dist, ShadePoint& sp ) const;
 
 public:
     /// <summary>
@@ -95,7 +97,8 @@ public:
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the piece of geometry.</param>
-    __device__ const Geometry* QueryIntersections( const Ray& ray, real_t& dist ) const;
+    /// <param name="sp">The shade point data.</param>
+    __device__ const Geometry* QueryIntersections( const Ray& ray, real_t& dist, ShadePoint& sp ) const;
 
     /// <summary>
     /// Queries this octree to see if the given shadow ray intersects anything.

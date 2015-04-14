@@ -34,22 +34,26 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
 
 
 
-    // prepare a material
+    // prepare some materials
     const real_t ka    = 0.25f;
     const real_t kd    = 0.75f;
     const real_t ks    = 0.30f;
     const real_t kpow  = 2.00f;
-    const PhongMaterial white( Color::White(), ka, kd, ks, kpow );
-    const PhongMaterial red  ( Color::Red(),   ka, kd, ks, kpow );
-    const PhongMaterial blue ( Color::Blue(),  ka, kd, ks, kpow );
+    const PhongMaterial white ( Color::White(),  ka, kd, ks, kpow );
+    const PhongMaterial red   ( Color::Red(),    ka, kd, ks, kpow );
+    const PhongMaterial blue  ( Color::Blue(),   ka, kd, ks, kpow );
+    const PhongMaterial orange( Color::Orange(), ka, kd, ks, kpow );
+    const PhongMaterial purple( Color::Purple(), ka, kd, ks, kpow );
 
-    // add a sphere
-    Sphere* sp1 = new Sphere( blue,  Vector3(   0.0,   0.0,   0.0 ), 10.0 );
-    Sphere* sp2 = new Sphere( red,   Vector3(  10.0,  10.0,  10.0 ),  6.0 );
-    Sphere* sp3 = new Sphere( white, Vector3( -15.0, -15.0, -15.0 ), 12.0 );
-    data->Geometry->Add( sp1 );
-    data->Geometry->Add( sp2 );
-    data->Geometry->Add( sp3 );
+    // add some spheres
+    data->Geometry->Add( new Sphere( blue,  Vector3(   0.0,   0.0,   0.0 ), 10.0 ) );
+    data->Geometry->Add( new Sphere( red,   Vector3(  10.0,  10.0,  10.0 ),  6.0 ) );
+    data->Geometry->Add( new Sphere( white, Vector3( -15.0, -15.0, -15.0 ), 12.0 ) );
+
+    // add some triangles
+    data->Geometry->Add( new Triangle( orange, Vector3(), Vector3(  20.0, 0.0, 0.0 ), Vector3(  20.0 ) ) );
+    data->Geometry->Add( new Triangle( purple, Vector3(), Vector3( -20.0, 0.0, 0.0 ), Vector3( -20.0 ) ) );
+
 
 
 
@@ -76,14 +80,14 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
 // build the scene
 bool Scene::Build( uint16 width, uint16 height )
 {
-    Logger::Log( "Building scene..." );
+    REX_DEBUG_LOG( "Building scene..." );
 
 
 
     // make sure the image isn't too large
     if ( width > 1024 || height > 1024 )
     {
-        Logger::Log( "  Image is too large. Max dimensions are 1024x1024, given ", width, "x", height, "." );
+        REX_DEBUG_LOG( "  Image is too large. Max dimensions are 1024x1024, given ", width, "x", height, "." );
         return false;
     }
 
@@ -100,7 +104,7 @@ bool Scene::Build( uint16 width, uint16 height )
     _viewPlane.Height       = height;
     _viewPlane.Gamma        = 1.0f;
     _viewPlane.InvGamma     = 1.0f / _viewPlane.Gamma;
-    _viewPlane.SampleCount  = 1;
+    _viewPlane.SampleCount  = 9;
 
 
     
@@ -110,12 +114,12 @@ bool Scene::Build( uint16 width, uint16 height )
     SceneBuildData* sdDevice = nullptr;
     if ( cudaSuccess != cudaMalloc( (void**)( &sdDevice ), sizeof( SceneBuildData ) ) )
     {
-        Logger::Log( "  Failed to allocate space for scene data." );
+        REX_DEBUG_LOG( "  Failed to allocate space for scene data." );
         return false;
     }
     if ( cudaSuccess != cudaMemcpy( sdDevice, &sdHost, sizeof( SceneBuildData ), cudaMemcpyHostToDevice ) )
     {
-        Logger::Log( "  Failed to initialize device scene data." );
+        REX_DEBUG_LOG( "  Failed to initialize device scene data." );
         return false;
     }
 
@@ -130,14 +134,14 @@ bool Scene::Build( uint16 width, uint16 height )
     // check for errors
     if ( cudaSuccess != cudaGetLastError() )
     {
-        Logger::Log( "  Scene build failed. Reason: ", cudaGetErrorString( cudaGetLastError() ) );
+        REX_DEBUG_LOG( "  Scene build failed. Reason: ", cudaGetErrorString( cudaGetLastError() ) );
         return false;
     }
 
     // wait for the kernel to finish executing
     if ( cudaSuccess != cudaDeviceSynchronize() )
     {
-        Logger::Log( "  Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
+        REX_DEBUG_LOG( "  Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
         return false;
     }
 
@@ -146,7 +150,7 @@ bool Scene::Build( uint16 width, uint16 height )
     // copy our data back
     if ( cudaSuccess != cudaMemcpy( &sdHost, sdDevice, sizeof( SceneBuildData ), cudaMemcpyDeviceToHost ) )
     {
-        Logger::Log( "  Failed to copy data from device." );
+        REX_DEBUG_LOG( "  Failed to copy data from device." );
         return false;
     }
 
@@ -169,8 +173,8 @@ bool Scene::Build( uint16 width, uint16 height )
 
 
 
-    Logger::Log( "  Done building." );
-    Logger::Log( "  Kernel time: ", timer.GetElapsed(), " seconds" );
+    REX_DEBUG_LOG( "  Done building." );
+    REX_DEBUG_LOG( "  Kernel time: ", timer.GetElapsed(), " seconds" );
     return true;
 }
 

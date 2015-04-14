@@ -1,6 +1,7 @@
 #include <rex/Graphics/Geometry/Octree.hxx>
 #include <rex/Graphics/Geometry/Geometry.hxx>
 #include <rex/Graphics/Geometry/Sphere.hxx>
+#include <rex/Graphics/ShadePoint.hxx>
 #include <rex/Math/Math.hxx>
 #include <rex/Utility/GC.hxx>
 #include <rex/Utility/Logger.hxx>
@@ -92,7 +93,7 @@ __device__ bool Octree::HasSubdivided() const
 }
 
 // query the intersections of the given ray and return the closest hit object
-__device__ const Geometry* Octree::QueryIntersections( const Ray& ray, real_t& dist ) const
+__device__ const Geometry* Octree::QueryIntersections( const Ray& ray, real_t& dist, ShadePoint& sp ) const
 {
     // reset the distance
     dist = Math::HugeValue();
@@ -102,7 +103,7 @@ __device__ const Geometry* Octree::QueryIntersections( const Ray& ray, real_t& d
     real_t tempDist = 0.0;
     if ( _bounds.Intersects( ray, tempDist ) )
     {
-        return QueryIntersectionsForReal( ray, dist );
+        return QueryIntersectionsForReal( ray, dist, sp );
     }
 
 
@@ -111,10 +112,11 @@ __device__ const Geometry* Octree::QueryIntersections( const Ray& ray, real_t& d
 }
 
 // queries the intersections for real this time
-__device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, real_t& dist ) const
+__device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, real_t& dist, ShadePoint& sp ) const
 {
-    const Geometry* closest = nullptr;
-    real_t          tempDist = 0.0;
+    const Geometry* closest   = nullptr;
+    real_t          tempDist  = 0.0;
+    ShadePoint      tempPoint = sp;
 
     // check our children first
     if ( HasSubdivided() )
@@ -123,13 +125,14 @@ __device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, re
         {
             // have the child query for ray intersections
             const Octree*   child = _children[ i ];
-            const Geometry* geom  = child->QueryIntersections( ray, tempDist );
+            const Geometry* geom  = child->QueryIntersections( ray, tempDist, tempPoint );
 
             // check to see if the child intersected the ray
             if ( ( geom != nullptr ) && ( tempDist < dist ) )
             {
                 closest = geom;
-                dist = tempDist;
+                dist    = tempDist;
+                sp      = tempPoint;
             }
         }
     }
@@ -137,13 +140,15 @@ __device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, re
     // now check our objects
     for ( uint_t i = 0; i < _objects.GetSize(); ++i )
     {
+        // TODO : Would just checking for the hit be faster than doing the bounds intersect first?
         BoundsGeometryPair pair = _objects[ i ];
         if ( pair.Bounds.Intersects( ray, tempDist ) && ( tempDist < dist ) )
         {
-            if ( pair.Geometry->ShadowHit( ray, tempDist ) && ( tempDist < dist ) )
+            if ( pair.Geometry->Hit( ray, tempDist, tempPoint ) && ( tempDist < dist ) )
             {
                 closest = pair.Geometry;
-                dist = tempDist;
+                dist    = tempDist;
+                sp      = tempPoint;
             }
         }
     }

@@ -13,9 +13,10 @@ following:
 1.   Make sure you have an NVIDIA GPU.
 2.   Make sure your GPU supports CUDA 7.0.
 3.   Make sure your GPU supports OpenGL 4.0.
-4.   Have the CUDA SDK v7.0 installed.
+4.   Make sure your GPU supports at least compute and SM 3.0.
+5.   Have the CUDA SDK v7.0 installed.
      * Later or earlier versions of CUDA may work, but I use 7.0.
-5.   Have Visual Studio 2013 installed.
+6.   Have Visual Studio 2013 installed.
      * This may work with an earlier version of VS, but I use 2013.
      * This may work on Linux and/or Mac, but I use Windows.
 

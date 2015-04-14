@@ -28,7 +28,7 @@ Image::Image( uint16 width, uint16 height )
 
 
     // create host pixels
-    const uint32 arraySize = _width * _height;
+    const uint_t arraySize = _width * _height;
     _hPixels.resize( arraySize );
 
 
@@ -61,13 +61,13 @@ bool Image::Save( const char* fname ) const
     converted.resize( _width * _height * 3 );
 
     // convert 32-bit floating point color components into 8-bit components
-    const uint32 count = _width * _height;
-    for ( uint32 i = 0; i < count; ++i )
+    const uint_t count = _width * _height;
+    for ( uint_t i = 0; i < count; ++i )
     {
         const Color& c = _hPixels[ i ];
-        converted[ i * 3 + 0 ] = static_cast<uint8>( Math::Clamp( c.R, 0.0f, 1.0f ) * 255 );
-        converted[ i * 3 + 1 ] = static_cast<uint8>( Math::Clamp( c.G, 0.0f, 1.0f ) * 255 );
-        converted[ i * 3 + 2 ] = static_cast<uint8>( Math::Clamp( c.B, 0.0f, 1.0f ) * 255 );
+        converted[ i * 3 + 0 ] = static_cast<uint8>( Math::Clamp( c.R, real_t( 0.0 ), real_t( 1.0 ) ) * 255 );
+        converted[ i * 3 + 1 ] = static_cast<uint8>( Math::Clamp( c.G, real_t( 0.0 ), real_t( 1.0 ) ) * 255 );
+        converted[ i * 3 + 2 ] = static_cast<uint8>( Math::Clamp( c.B, real_t( 0.0 ), real_t( 1.0 ) ) * 255 );
     }
 
     // now write out the image as a PNG
@@ -77,14 +77,14 @@ bool Image::Save( const char* fname ) const
 // copy host pixels to device
 void Image::CopyHostToDevice()
 {
-    uint32 size = _hPixels.size() * sizeof( Color );
+    uint_t size = _hPixels.size() * sizeof( Color );
     cudaMemcpy( _dPixels, &_hPixels[ 0 ], size, cudaMemcpyHostToDevice );
 }
 
 // copy device pixels to host
 void Image::CopyDeviceToHost()
 {
-    uint32 size = _hPixels.size() * sizeof( Color );
+    uint_t size = _hPixels.size() * sizeof( Color );
     cudaMemcpy( &_hPixels[ 0 ], _dPixels, size, cudaMemcpyDeviceToHost );
 }
 

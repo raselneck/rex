@@ -33,8 +33,8 @@ inline String Logger::Merge( std::initializer_list<String> list )
 inline String Logger::GetAbsoluteFileName( const char* fname )
 {
     String str = fname;
-    uint32 index = Math::Min( str.find_last_of( '\\' ),
-                              str.find_last_of( '/' ) );
+    uint_t index = Math::Min( str.find_last_of( '\\' ),
+                              str.find_last_of( '/'  ) );
     return str.substr( index + 1 );
 }
 

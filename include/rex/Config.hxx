@@ -93,7 +93,6 @@ typedef uint64_t uint64;
 typedef float    real32;
 typedef double   real64;
 
-
 // Defining REX_MAX_PRECISION will use doubles instead of floats. Although they are far more
 // accurate, they may drastically reduce the speed of Rex on the GPU. See here:
 // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#from-graphics-processing-to-general-purpose-parallel-computing
@@ -103,6 +102,15 @@ typedef real64 real_t;
 #else
 typedef real32 real_t;
 #endif
+
+
+// TODO : Look up build type detection with GCC
+#if defined( _WIN64 )
+typedef uint64 uint_t;
+#else
+typedef uint32 uint_t;
+#endif
+
 
 
 #include <memory>

@@ -30,7 +30,7 @@ class Octree
     REX_IMPLEMENT_DEVICE_MEM_OPS()
 
     BoundingBox                    _bounds;
-    const uint32                   _countBeforeSubivide;
+    const uint_t                   _countBeforeSubivide;
     Octree*                        _children[ 8 ];
     DeviceList<BoundsGeometryPair> _objects;
 
@@ -70,7 +70,7 @@ public:
     /// </summary>
     /// <param name="bounds">The octree's bounds.</param>
     /// <param name="maxItemCount">The maximum number of items to allow per-node before that node subdivides.</param>
-    __device__ Octree( const BoundingBox& bounds, uint32 maxItemCount );
+    __device__ Octree( const BoundingBox& bounds, uint_t maxItemCount );
 
     /// <summary>
     /// Creates a new octree.
@@ -78,7 +78,7 @@ public:
     /// <param name="min">The minimum corner of the bounds.</param>
     /// <param name="max">The maximum corner of the bounds.</param>
     /// <param name="maxItemCount">The maximum number of items to allow per-node before that node subdivides.</param>
-    __device__ Octree( const Vector3& min, const Vector3& max, uint32 maxItemCount );
+    __device__ Octree( const Vector3& min, const Vector3& max, uint_t maxItemCount );
 
     /// <summary>
     /// Destroys this octree.

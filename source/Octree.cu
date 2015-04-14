@@ -27,6 +27,7 @@ __device__ static BoundsGeometryPair MakePair( const BoundingBox& bounds, const 
 }
 
 
+
 // create a new bounding box / geometry pair
 __device__ BoundsGeometryPair::BoundsGeometryPair()
     : Bounds( Vector3(), Vector3() )
@@ -48,19 +49,19 @@ __device__ Octree::Octree( const Vector3& min, const Vector3& max )
 }
 
 // create an octree w/ bounds and max item count
-__device__ Octree::Octree( const BoundingBox& bounds, uint32 maxItemCount )
+__device__ Octree::Octree( const BoundingBox& bounds, uint_t maxItemCount )
     : _bounds( bounds ),
       _countBeforeSubivide( maxItemCount )
 {
     // clear out the children
-    for ( uint32 i = 0; i < 8; ++i )
+    for ( uint_t i = 0; i < 8; ++i )
     {
         _children[ i ] = nullptr;
     }
 }
 
 // create an octree w/ min corner, max corner, and max item count
-__device__ Octree::Octree( const Vector3& min, const Vector3& max, uint32 maxItemCount )
+__device__ Octree::Octree( const Vector3& min, const Vector3& max, uint_t maxItemCount )
     : Octree( BoundingBox( min, max ), maxItemCount )
 {
 }
@@ -70,7 +71,7 @@ __device__ Octree::~Octree()
 {
     if ( HasSubdivided() )
     {
-        for ( uint32 i = 0; i < 8; ++i )
+        for ( uint_t i = 0; i < 8; ++i )
         {
             delete _children[ i ];
             _children[ i ] = nullptr;
@@ -118,11 +119,11 @@ __device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, re
     // check our children first
     if ( HasSubdivided() )
     {
-        for ( uint32 i = 0; i < 8; ++i )
+        for ( uint_t i = 0; i < 8; ++i )
         {
             // have the child query for ray intersections
             const Octree*   child = _children[ i ];
-            const Geometry* geom = child->QueryIntersections( ray, tempDist );
+            const Geometry* geom  = child->QueryIntersections( ray, tempDist );
 
             // check to see if the child intersected the ray
             if ( ( geom != nullptr ) && ( tempDist < dist ) )
@@ -134,13 +135,16 @@ __device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, re
     }
 
     // now check our objects
-    for ( uint32 i = 0; i < _objects.GetSize(); ++i )
+    for ( uint_t i = 0; i < _objects.GetSize(); ++i )
     {
-        const BoundsGeometryPair& pair = _objects[ i ];
+        BoundsGeometryPair pair = _objects[ i ];
         if ( pair.Bounds.Intersects( ray, tempDist ) && ( tempDist < dist ) )
         {
-            closest = pair.Geometry;
-            dist = tempDist;
+            if ( pair.Geometry->ShadowHit( ray, tempDist ) && ( tempDist < dist ) )
+            {
+                closest = pair.Geometry;
+                dist = tempDist;
+            }
         }
     }
 
@@ -151,6 +155,8 @@ __device__ const Geometry* Octree::QueryIntersectionsForReal( const Ray& ray, re
 __device__ bool Octree::QueryShadowRay( const Ray& ray, real_t& dist ) const
 {
     real_t d = 0.0;
+    bool hit = false;
+    dist     = Math::HugeValue();
 
     // ensure the ray even intersects our bounds
     if ( !_bounds.Intersects( ray, d ) )
@@ -159,30 +165,32 @@ __device__ bool Octree::QueryShadowRay( const Ray& ray, real_t& dist ) const
     }
 
     // check the children first if we have subdivided
+    // TODO : Will this work? Should we still check our objects?
     if ( HasSubdivided() )
     {
-        for ( uint32 i = 0; i < 8; ++i )
+        for ( uint_t i = 0; i < 8; ++i )
         {
-            if ( _children[ i ]->QueryShadowRay( ray, d ) )
+            if ( _children[ i ]->QueryShadowRay( ray, d ) && ( d < dist ) )
             {
+                hit  = true;
                 dist = d;
-                return true;
             }
         }
     }
 
     // now check all of our objects
-    uint32 count = _objects.GetSize();
-    for ( uint32 i = 0; i < count; ++i )
+    uint_t count = _objects.GetSize();
+    for ( uint_t i = 0; i < count; ++i )
     {
-        if ( _objects[ i ].Geometry->ShadowHit( ray, d ) )
+        const Geometry* geom = _objects[ i ].Geometry;
+        if ( geom->ShadowHit( ray, d ) && ( d < dist ) )
         {
+            hit  = true;
             dist = d;
-            return true;
         }
     }
 
-    return false;
+    return hit;
 }
 
 // add the given piece of geometry to this octree
@@ -216,7 +224,7 @@ __device__ bool Octree::Add( const Geometry* geometry )
         }
 
         // try to add the object to children first
-        for ( uint32 i = 0; i < 8; ++i )
+        for ( uint_t i = 0; i < 8; ++i )
         {
             if ( _children[ i ]->Add( geometry ) )
             {
@@ -270,7 +278,7 @@ __device__ void Octree::Subdivide()
         auto& obj = _objects[ oi ];
 
         // check each child to see if we can move the object
-        for ( uint32 ci = 0; ci < 8; ++ci )
+        for ( uint_t ci = 0; ci < 8; ++ci )
         {
             if ( _children[ ci ]->Add( obj.Geometry ) )
             {

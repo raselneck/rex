@@ -1,4 +1,5 @@
 #include <rex/Rex.hxx>
+#include <stdio.h>
 
 REX_NS_BEGIN
 
@@ -39,20 +40,22 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
     const real_t ks    = 0.30f;
     const real_t kpow  = 2.00f;
     const PhongMaterial white( Color::White(), ka, kd, ks, kpow );
+    const PhongMaterial red  ( Color::Red(),   ka, kd, ks, kpow );
+    const PhongMaterial blue ( Color::Blue(),  ka, kd, ks, kpow );
 
     // add a sphere
-    Sphere* sp1 = new Sphere( white, Vector3(  0.0,  0.0,  0.0 ), 10.0 );
-    Sphere* sp2 = new Sphere( white, Vector3( 10.0, 10.0, 10.0 ),  4.0 );
+    Sphere* sp1 = new Sphere( blue,  Vector3(   0.0,   0.0,   0.0 ), 10.0 );
+    Sphere* sp2 = new Sphere( red,   Vector3(  10.0,  10.0,  10.0 ),  6.0 );
+    Sphere* sp3 = new Sphere( white, Vector3( -15.0, -15.0, -15.0 ), 12.0 );
     data->Geometry->Add( sp1 );
     data->Geometry->Add( sp2 );
-
-    
+    data->Geometry->Add( sp3 );
 
 
 
     // calculate the min and max of the bounds
     Vector3 min, max;
-    for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
+    for ( uint_t i = 0; i < data->Geometry->GetSize(); ++i )
     {
         Geometry* geom = data->Geometry->operator[]( i );
         min = Vector3::Min( min, geom->GetBounds().GetMin() );
@@ -63,7 +66,7 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
     data->Octree = new Octree( min, max );
 
     // add the objects to the octree
-    for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
+    for ( uint_t i = 0; i < data->Geometry->GetSize(); ++i )
     {
         Geometry* geom = data->Geometry->operator[]( i );
         data->Octree->Add( geom );
@@ -74,6 +77,8 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
 bool Scene::Build( uint16 width, uint16 height )
 {
     Logger::Log( "Building scene..." );
+
+
 
     // make sure the image isn't too large
     if ( width > 1024 || height > 1024 )
@@ -95,7 +100,7 @@ bool Scene::Build( uint16 width, uint16 height )
     _viewPlane.Height       = height;
     _viewPlane.Gamma        = 1.0f;
     _viewPlane.InvGamma     = 1.0f / _viewPlane.Gamma;
-    _viewPlane.SampleCount  = 9;
+    _viewPlane.SampleCount  = 1;
 
 
     
@@ -114,6 +119,11 @@ bool Scene::Build( uint16 width, uint16 height )
         return false;
     }
 
+
+    // start a timer to get the actual build time
+    Timer timer;
+    timer.Start();
+
     // call the kernel
     SceneBuildKernel<<<1, 1 >>>( sdDevice );
 
@@ -130,6 +140,8 @@ bool Scene::Build( uint16 width, uint16 height )
         Logger::Log( "  Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
         return false;
     }
+
+    timer.Stop();
 
     // copy our data back
     if ( cudaSuccess != cudaMemcpy( &sdHost, sdDevice, sizeof( SceneBuildData ), cudaMemcpyDeviceToHost ) )
@@ -155,6 +167,10 @@ bool Scene::Build( uint16 width, uint16 height )
     _camera.SetViewPlaneDistance( 2000.0 );
     _camera.CalculateOrthonormalVectors();
 
+
+
+    Logger::Log( "  Done building." );
+    Logger::Log( "  Kernel time: ", timer.GetElapsed(), " seconds" );
     return true;
 }
 

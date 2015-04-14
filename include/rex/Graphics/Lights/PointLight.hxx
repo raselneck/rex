@@ -67,7 +67,7 @@ public:
     /// <summary>
     /// Gets this light's radiance scale.
     /// </summary>
-    __device__ real32 GetRadianceScale() const;
+    __device__ real_t GetRadianceScale() const;
 
     /// <summary>
     /// Checks to see if the given ray is in shadow when viewed from this light.

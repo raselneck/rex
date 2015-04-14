@@ -25,7 +25,7 @@ public:
     /// </summary>
     /// <param name="kd">The diffuse reflection coefficient.</param>
     /// <param name="dc">The diffuse color.</param>
-    __device__ LambertianBRDF( real32 kd, const Color& dc );
+    __device__ LambertianBRDF( real_t kd, const Color& dc );
 
     /// <summary>
     /// Destroys this Lambertian BRDF.
@@ -55,7 +55,7 @@ public:
     /// <summary>
     /// Gets the reflection coefficient.
     /// </summary>
-    __device__ real32 GetDiffuseCoefficient() const;
+    __device__ real_t GetDiffuseCoefficient() const;
 
     /// <summary>
     /// Sets the color.
@@ -67,7 +67,7 @@ public:
     /// Sets the reflection coefficient.
     /// </summary>
     /// <param name="coeff">The new reflection coefficient.</param>
-    __device__ void SetDiffuseCoefficient( real32 coeff );
+    __device__ void SetDiffuseCoefficient( real_t coeff );
 };
 
 REX_NS_END

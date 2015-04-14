@@ -9,9 +9,9 @@ REX_NS_BEGIN
 /// </summary>
 struct ViewPlane
 {
-    uint32 Width;
-    uint32 Height;
-    uint32 SampleCount;
+    uint_t Width;
+    uint_t Height;
+    uint_t SampleCount;
     real_t Gamma;
     real_t InvGamma;
 

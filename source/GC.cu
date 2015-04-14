@@ -41,7 +41,7 @@ void GC::RegisterDeviceMemory( void* mem )
 // unregister device memory
 void GC::UnregisterDeviceMemory( void* mem )
 {
-    for ( uint32 i = 0; i < _instance._deviceMem.size(); ++i )
+    for ( uint_t i = 0; i < _instance._deviceMem.size(); ++i )
     {
         if ( _instance._deviceMem[ i ] == mem )
         {

@@ -22,7 +22,7 @@ __global__ void SceneCleanupKernel( SceneCleanupData* data )
 {
     if ( data->Geometry )
     {
-        for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
+        for ( uint_t i = 0; i < data->Geometry->GetSize(); ++i )
         {
             Geometry* geom = data->Geometry->operator[]( i );
             delete    geom;
@@ -32,7 +32,7 @@ __global__ void SceneCleanupKernel( SceneCleanupData* data )
 
     if ( data->Lights )
     {
-        for ( uint32 i = 0; i < data->Lights->GetSize(); ++i )
+        for ( uint_t i = 0; i < data->Lights->GetSize(); ++i )
         {
             Light* light = data->Lights->operator[]( i );
             delete light;

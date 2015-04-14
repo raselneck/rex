@@ -11,13 +11,13 @@ Color::Color()
 }
 
 // create a color w/ value for all
-Color::Color( real32 all )
+Color::Color( real_t all )
     : Color( all, all, all )
 {
 }
 
 // create a color w/ r, g, and b
-Color::Color( real32 r, real32 g, real32 b )
+Color::Color( real_t r, real_t g, real_t b )
     : R( r ),
       G( g ),
       B( b )
@@ -33,7 +33,7 @@ Color::~Color()
 }
 
 // linearly interpolate two colors
-Color Color::Lerp( const Color& c1, const Color& c2, real32 amount )
+Color Color::Lerp( const Color& c1, const Color& c2, real_t amount )
 {
     return Color( Math::Lerp( c1.R, c2.R, amount ),
                   Math::Lerp( c1.G, c2.G, amount ),
@@ -41,23 +41,23 @@ Color Color::Lerp( const Color& c1, const Color& c2, real32 amount )
 }
 
 // darken a color
-Color Color::Darken( const Color& color, real32 amount )
+Color Color::Darken( const Color& color, real_t amount )
 {
     return Color::Lerp( color, Color::Black(), amount );
 }
 
 // lighten a color
-Color Color::Lighten( const Color& color, real32 amount )
+Color Color::Lighten( const Color& color, real_t amount )
 {
     return Color::Lerp( color, Color::White(), amount );
 }
 
 // raise a color to a power
-Color Color::Pow( const Color& color, real32 exp )
+Color Color::Pow( const Color& color, real_t exp )
 {
-    return Color( powf( color.R, exp ),
-                  powf( color.G, exp ),
-                  powf( color.B, exp ) );
+    return Color( pow( color.R, exp ),
+                  pow( color.G, exp ),
+                  pow( color.B, exp ) );
 }
 
 #pragma region Pre-defined Colors
@@ -140,7 +140,7 @@ Color Color::operator-( const Color& c ) const
                   B - c.B );
 }
 
-Color Color::operator/( real32 s ) const
+Color Color::operator/( real_t s ) const
 {
     return Color( R / s,
                   G / s,
@@ -163,7 +163,7 @@ Color& Color::operator-=( const Color& c )
     return *this;
 }
 
-Color& Color::operator*=( real32 s )
+Color& Color::operator*=( real_t s )
 {
     R *= s;
     G *= s;
@@ -171,7 +171,7 @@ Color& Color::operator*=( real32 s )
     return *this;
 }
 
-Color& Color::operator/=( real32 s )
+Color& Color::operator/=( real_t s )
 {
     R /= s;
     G /= s;
@@ -186,14 +186,14 @@ Color operator*( const Color& c1, const Color& c2 )
                   c1.B * c2.B );
 }
 
-Color operator*( const Color& c, real32 s )
+Color operator*( const Color& c, real_t s )
 {
     return Color( c.R * s,
                   c.G * s,
                   c.B * s );
 }
 
-Color operator*( real32 s, const Color& c )
+Color operator*( real_t s, const Color& c )
 {
     return Color( c.R * s,
                   c.G * s,

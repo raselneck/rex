@@ -17,7 +17,7 @@ __device__ MatteMaterial::MatteMaterial( const Color& color )
 }
 
 // create material w/ color, ambient coefficient, and diffuse coefficient
-__device__ MatteMaterial::MatteMaterial( const Color& color, real32 ka, real32 kd )
+__device__ MatteMaterial::MatteMaterial( const Color& color, real_t ka, real_t kd )
     : MatteMaterial( color, ka, kd, MaterialType::Matte )
 {
 }
@@ -46,7 +46,7 @@ __device__ Material* MatteMaterial::Copy() const
 }
 
 // get ka
-__device__ real32 MatteMaterial::GetAmbientCoefficient() const
+__device__ real_t MatteMaterial::GetAmbientCoefficient() const
 {
     return _ambient.GetDiffuseCoefficient();
 }
@@ -59,13 +59,13 @@ __device__ Color MatteMaterial::GetColor() const
 }
 
 // get kd
-__device__ real32 MatteMaterial::GetDiffuseCoefficient() const
+__device__ real_t MatteMaterial::GetDiffuseCoefficient() const
 {
     return _diffuse.GetDiffuseCoefficient();
 }
 
 // set ka
-__device__ void MatteMaterial::SetAmbientCoefficient( real32 ka )
+__device__ void MatteMaterial::SetAmbientCoefficient( real_t ka )
 {
     _ambient.SetDiffuseCoefficient( ka );
 }
@@ -78,14 +78,14 @@ __device__ void MatteMaterial::SetColor( const Color& color )
 }
 
 // set color w/ components
-__device__ void MatteMaterial::SetColor( real32 r, real32 g, real32 b )
+__device__ void MatteMaterial::SetColor( real_t r, real_t g, real_t b )
 {
     Color color = Color( r, g, b );
     SetColor( color );
 }
 
 // set kd
-__device__ void MatteMaterial::SetDiffuseCoefficient( real32 kd )
+__device__ void MatteMaterial::SetDiffuseCoefficient( real_t kd )
 {
     _diffuse.SetDiffuseCoefficient( kd );
 }
@@ -98,11 +98,11 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
     Color   color = _ambient.GetBHR( sp, wo );
 
     // go through all of the lights in the scene
-    for ( uint32 i = 0; i < lights->GetSize(); ++i )
+    for ( uint_t i = 0; i < lights->GetSize(); ++i )
     {
         const Light*  light = lights->operator[]( i );
         Vector3       wi    = light->GetLightDirection( sp );
-        real32        angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
+        real_t        angle = static_cast<real_t>( Vector3::Dot( sp.Normal, wi ) );
 
         if ( angle > 0.0 )
         {

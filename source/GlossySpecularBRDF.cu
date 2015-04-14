@@ -9,7 +9,7 @@ __device__ GlossySpecularBRDF::GlossySpecularBRDF()
 }
 
 // create g-s BRDF w/ coefficient, color, power
-__device__ GlossySpecularBRDF::GlossySpecularBRDF( real32 ks, const Color& color, real32 pow )
+__device__ GlossySpecularBRDF::GlossySpecularBRDF( real_t ks, const Color& color, real_t pow )
     : _coefficient( ks ),
       _color      ( color ),
       _power      ( pow )
@@ -35,10 +35,10 @@ __device__ Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const Vector
     // from Suffern, 284
 
     Color   color;
-    real32  angle = static_cast<real32>( Vector3::Dot( sp.Normal, wi ) );
+    real_t  angle     = Vector3::Dot( sp.Normal, wi );
     Vector3 reflected = -wi + 2.0 * sp.Normal * angle;
 
-    angle = static_cast<real32>( Vector3::Dot( reflected, wo ) );
+    angle = Vector3::Dot( reflected, wo );
     if ( angle > 0.0 )
     {
         color = _coefficient * _color * pow( angle, _power );
@@ -48,7 +48,7 @@ __device__ Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const Vector
 }
 
 // get ks
-__device__ real32 GlossySpecularBRDF::GetSpecularCoefficient() const
+__device__ real_t GlossySpecularBRDF::GetSpecularCoefficient() const
 {
     return _coefficient;
 }

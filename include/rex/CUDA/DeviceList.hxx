@@ -12,7 +12,7 @@ REX_NS_BEGIN
 template<typename T> class DeviceList
 {
     T*     _items;
-    uint32 _size;
+    uint_t _size;
 
 public:
     /// <summary>
@@ -28,7 +28,7 @@ public:
     /// <summary>
     /// Gets the number of items in this list.
     /// </summary>
-    __device__ uint32 GetSize() const;
+    __device__ uint_t GetSize() const;
 
     /// <summary>
     /// Adds the given item to this list.
@@ -40,25 +40,25 @@ public:
     /// Removes the item at the given index.
     /// </summary>
     /// <param name="index">The index of the item to remove.</param>
-    __device__ void Remove( uint32 index );
+    __device__ void Remove( uint_t index );
 
     /// <summary>
     /// Resizes this list.
     /// </summary>
     /// <param name="size">The new size.</param>
-    __device__ void Resize( uint32 size );
+    __device__ void Resize( uint_t size );
 
     /// <summary>
     /// Gets the item at the given index.
     /// </summary>
     /// <param name="index">The index.</param>
-    __device__ const T& operator[]( uint32 index ) const;
+    __device__ const T& operator[]( uint_t index ) const;
 
     /// <summary>
     /// Gets the item at the given index.
     /// </summary>
     /// <param name="index">The index.</param>
-    __device__ T& operator[]( uint32 index );
+    __device__ T& operator[]( uint_t index );
 };
 
 REX_NS_END

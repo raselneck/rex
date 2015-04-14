@@ -38,7 +38,7 @@ __device__ Color AmbientLight::GetRadiance( ShadePoint& sp ) const
 }
 
 // get radiance scale
-__device__ real32 AmbientLight::GetRadianceScale() const
+__device__ real_t AmbientLight::GetRadianceScale() const
 {
     return _radianceScale;
 }
@@ -62,7 +62,7 @@ __device__ void AmbientLight::SetColor( const Color& color )
 }
 
 // set color by components
-__device__ void AmbientLight::SetColor( real32 r, real32 g, real32 b )
+__device__ void AmbientLight::SetColor( real_t r, real_t g, real_t b )
 {
     _color.R = r;
     _color.G = g;
@@ -70,7 +70,7 @@ __device__ void AmbientLight::SetColor( real32 r, real32 g, real32 b )
 }
 
 // set radiance scale
-__device__ void AmbientLight::SetRadianceScale( real32 ls )
+__device__ void AmbientLight::SetRadianceScale( real_t ls )
 {
     _radianceScale = ls;
 }

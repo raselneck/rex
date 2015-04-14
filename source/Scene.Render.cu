@@ -46,7 +46,7 @@ __device__ void SceneHitObjects( DeviceSceneData* sd, const Ray& ray, ShadePoint
 
     // only get the objects that the ray hits
     const Octree*   octree = sd->Octree;
-    const Geometry* geom = octree->QueryIntersections( ray, t );
+    const Geometry* geom   = octree->QueryIntersections( ray, t );
 
 
     // iterate through the hit objects
@@ -135,6 +135,8 @@ void Scene::Render()
 {
     Logger::Log( "Rendering scene..." );
 
+
+
     // create the host scene data
     DeviceSceneData hsd;
     hsd.Lights          = _lights;
@@ -158,19 +160,25 @@ void Scene::Render()
     }
 
 
-    // now call the render kernel
+    // prepare for the kernel
     int32 imgWidth  = GetNextPowerOfTwo( _image->GetWidth() );
     int32 imgHeight = GetNextPowerOfTwo( _image->GetHeight() );
     dim3  blocks    = dim3( 4, 4 );
     dim3  grid      = dim3( imgHeight / blocks.x + ( ( imgHeight % blocks.x ) == 0 ? 0 : 1 ),
                             imgWidth  / blocks.y + ( ( imgWidth  % blocks.y ) == 0 ? 0 : 1 ) );
+
+    // start a timer
+    Timer timer;
+    timer.Start();
+
+    // run the kernel
     SceneRenderKernel<<<grid, blocks>>>( dsd );
 
     // check for errors
     cudaError_t err = cudaGetLastError();
     if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "Scene::Render kernel failed. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "  Render kernel failed. Reason: ", cudaGetErrorString( err ) );
         return;
     }
 
@@ -178,13 +186,21 @@ void Scene::Render()
     err = cudaDeviceSynchronize();
     if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "  Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
         return;
     }
 
 
+    timer.Stop();
+
+
     // copy our image's contents back to the host
     _image->CopyDeviceToHost();
+
+
+
+    Logger::Log( "  Done rendering." );
+    Logger::Log( "  Kernel time: ", timer.GetElapsed(), " seconds" );
 }
 
 REX_NS_END

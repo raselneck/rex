@@ -75,7 +75,7 @@ __device__ void PhongMaterial::SetColor( real_t r, real_t g, real_t b )
 }
 
 // set diffuse coefficient
-__device__ void PhongMaterial::SetDiffuseCoefficient( real32 kd )
+__device__ void PhongMaterial::SetDiffuseCoefficient( real_t kd )
 {
     _diffuse.SetDiffuseCoefficient( kd );
 }
@@ -99,7 +99,7 @@ __device__ Color PhongMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
     Vector3 wo    = -sp.Ray.Direction;
     Color   color = _ambient.GetBHR( sp, wo );
 
-    for ( uint32 i = 0; i < lights->GetSize(); ++i )
+    for ( uint_t i = 0; i < lights->GetSize(); ++i )
     {
         const Light* light = lights->operator[]( i );
         Vector3      wi    = light->GetLightDirection( sp );

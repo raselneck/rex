@@ -1,9 +1,10 @@
 # Rex the Ray Tracer
 
-Rex is a ray tracer I am working on for an independent study where I will
-be attempting to make a real-time ray tracer on the GPU utilizing CUDA. I
+Rex is a ray tracer I am working on for an independent study where I am
+attempting to make a real-time ray tracer on the GPU utilizing CUDA. I
 am using "Ray Tracing from the Ground Up" by Kevin Suffern as the basis and
-reference for the ray tracer itself.
+reference for the ray tracer itself. For CUDA use and OpenGL integration,
+I am using online resources.
 
 ## Building & Running
 
@@ -11,12 +12,12 @@ To build and run the current version of Rex, you will need to check the
 following:
 
 1.   Make sure you have an NVIDIA GPU.
-2.   Make sure your GPU supports CUDA 7.0.
-3.   Make sure your GPU supports OpenGL 4.0.
-4.   Make sure your GPU supports at least compute and SM 3.0.
-5.   Have the CUDA SDK v7.0 installed.
-     * Later or earlier versions of CUDA may work, but I use 7.0.
-6.   Have Visual Studio 2013 installed.
+2.   Make sure your GPU supports:
+     * CUDA 7.0
+     * OpenGL 4.0
+     * Compute and SM 2.0
+3.   Have the CUDA SDK v7.0 installed.
+4.   Have Visual Studio 2013 installed.
      * This may work with an earlier version of VS, but I use 2013.
      * This may work on Linux and/or Mac, but I use Windows.
 
@@ -29,7 +30,12 @@ your own. Sorry. I don't have enough time to test this everywhere I can.
 ## What happened to the CPU version??
 
 Not to fear! If you don't want to play around with CUDA, you can still
-access the CPU-based version of Rex [here](https://github.com/fastinvsqrt/rex/tree/CPU)!
+access the [CPU-based version of Rex](https://github.com/fastinvsqrt/rex/tree/CPU)!
+
+## Helpful Links
+
+* [CUDA 7.0 C Programming Guide](http://docs.nvidia.com/cuda/#axzz3XP4B2jj6)
+* [CUDA Forums](https://devtalk.nvidia.com/)
 
 ## License
 

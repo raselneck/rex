@@ -12,8 +12,6 @@ struct ViewPlane
     uint_t Width;
     uint_t Height;
     uint_t SampleCount;
-    real_t Gamma;
-    real_t InvGamma;
 
     /// <summary>
     /// Creates a new view plane.

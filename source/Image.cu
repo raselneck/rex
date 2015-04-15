@@ -33,12 +33,28 @@ Image::Image( uint16 width, uint16 height )
 
 
     // create device pixels
-    _dPixels = GC::DeviceAllocArray( arraySize, &_hPixels[ 0 ] );
+    if ( cudaSuccess != cudaMalloc( reinterpret_cast<void**>( &_dPixels ), arraySize * sizeof( Color ) ) )
+    {
+        REX_DEBUG_LOG( "Failed to allocate device image pixels." );
+        return;
+    }
+    if ( cudaSuccess != cudaMemcpy( _dPixels, &_hPixels[ 0 ], arraySize * sizeof( Color ), cudaMemcpyHostToDevice ) )
+    {
+        REX_DEBUG_LOG( "Failed to copy over initial device pixels." );
+        cudaFree( _dPixels );
+        _dPixels = nullptr;
+    }
 }
 
 // destroy image
 Image::~Image()
 {
+    // free our device pixels
+    if ( _dPixels )
+    {
+        cudaFree( _dPixels );
+        _dPixels = nullptr;
+    }
 }
 
 // get image width

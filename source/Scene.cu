@@ -114,4 +114,16 @@ void Scene::SaveImage( const char* fname ) const
     }
 }
 
+// set camera position
+void Scene::SetCameraPosition( const Vector3& pos )
+{
+    _camera.SetPosition( pos );
+}
+
+// set camera position
+void Scene::SetCameraPosition( real_t x, real_t y, real_t z )
+{
+    _camera.SetPosition( x, y, z );
+}
+
 REX_NS_END

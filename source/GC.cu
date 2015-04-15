@@ -14,12 +14,7 @@ GC::GC()
 // destroy the garbage collector instance
 GC::~GC()
 {
-    // clear all of the device memory
-    for ( auto& dm : _deviceMem )
-    {
-        cudaFree( dm );
-    }
-    _deviceMem.clear();
+    ReleaseDeviceMemory();
 
     // clear all of the host memory
     for ( auto& hm : _hostMem )
@@ -32,23 +27,15 @@ GC::~GC()
     _hostMem.clear();
 }
 
-// register device memory
-void GC::RegisterDeviceMemory( void* mem )
+// free all device memory
+void GC::ReleaseDeviceMemory()
 {
-    _instance._deviceMem.push_back( mem );
-}
-
-// unregister device memory
-void GC::UnregisterDeviceMemory( void* mem )
-{
-    for ( uint_t i = 0; i < _instance._deviceMem.size(); ++i )
+    // clear all of the device memory
+    for ( auto& dm : _instance._deviceMem )
     {
-        if ( _instance._deviceMem[ i ] == mem )
-        {
-            _instance._deviceMem.erase( _instance._deviceMem.begin() + i );
-            break;
-        }
+        cudaFree( dm );
     }
+    _instance._deviceMem.clear();
 }
 
 REX_NS_END

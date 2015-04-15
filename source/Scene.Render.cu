@@ -83,9 +83,9 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
     Color            color      = Color::Black();
     const Camera*    camera     = sd->Camera;
     const ViewPlane* vp         = sd->ViewPlane;
-    const real_t     invSamples = 1.0f / sd->ViewPlane->SampleCount;
+    const real_t     invSamples = 1.0f / vp->SampleCount;
     const real_t     half       = real_t( 0.5 );
-    int32            n          = static_cast<int32>( sqrtf( sd->ViewPlane->SampleCount ) );
+    int32            n          = static_cast<int32>( sqrtf( vp->SampleCount ) );
     real_t           invn       = 1.0 / n;
     int32            sy         = 0;
     int32            sx         = 0;
@@ -130,9 +130,8 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
 // renders the scene
 void Scene::Render()
 {
-    REX_DEBUG_LOG( "Rendering scene..." );
-
-
+    // make sure the camera is up to date
+    _camera.CalculateOrthonormalVectors();
 
     // create the host scene data
     DeviceSceneData hsd;
@@ -140,7 +139,7 @@ void Scene::Render()
     hsd.AmbientLight    = _ambientLight;
     hsd.Camera          = GC::DeviceAlloc<Camera>( _camera );
     hsd.Octree          = _octree;
-    hsd.Image           = GC::DeviceAlloc<Image>( *( _image.get() ) );
+    hsd.Image           = GC::DeviceAlloc<Image>( *_image );
     hsd.ViewPlane       = GC::DeviceAlloc<ViewPlane>( _viewPlane );
     hsd.BackgroundColor = GC::DeviceAlloc<Color>( _backgroundColor );
 
@@ -175,7 +174,7 @@ void Scene::Render()
     cudaError_t err = cudaGetLastError();
     if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "  Render kernel failed. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "Render kernel failed. Reason: ", cudaGetErrorString( err ) );
         return;
     }
 
@@ -183,7 +182,7 @@ void Scene::Render()
     err = cudaDeviceSynchronize();
     if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "  Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
         return;
     }
 
@@ -196,8 +195,7 @@ void Scene::Render()
 
 
 
-    REX_DEBUG_LOG( "  Done rendering." );
-    REX_DEBUG_LOG( "  Kernel time: ", timer.GetElapsed(), " seconds" );
+    REX_DEBUG_LOG( "Render time: ", timer.GetElapsed(), " seconds" );
 }
 
 REX_NS_END

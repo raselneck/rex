@@ -5,8 +5,6 @@
 #include "../Math/Vector3.hxx"
 #include "Color.hxx"
 
-// TODO : Do we need the scene pointer? Can we make the SceneData struct public?
-
 REX_NS_BEGIN
 
 class Scene;

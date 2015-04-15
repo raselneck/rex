@@ -68,16 +68,9 @@ public:
     template<typename T> __host__ static T* DeviceAllocArray( uint_t count, const T* source );
 
     /// <summary>
-    /// Registers the given device memory pointer to be handled.
+    /// Releases all device memory.
     /// </summary>
-    /// <param name="mem">The device memory pointer.</param>
-    static void RegisterDeviceMemory( void* mem );
-
-    /// <summary>
-    /// Unregisters the given device memory pointer from being handled.
-    /// </summary>
-    /// <param name="mem">The device memory pointer.</param>
-    static void UnregisterDeviceMemory( void* mem );
+    static void ReleaseDeviceMemory();
 };
 
 REX_NS_END

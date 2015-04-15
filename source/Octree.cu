@@ -201,8 +201,17 @@ __device__ bool Octree::QueryShadowRay( const Ray& ray, real_t& dist ) const
 // add the given piece of geometry to this octree
 __device__ bool Octree::Add( const Geometry* geometry )
 {
-    BoundingBox bounds = geometry->GetBounds();
+    return Add( geometry, geometry->GetBounds() );
+}
 
+// add the given piece of geometry to this octree
+__device__ bool Octree::Add( const Geometry* geometry, const BoundingBox& bounds )
+{
+    // ensure we were given a valid piece of geometry
+    if ( !geometry )
+    {
+        return false;
+    }
 
     // make sure we contain the geometry's bounding box
     ContainmentType ctype = _bounds.Contains( bounds );

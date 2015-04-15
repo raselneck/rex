@@ -14,8 +14,9 @@ __device__ Sphere::~Sphere()
 // get bounds
 __device__ BoundingBox Sphere::GetBounds() const
 {
-    Vector3 size = Vector3( _radius );
-    return BoundingBox( _center - size, _center + size );
+    Vector3     size   = Vector3( _radius );
+    BoundingBox bounds = BoundingBox( _center - size, _center + size );
+    return bounds;
 }
 
 // shade hit this sphere with a ray

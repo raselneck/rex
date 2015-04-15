@@ -204,7 +204,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="LambertianBRDF.cu" />
     <CudaCompile Include="Light.cu" />
     <CudaCompile Include="Logger.cu" />
-    <CudaCompile Include="Main.cu" />
+    <CudaCompile Include="Main.cxx" />
     <CudaCompile Include="Material.cu" />
     <CudaCompile Include="Math.cu" />
     <CudaCompile Include="Matrix.cu" />

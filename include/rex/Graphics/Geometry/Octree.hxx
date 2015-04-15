@@ -112,6 +112,13 @@ public:
     /// </summary>
     /// <param name="geometry">The piece of geometry to add.</param>
     __device__ bool Add( const Geometry* geometry );
+
+    /// <summary>
+    /// Adds the given bounding box to this octree.
+    /// </summary>
+    /// <param name="geometry">The piece of geometry to add.</param>
+    /// <param name="geometry">The bounds of the given object.</param>
+    __device__ bool Add( const Geometry* geometry, const BoundingBox& bounds );
 };
 
 REX_NS_END

@@ -75,8 +75,9 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
     // add the objects to the octree
     for ( uint_t i = 0; i < data->Geometry->GetSize(); ++i )
     {
-        Geometry* geom = data->Geometry->operator[]( i );
-        data->Octree->Add( geom );
+        Geometry*   geom   = data->Geometry->operator[]( i );
+        BoundingBox bounds = geom->GetBounds();
+        data->Octree->Add( geom, bounds );
     }
 }
 

@@ -11,10 +11,10 @@ __device__ Triangle::~Triangle()
 // get triangle bounds
 __device__ BoundingBox Triangle::GetBounds() const
 {
-    Vector3 min = Vector3::Min( Vector3::Min( _p1, _p2 ), _p3 );
-    Vector3 max = Vector3::Max( Vector3::Max( _p1, _p2 ), _p3 );
-
-    return BoundingBox( min, max );
+    Vector3     min    = Vector3::Min( Vector3::Min( _p1, _p2 ), _p3 );
+    Vector3     max    = Vector3::Max( Vector3::Max( _p1, _p2 ), _p3 );
+    BoundingBox bounds = BoundingBox( min, max );
+    return bounds;
 }
 
 // get triangle normal

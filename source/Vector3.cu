@@ -74,17 +74,19 @@ real_t Vector3::Dot( const Vector3& v1, const Vector3& v2 )
 // get min components of two vectors
 Vector3 Vector3::Min( const Vector3& v1, const Vector3& v2 )
 {
-    return Vector3( Math::Min( v1.X, v2.X ),
-                    Math::Min( v1.Y, v2.Y ),
-                    Math::Min( v1.Z, v2.Z ) );
+    Vector3 min = Vector3( Math::Min( v1.X, v2.X ),
+                           Math::Min( v1.Y, v2.Y ),
+                           Math::Min( v1.Z, v2.Z ) );
+    return min;
 }
 
 // get max components of two vectors
 Vector3 Vector3::Max( const Vector3& v1, const Vector3& v2 )
 {
-    return Vector3( Math::Max( v1.X, v2.X ),
-                    Math::Max( v1.Y, v2.Y ),
-                    Math::Max( v1.Z, v2.Z ) );
+     Vector3 max = Vector3( Math::Max( v1.X, v2.X ),
+                            Math::Max( v1.Y, v2.Y ),
+                            Math::Max( v1.Z, v2.Z ) );
+     return max;
 }
 
 // normalize a vector

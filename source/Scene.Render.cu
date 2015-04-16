@@ -40,6 +40,8 @@ static int32 GetNextPowerOfTwo( int32 number )
 /// <param name="sp">The shade point whose data should be populated.</param>
 __device__ void SceneHitObjects( DeviceSceneData* sd, const Ray& ray, ShadePoint& sp )
 {
+    // TODO : Honestly, this function can be removed
+
     // prepare to check objects
     real_t t = 0.0;
 

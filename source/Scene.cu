@@ -71,12 +71,12 @@ Scene::~Scene()
     // allocate and copy the cleanup information
     if ( cudaSuccess != cudaMalloc( (void**)( &sdDevice ), sizeof( SceneCleanupData ) ) )
     {
-        Logger::Log( "  Failed to allocate space for data." );
+        REX_DEBUG_LOG( "  Failed to allocate space for data." );
         return;
     }
     if ( cudaSuccess != cudaMemcpy( sdDevice, &sdHost, sizeof( SceneCleanupData ), cudaMemcpyHostToDevice ) )
     {
-        Logger::Log( "  Failed to initialize device data." );
+        REX_DEBUG_LOG( "  Failed to initialize device data." );
         return;
     }
 
@@ -86,14 +86,14 @@ Scene::~Scene()
     // check for errors
     if ( cudaSuccess != cudaGetLastError() )
     {
-        Logger::Log( "  Scene cleanup failed. Reason: ", cudaGetErrorString( cudaGetLastError() ) );
+        REX_DEBUG_LOG( "  Scene cleanup failed. Reason: ", cudaGetErrorString( cudaGetLastError() ) );
         return;
     }
 
     // wait for the kernel to finish executing
     if ( cudaSuccess != cudaDeviceSynchronize() )
     {
-        Logger::Log( "  Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
+        REX_DEBUG_LOG( "  Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
         return;
     }
 
@@ -103,6 +103,13 @@ Scene::~Scene()
     _ambientLight = nullptr;
     _geometry     = nullptr;
     _octree       = nullptr;
+
+
+    // try to reset the device
+    if ( cudaSuccess != cudaDeviceReset() )
+    {
+        REX_DEBUG_LOG( "  Failed to reset device." );
+    }
 }
 
 // saves this scene's image

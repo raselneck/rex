@@ -129,16 +129,18 @@ bool Scene::Build( uint16 width, uint16 height )
     SceneBuildKernel<<<1, 1 >>>( sdDevice );
 
     // check for errors
-    if ( cudaSuccess != cudaGetLastError() )
+    cudaError_t err = cudaGetLastError();
+    if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "Build failed. Reason: ", cudaGetErrorString( cudaGetLastError() ) );
+        REX_DEBUG_LOG( "Build failed. Reason: ", cudaGetErrorString( err ) );
         return false;
     }
 
     // wait for the kernel to finish executing
-    if ( cudaSuccess != cudaDeviceSynchronize() )
+    err = cudaDeviceSynchronize();
+    if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
+        REX_DEBUG_LOG( "Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
         return false;
     }
 

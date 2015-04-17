@@ -311,5 +311,8 @@
     <ClCompile Include="GLContext.cxx">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
+    <ClCompile Include="GLTexture2D.cxx">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,4 +4,4 @@
 #define VC_EXTRALEAN
 
 #include <GL/glew.h>
-//#include <GLFW/glfw3.h>
+#include <cuda_gl_interop.h>

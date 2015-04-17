@@ -63,7 +63,7 @@ Scene::Scene()
 // destroy this scene
 Scene::~Scene()
 {
-    Logger::Log( "Cleaning up scene..." );
+    REX_DEBUG_LOG( "Cleaning up scene..." );
 
     SceneCleanupData  sdHost = { _lights, _ambientLight, _geometry, _octree };
     SceneCleanupData* sdDevice = nullptr;

@@ -19,12 +19,14 @@ Image::Image( uint16 width, uint16 height )
       _height( height ),
       _dPixels( nullptr )
 {
+#if 0
     // ensure the given sizes are okay
     if ( width > 1024 || height > 1024 )
     {
         REX_DEBUG_LOG( "Cannot create an image of size ", _width, "x", _height, " (max size is 2048x2048)." );
         return;
     }
+#endif
 
 
     // create host pixels

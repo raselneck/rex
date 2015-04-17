@@ -33,34 +33,6 @@ static int32 GetNextPowerOfTwo( int32 number )
 }
 
 /// <summary>
-/// Shadow hits objects in a scene.
-/// </summary>
-/// <param name="sd">The scene data.</param>
-/// <param name="ray">The ray to check.</param>
-/// <param name="sp">The shade point whose data should be populated.</param>
-__device__ void SceneHitObjects( DeviceSceneData* sd, const Ray& ray, ShadePoint& sp )
-{
-    // TODO : Honestly, this function can be removed
-
-    // prepare to check objects
-    real_t t = 0.0;
-
-
-    // only get the objects that the ray hits
-    const Octree*   octree = sd->Octree;
-    const Geometry* geom   = octree->QueryIntersections( ray, t, sp );
-
-
-    // iterate through the hit objects
-    if ( geom )
-    {
-        sp.HasHit   = true;
-        sp.Ray      = ray;
-        sp.T        = t;
-    }
-}
-
-/// <summary>
 /// The scene render kernel.
 /// </summary>
 /// <param name="sd">The scene data.</param>
@@ -85,10 +57,12 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
     Color            color      = Color::Black();
     const Camera*    camera     = sd->Camera;
     const ViewPlane* vp         = sd->ViewPlane;
+    const Octree*    octree     = sd->Octree;
     const real_t     invSamples = 1.0f / vp->SampleCount;
     const real_t     half       = real_t( 0.5 );
     int32            n          = static_cast<int32>( sqrtf( vp->SampleCount ) );
     real_t           invn       = 1.0 / n;
+    real_t           t          = 0;
     int32            sy         = 0;
     int32            sx         = 0;
 
@@ -104,15 +78,20 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
             samplePoint.X = x - half * vp->Width  + ( sx + half ) * invn;
             samplePoint.Y = y - half * vp->Height + ( sy + half ) * invn;
 
+
             // set the ray direction
             ray.Direction = camera->GetRayDirection( samplePoint );
 
-            // hit the objects in the scene
-            SceneHitObjects( sd, ray, shadePoint );
 
-            // add to the color if the ray hit
-            if ( shadePoint.HasHit )
+            // hit the objects in the scene
+            const Geometry* geom = octree->QueryIntersections( ray, t, shadePoint );
+            if ( geom )
             {
+                shadePoint.HasHit = true;
+                shadePoint.Ray = ray;
+                shadePoint.T = t;
+
+                // add to the color if the ray hit
                 const Material* mat = shadePoint.Material;
                 color += mat->Shade( shadePoint, sd->Lights, sd->Octree );
             }

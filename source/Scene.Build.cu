@@ -84,12 +84,14 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
 // build the scene
 bool Scene::Build( uint16 width, uint16 height )
 {
+#if 0
     // make sure the image isn't too large
     if ( width > 1024 || height > 1024 )
     {
         REX_DEBUG_LOG( "Image is too large. Max dimensions are 1024x1024, given ", width, "x", height, "." );
         return false;
     }
+#endif
 
     // create the image
     _image.reset( new Image( width, height ) );

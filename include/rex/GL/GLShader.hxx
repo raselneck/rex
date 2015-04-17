@@ -8,19 +8,19 @@ REX_NS_BEGIN
 /// <summary>
 /// An enumeration of possible shader types.
 /// </summary>
-enum class ShaderType
+enum class GLShaderType
 {
     Vertex   = GL_VERTEX_SHADER,
     Fragment = GL_FRAGMENT_SHADER
 };
 
 /// <summary>
-/// Defines a shader.
+/// Defines an OpenGL shader.
 /// </summary>
-class Shader
+class GLShader
 {
     Handle<GLuint> _handle;
-    ShaderType _type;
+    GLShaderType _type;
 };
 
 REX_NS_END

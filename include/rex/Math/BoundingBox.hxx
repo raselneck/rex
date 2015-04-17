@@ -81,18 +81,6 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the collision.</param>
     __both__ bool Intersects( const Ray& ray, real_t& dist ) const;
-
-    /// <summary>
-    /// Sets this bounding box's "minimum" corner.
-    /// </summary>
-    /// <param name="min">The new "minimum" corner.</param>
-    __both__ void SetMin( const Vector3& min );
-
-    /// <summary>
-    /// Sets this bounding box's "maximum" corner.
-    /// </summary>
-    /// <param name="max">The new "maximum" corner.</param>
-    __both__ void SetMax( const Vector3& max );
 };
 
 REX_NS_END

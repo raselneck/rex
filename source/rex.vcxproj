@@ -229,9 +229,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\CUDA.hxx" />
     <ClInclude Include="..\include\rex\CUDA\DeviceList.hxx" />
     <ClInclude Include="..\include\rex\GL\GLContext.hxx" />
+    <ClInclude Include="..\include\rex\GL\GLTexture2D.hxx" />
     <ClInclude Include="..\include\rex\GL\GLWindow.hxx" />
     <ClInclude Include="..\include\rex\GL\GLWindowHints.hxx" />
-    <ClInclude Include="..\include\rex\GL\Shader.hxx" />
+    <ClInclude Include="..\include\rex\GL\GLShader.hxx" />
     <ClInclude Include="..\include\rex\Graphics\BRDFs\BRDF.hxx" />
     <ClInclude Include="..\include\rex\Graphics\BRDFs\GlossySpecularBRDF.hxx" />
     <ClInclude Include="..\include\rex\Graphics\BRDFs\LambertianBRDF.hxx" />

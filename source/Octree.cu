@@ -13,29 +13,11 @@
 
 REX_NS_BEGIN
 
-
-/// <summary>
-/// Creates a new bounding box / geometry pair.
-/// </summary>
-/// <param name="bounds">The bounding box to use.</param>
-/// <param name="geom">The geometry to use.</param>
-__device__ static BoundsGeometryPair MakePair( const BoundingBox& bounds, const Geometry* geom )
-{
-    BoundsGeometryPair pair;
-    pair.Bounds = bounds;
-    pair.Geometry = geom;
-    return pair;
-}
-
-
-
 // create a new bounding box / geometry pair
 __device__ BoundsGeometryPair::BoundsGeometryPair()
     : Bounds( Vector3(), Vector3() )
 {
 }
-
-
 
 // create an octree w/ bounds
 __device__ Octree::Octree( const BoundingBox& bounds )
@@ -221,12 +203,17 @@ __device__ bool Octree::Add( const Geometry* geometry, const BoundingBox& bounds
     }
 
 
+    // create the pair
+    BoundsGeometryPair pair;
+    pair.Bounds = bounds;
+    pair.Geometry = geometry;
+
+
     // check if we can add the object to us first
     bool added = false;
     if ( ( _objects.GetSize() < _countBeforeSubivide ) && ( !HasSubdivided() ) )
     {
-        _objects.Add( MakePair( bounds, geometry ) );
-
+        _objects.Add( pair );
         added = true;
     }
     else
@@ -250,8 +237,7 @@ __device__ bool Octree::Add( const Geometry* geometry, const BoundingBox& bounds
         // now we just add the object to us if no child took it
         if ( !added )
         {
-            _objects.Add( MakePair( bounds, geometry ) );
-
+            _objects.Add( pair );
             added = true;
         }
     }

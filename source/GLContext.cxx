@@ -19,6 +19,13 @@ GLContext::~GLContext()
     _handle = nullptr;
 }
 
+// check if context is current
+bool GLContext::IsCurrent() const
+{
+    GLFWwindow* current = glfwGetCurrentContext();
+    return ( current == _handle );
+}
+
 // make context current
 void GLContext::MakeCurrent() const
 {

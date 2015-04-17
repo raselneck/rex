@@ -190,9 +190,6 @@
     <ClInclude Include="..\include\rex\Math\BoundingBox.hxx">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\GL\Shader.hxx">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\rex\CUDA.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -273,6 +270,12 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\Graphics\Geometry\Triangle.hxx">
       <Filter>Header Files\Graphics\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\GL\GLShader.hxx">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\GL\GLTexture2D.hxx">
+      <Filter>Header Files\GL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

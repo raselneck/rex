@@ -26,11 +26,14 @@ public:
     ~GLContext();
 
     /// <summary>
+    /// Checks to see if this context is the current one.
+    /// </summary>
+    bool IsCurrent() const;
+
+    /// <summary>
     /// Makes this OpenGL context the active one on the current thread.
     /// </summary>
     void MakeCurrent() const;
-
-
 
     /// <summary>
     /// Implicitly converts this context to a boolean to determine whether or not it exists.

@@ -5,20 +5,16 @@ REX_NS_BEGIN
 
 // new bounding box
 BoundingBox::BoundingBox( const Vector3& min, const Vector3& max )
+    : _min( min ),
+      _max( max )
 {
-    // ensure min and max
-    _min = Vector3::Min( min, max );
-    _max = Vector3::Max( min, max );
 }
 
 // new bounding box
 BoundingBox::BoundingBox( real_t minX, real_t minY, real_t minZ, real_t maxX, real_t maxY, real_t maxZ )
+    : _min( minX, minY, minZ ),
+      _max( maxX, maxY, maxZ )
 {
-    Vector3 min = Vector3( minX, minY, minZ );
-    Vector3 max = Vector3( maxX, maxY, maxZ );
-
-    _min = Vector3::Min( min, max );
-    _max = Vector3::Max( min, max );
 }
 
 // destroy bounding box
@@ -119,22 +115,6 @@ bool BoundingBox::Intersects( const Ray& ray, real_t& dist ) const
 
     dist = tmin;
     return true;
-}
-
-// set box max
-void BoundingBox::SetMin( const Vector3& min )
-{
-    Vector3 oldMin = _min;
-    _min = Vector3::Min( _min,   Vector3::Min( min, _max ) );
-    _max = Vector3::Max( oldMin, Vector3::Max( min, _max ) );
-}
-
-// set box max
-void BoundingBox::SetMax( const Vector3& max )
-{
-    Vector3 oldMax = _max;
-    _max = Vector3::Max( _min, Vector3::Max( max, _max   ) );
-    _min = Vector3::Min( _min, Vector3::Min( max, oldMax ) );
 }
 
 REX_NS_END

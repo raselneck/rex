@@ -100,7 +100,7 @@ int32 main( int32 argc, char** argv )
     PrintCudaDeviceInfo( 0 );
 
     Scene scene;
-    if ( scene.Build( 1920, 1080 ) )
+    if ( scene.Build( 1024, 768 ) )
     {
         // create our output directory
         mkdir( "render" );

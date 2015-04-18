@@ -18,10 +18,8 @@ struct ShadePoint
     Ray                  Ray;
     Vector3              HitPoint;
     Vector3              Normal;
-    Vector3              Direction; // TODO : Same as ray direction?
     real_t               T;
     const rex::Material* Material;
-    bool                 HasHit;
 
     /// <summary>
     /// Creates a new shade point.

@@ -100,9 +100,9 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
     // go through all of the lights in the scene
     for ( uint_t i = 0; i < lights->GetSize(); ++i )
     {
-        const Light*  light = lights->operator[]( i );
+        const Light*  light = lights->Get( i );
         Vector3       wi    = light->GetLightDirection( sp );
-        real_t        angle = static_cast<real_t>( Vector3::Dot( sp.Normal, wi ) );
+        real_t        angle = Vector3::Dot( sp.Normal, wi );
 
         if ( angle > 0.0 )
         {

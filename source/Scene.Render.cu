@@ -14,9 +14,9 @@ struct DeviceSceneData
     const AmbientLight*       AmbientLight;
     const Camera*             Camera;
     const Octree*             Octree;
-    Image*                    Image;
     const ViewPlane*          ViewPlane;
     const Color*              BackgroundColor;
+    Image*                    Image;
 };
 
 /// <summary>
@@ -51,23 +51,21 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
     }
 
     // prepare for the tracing!!
-    Ray              ray;
-    Vector2          samplePoint;
-    ShadePoint       shadePoint;
-    Color            color      = Color::Black();
+    const Color&     bgColor    = *sd->BackgroundColor;
     const Camera*    camera     = sd->Camera;
     const ViewPlane* vp         = sd->ViewPlane;
     const Octree*    octree     = sd->Octree;
     const real_t     invSamples = 1.0f / vp->SampleCount;
     const real_t     half       = real_t( 0.5 );
-    int32            n          = static_cast<int32>( sqrtf( vp->SampleCount ) );
-    real_t           invn       = 1.0 / n;
+    const int32      n          = static_cast<int32>( sqrtf( vp->SampleCount ) );
+    const real_t     invn       = 1.0 / n;
+    Color            color      = Color::Black();
     real_t           t          = 0;
     int32            sy         = 0;
     int32            sx         = 0;
-
-    // set the ray's origin
-    ray.Origin = camera->GetPosition();
+    Ray              ray        = Ray( camera->GetPosition(), Vector3( 0, 0, 1 ) );
+    Vector2          samplePoint;
+    ShadePoint       shadePoint;
 
     // sample
     for ( sy = 0; sy < n; ++sy )
@@ -87,9 +85,8 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
             const Geometry* geom = octree->QueryIntersections( ray, t, shadePoint );
             if ( geom )
             {
-                shadePoint.HasHit = true;
                 shadePoint.Ray = ray;
-                shadePoint.T = t;
+                shadePoint.T   = t;
 
                 // add to the color if the ray hit
                 const Material* mat = shadePoint.Material;
@@ -97,7 +94,7 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
             }
             else
             {
-                color += *( sd->BackgroundColor );
+                color += bgColor;
             }
         }
     }
@@ -176,7 +173,7 @@ void Scene::Render()
 
 
 
-    REX_DEBUG_LOG( "Render time: ", timer.GetElapsed(), " seconds" );
+    REX_DEBUG_LOG( "Render time: ", timer.GetElapsed(), "s (~", 1 / timer.GetElapsed(), " FPS)" );
 }
 
 REX_NS_END

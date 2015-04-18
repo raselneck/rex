@@ -101,7 +101,7 @@ __device__ Color PhongMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
 
     for ( uint_t i = 0; i < lights->GetSize(); ++i )
     {
-        const Light* light = lights->operator[]( i );
+        const Light* light = lights->Get( i );
         Vector3      wi    = light->GetLightDirection( sp );
         real_t       angle = Vector3::Dot( sp.Normal, wi );
 

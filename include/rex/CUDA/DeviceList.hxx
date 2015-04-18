@@ -26,6 +26,12 @@ public:
     __both__ ~DeviceList();
 
     /// <summary>
+    /// Gets the item at the given index.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    __device__ const T& Get( uint_t index ) const;
+
+    /// <summary>
     /// Gets the number of items in this list.
     /// </summary>
     __device__ uint_t GetSize() const;
@@ -35,6 +41,12 @@ public:
     /// </summary>
     /// <param name="item">The item to add.</param>
     __device__ void Add( const T& item );
+
+    /// <summary>
+    /// Gets the item at the given index.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    __device__ T& Get( uint_t index );
 
     /// <summary>
     /// Removes the item at the given index.

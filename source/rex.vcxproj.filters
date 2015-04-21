@@ -137,9 +137,6 @@
     <CudaCompile Include="Scene.cu">
       <Filter>Source Files\Graphics</Filter>
     </CudaCompile>
-    <CudaCompile Include="Scene.Render.cu">
-      <Filter>Source Files\Graphics</Filter>
-    </CudaCompile>
     <CudaCompile Include="Octree.cu">
       <Filter>Source Files\Graphics\Geometry</Filter>
     </CudaCompile>
@@ -157,6 +154,12 @@
     </CudaCompile>
     <CudaCompile Include="Main.cxx">
       <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Scene.RenderToImage.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="DeviceScene.cu">
+      <Filter>Source Files\Graphics</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +279,9 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\GL\GLTexture2D.hxx">
       <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceScene.hxx">
+      <Filter>Source Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

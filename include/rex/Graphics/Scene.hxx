@@ -2,6 +2,7 @@
 
 #include "../Config.hxx"
 #include "../CUDA/DeviceList.hxx"
+#include "../GL/GLTexture2D.hxx"
 #include "../Utility/Image.hxx"
 #include "Geometry/Octree.hxx"
 #include "Lights/AmbientLight.hxx"
@@ -26,6 +27,7 @@ class Scene
     AmbientLight*          _ambientLight;
     DeviceList<Geometry*>* _geometry;
     Octree*                _octree;
+    GLTexture2D*           _texture;
 
 public:
     /// <summary>
@@ -54,7 +56,7 @@ public:
     /// <summary>
     /// Renders this scene.
     /// </summary>
-    __host__ void Render();
+    __host__ void RenderToImage();
 
     /// <summary>
     /// Sets the camera's position.

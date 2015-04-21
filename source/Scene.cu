@@ -56,7 +56,8 @@ __global__ void SceneCleanupKernel( SceneCleanupData* data )
 Scene::Scene()
     : _lights  ( nullptr ),
       _geometry( nullptr ),
-      _octree  ( nullptr )
+      _octree  ( nullptr ),
+      _texture ( nullptr )
 {
 }
 
@@ -65,6 +66,17 @@ Scene::~Scene()
 {
     REX_DEBUG_LOG( "Cleaning up scene..." );
 
+
+    // delete the OpenGL texture
+    if ( _texture )
+    {
+        delete _texture;
+        _texture = nullptr;
+    }
+
+
+
+    // prepare to call the cleanup kernel
     SceneCleanupData  sdHost = { _lights, _ambientLight, _geometry, _octree };
     SceneCleanupData* sdDevice = nullptr;
 
@@ -96,7 +108,6 @@ Scene::~Scene()
         REX_DEBUG_LOG( "  Failed to synchronize device. Reason: ", cudaGetErrorString( cudaDeviceSynchronize() ) );
         return;
     }
-
 
     // now set everything to null :D
     _lights       = nullptr;

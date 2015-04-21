@@ -196,6 +196,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="BRDF.cu" />
     <CudaCompile Include="Camera.cu" />
     <CudaCompile Include="Color.cu" />
+    <CudaCompile Include="DeviceScene.cu" />
     <CudaCompile Include="DirectionalLight.cu" />
     <CudaCompile Include="GC.cu" />
     <CudaCompile Include="Geometry.cu" />
@@ -215,7 +216,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="Ray.cu" />
     <CudaCompile Include="Scene.Build.cu" />
     <CudaCompile Include="Scene.cu" />
-    <CudaCompile Include="Scene.Render.cu" />
+    <CudaCompile Include="Scene.RenderToImage.cu" />
     <CudaCompile Include="ShadePoint.cu" />
     <CudaCompile Include="Sphere.cu" />
     <CudaCompile Include="Timer.cu" />
@@ -264,6 +265,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Utility\Image.hxx" />
     <ClInclude Include="..\include\rex\Utility\Logger.hxx" />
     <ClInclude Include="..\include\rex\Utility\Timer.hxx" />
+    <ClInclude Include="DeviceScene.hxx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\CUDA\DeviceList.inl" />

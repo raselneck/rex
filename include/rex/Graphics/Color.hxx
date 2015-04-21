@@ -50,6 +50,11 @@ struct Color
     __both__ ~Color();
 
     /// <summary>
+    /// Gets this color as a uchar3.
+    /// </summary>
+    __both__ uchar3 ToUChar3() const;
+
+    /// <summary>
     /// Linearly interpolates two colors.
     /// </summary>
     /// <param name="c1">The first color.</param>

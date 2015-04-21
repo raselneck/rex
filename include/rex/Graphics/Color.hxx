@@ -50,9 +50,9 @@ struct Color
     __both__ ~Color();
 
     /// <summary>
-    /// Gets this color as a uchar3.
+    /// Gets this color as a uchar4.
     /// </summary>
-    __both__ uchar3 ToUChar3() const;
+    __both__ uchar4 ToUChar4() const;
 
     /// <summary>
     /// Linearly interpolates two colors.

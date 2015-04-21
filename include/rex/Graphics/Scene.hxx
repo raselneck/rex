@@ -3,6 +3,7 @@
 #include "../Config.hxx"
 #include "../CUDA/DeviceList.hxx"
 #include "../GL/GLTexture2D.hxx"
+#include "../GL/GLWindow.hxx"
 #include "../Utility/Image.hxx"
 #include "Geometry/Octree.hxx"
 #include "Lights/AmbientLight.hxx"
@@ -13,27 +14,54 @@
 REX_NS_BEGIN
 
 /// <summary>
+/// An enumeration of possible render modes for the scene.
+/// </summary>
+enum class SceneRenderMode
+{
+    ToImage,
+    ToOpenGL
+};
+
+/// <summary>
 /// Defines a scene.
 /// </summary>
 class Scene
 {
     REX_NONCOPYABLE_CLASS( Scene )
 
+    const SceneRenderMode  _renderMode;
     ViewPlane              _viewPlane;
     Color                  _backgroundColor;
     Camera                 _camera;
-    Handle<Image>          _image;
     DeviceList<Light*>*    _lights;
     AmbientLight*          _ambientLight;
     DeviceList<Geometry*>* _geometry;
     Octree*                _octree;
+    GLWindow*              _window;
     GLTexture2D*           _texture;
+    Image*                 _image;
+
+    /// <summary>
+    /// Performs pre-render actions.
+    /// </summary>
+    __host__ bool OnPreRender();
+
+    /// <summary>
+    /// Performs post-render actions.
+    /// </summary>
+    __host__ bool OnPostRender();
+
+    /// <summary>
+    /// Disposes of this scene.
+    /// </summary>
+    __host__ void Dispose();
 
 public:
     /// <summary>
     /// Creates a new scene.
     /// </summary>
-    __host__ Scene();
+    /// <param name="renderMode">The render mode to use.</param>
+    __host__ Scene( SceneRenderMode renderMode );
 
     /// <summary>
     /// Destroys this scene.
@@ -56,7 +84,7 @@ public:
     /// <summary>
     /// Renders this scene.
     /// </summary>
-    __host__ void RenderToImage();
+    __host__ void Render();
 
     /// <summary>
     /// Sets the camera's position.

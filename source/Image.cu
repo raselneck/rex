@@ -19,28 +19,19 @@ Image::Image( uint16 width, uint16 height )
       _height( height ),
       _dPixels( nullptr )
 {
-#if 0
-    // ensure the given sizes are okay
-    if ( width > 1024 || height > 1024 )
-    {
-        REX_DEBUG_LOG( "Cannot create an image of size ", _width, "x", _height, " (max size is 2048x2048)." );
-        return;
-    }
-#endif
-
-
     // create host pixels
     const uint_t arraySize = _width * _height;
+    const uint_t cudaSize  = arraySize * sizeof( uchar4 );
     _hPixels.resize( arraySize );
 
 
     // create device pixels
-    if ( cudaSuccess != cudaMalloc( reinterpret_cast<void**>( &_dPixels ), arraySize * sizeof( Color ) ) )
+    if ( cudaSuccess != cudaMalloc( reinterpret_cast<void**>( &_dPixels ), cudaSize ) )
     {
         REX_DEBUG_LOG( "Failed to allocate device image pixels." );
         return;
     }
-    if ( cudaSuccess != cudaMemcpy( _dPixels, &_hPixels[ 0 ], arraySize * sizeof( Color ), cudaMemcpyHostToDevice ) )
+    if ( cudaSuccess != cudaMemcpy( _dPixels, &_hPixels[ 0 ], cudaSize, cudaMemcpyHostToDevice ) )
     {
         REX_DEBUG_LOG( "Failed to copy over initial device pixels." );
         cudaFree( _dPixels );
@@ -74,66 +65,27 @@ uint16 Image::GetHeight() const
 // save image
 bool Image::Save( const char* fname ) const
 {
-    // prepare our converted data array
-    std::vector<uint8> converted;
-    converted.resize( _width * _height * 3 );
-
-    // convert 32-bit floating point color components into 8-bit components
-    const uint_t count = _width * _height;
-    for ( uint_t i = 0; i < count; ++i )
-    {
-        const Color& c = _hPixels[ i ];
-        converted[ i * 3 + 0 ] = static_cast<uint8>( Math::Clamp( c.R, real_t( 0.0 ), real_t( 1.0 ) ) * 255 );
-        converted[ i * 3 + 1 ] = static_cast<uint8>( Math::Clamp( c.G, real_t( 0.0 ), real_t( 1.0 ) ) * 255 );
-        converted[ i * 3 + 2 ] = static_cast<uint8>( Math::Clamp( c.B, real_t( 0.0 ), real_t( 1.0 ) ) * 255 );
-    }
-
-    // now write out the image as a PNG
-    return 0 == stbi_write_png( fname, _width, _height, 3, &( converted[ 0 ] ), _width * 3 );
+    return 0 == stbi_write_png( fname, _width, _height, 3, &( _hPixels[ 0 ] ), _width * 3 );
 }
 
 // copy host pixels to device
 void Image::CopyHostToDevice()
 {
-    uint_t size = _hPixels.size() * sizeof( Color );
+    uint_t size = _hPixels.size() * sizeof( uchar4 );
     cudaMemcpy( _dPixels, &_hPixels[ 0 ], size, cudaMemcpyHostToDevice );
 }
 
 // copy device pixels to host
 void Image::CopyDeviceToHost()
 {
-    uint_t size = _hPixels.size() * sizeof( Color );
+    uint_t size = _hPixels.size() * sizeof( uchar4 );
     cudaMemcpy( &_hPixels[ 0 ], _dPixels, size, cudaMemcpyDeviceToHost );
 }
 
-// set host pixel w/ bounds checking
-void Image::SetHostPixel( uint16 x, uint16 y, const Color& color )
+// get image device memory
+uchar4* Image::GetDeviceMemory()
 {
-    if ( x < _width && y < _height )
-    {
-        SetHostPixelUnchecked( x, y, color );
-    }
-}
-
-// set host pixel w/o bounds checking
-void Image::SetHostPixelUnchecked( uint16 x, uint16 y, const Color& color )
-{
-    _hPixels[ x + y * _width ] = color;
-}
-
-// set device pixel w/ bounds checking
-__device__ void Image::SetDevicePixel( uint16 x, uint16 y, const Color& color )
-{
-    if ( x < _width && y < _height )
-    {
-        SetDevicePixelUnchecked( x, y, color );
-    }
-}
-
-// set device pixel w/o bounds checking
-__device__ void Image::SetDevicePixelUnchecked( uint16 x, uint16 y, const Color& color )
-{
-    _dPixels[ x + y * _width ] = color;
+    return _dPixels;
 }
 
 REX_NS_END

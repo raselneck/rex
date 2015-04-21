@@ -84,22 +84,48 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
 // build the scene
 bool Scene::Build( uint16 width, uint16 height )
 {
-#if 0
-    // make sure the image isn't too large
-    if ( width > 1024 || height > 1024 )
+    // if we're rendering to an image, create the image
+    if ( _renderMode == SceneRenderMode::ToImage )
     {
-        REX_DEBUG_LOG( "Image is too large. Max dimensions are 1024x1024, given ", width, "x", height, "." );
+        _image = new Image( width, height );
+    }
+    // if we're rendering to OpenGL...
+    else if ( _renderMode == SceneRenderMode::ToOpenGL )
+    {
+        // create the OpenGL window
+        GLWindowHints hints;
+        hints.Resizable = false;
+        hints.Visible   = false;
+        _window = new GLWindow( width, height, "REX" );
+
+        // ensure it was created
+        if ( !_window->WasCreated() )
+        {
+            REX_DEBUG_LOG( "Failed to create OpenGL window." );
+            return false;
+        }
+
+        // now create the texture
+        _texture = new GLTexture2D( _window->GetContext(), width, height );
+    }
+    else
+    {
+        REX_DEBUG_LOG( "Invalid scene render mode." );
         return false;
     }
-#endif
 
-    // create the image
-    _image.reset( new Image( width, height ) );
+
 
     // set the background color
     _backgroundColor = Color( real_t( 0.392157 ),
                               real_t( 0.584314 ),
                               real_t( 0.929412 ) ); // cornflower blue ;)
+    if ( _renderMode == SceneRenderMode::ToOpenGL )
+    {
+        glClearColor( _backgroundColor.R, _backgroundColor.G, _backgroundColor.B, 1.0f );
+    }
+
+
 
     // setup the view plane
     _viewPlane.Width       = width;
@@ -121,7 +147,6 @@ bool Scene::Build( uint16 width, uint16 height )
         REX_DEBUG_LOG( "Failed to initialize device scene data." );
         return false;
     }
-
 
     // start a timer to get the actual build time
     Timer timer;
@@ -155,13 +180,13 @@ bool Scene::Build( uint16 width, uint16 height )
         return false;
     }
 
+
+
     // set our references
     _lights       = sdHost.Lights;
     _ambientLight = sdHost.AmbientLight;
     _geometry     = sdHost.Geometry;
     _octree       = sdHost.Octree;
-
-
 
 
 

@@ -155,11 +155,17 @@
     <CudaCompile Include="Main.cxx">
       <Filter>Source Files</Filter>
     </CudaCompile>
-    <CudaCompile Include="Scene.RenderToImage.cu">
-      <Filter>Source Files\Graphics</Filter>
-    </CudaCompile>
     <CudaCompile Include="DeviceScene.cu">
       <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Scene.Dispose.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Scene.Render.cu">
+      <Filter>Source Files\Graphics</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GLTexture2D.cu">
+      <Filter>Source Files\GL</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,9 +321,6 @@
       <Filter>Source Files\GL</Filter>
     </ClCompile>
     <ClCompile Include="GLContext.cxx">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="GLTexture2D.cxx">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
   </ItemGroup>

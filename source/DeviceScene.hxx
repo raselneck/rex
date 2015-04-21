@@ -4,11 +4,6 @@
 
 REX_NS_BEGIN
 
-
-// TODO : Make a unified memory source so that the kernel only has to render to that. To do
-// that I just need to change the image's device memory to be a uchar3 pointer.
-
-
 /// <summary>
 /// Contains scene data destined for a device.
 /// </summary>
@@ -16,12 +11,11 @@ struct DeviceSceneData
 {
     const DeviceList<Light*>* Lights;
     const AmbientLight*       AmbientLight;
-    const Camera*             Camera;
     const Octree*             Octree;
-    const ViewPlane*          ViewPlane;
-    const Color*              BackgroundColor;
-    Image*                    Image;
-    uchar3*                   TextureMemory;
+    const Camera              Camera;
+    const ViewPlane           ViewPlane;
+    const Color               BackgroundColor;
+    uchar4*                   Pixels;
 };
 
 /// <summary>

@@ -1,0 +1,189 @@
+#define _USE_MATH_DEFINES
+#include <rex/Rex.hxx>
+#include <math.h>
+#include <stdio.h>
+#include "DeviceScene.hxx"
+
+REX_NS_BEGIN
+
+// the scene data
+static DeviceSceneData* SceneData = nullptr;
+
+
+/// <summary>
+/// Gets the next power of two that is higher than the given number.
+/// </summary>
+/// <param name="number">The number.</param>
+static int32 GetNextPowerOfTwo( int32 number )
+{
+    real64 logBase2 = log( static_cast<real64>( number ) ) / log( 2.0 );
+    uint32 power    = static_cast<uint32>( Math::Ceiling( logBase2 ) );
+
+    int32 value = 1 << power;
+    return value;
+}
+
+// handles pre-rendering
+bool Scene::OnPreRender()
+{
+    if ( !SceneData )
+    {
+        // make sure the camera is up to date
+        _camera.CalculateOrthonormalVectors();
+
+        // create the host scene data
+        DeviceSceneData hsd =
+        {
+            _lights,
+            _ambientLight,
+            _octree,
+            _camera,
+            _viewPlane,
+            _backgroundColor,
+            nullptr
+        };
+
+        // set the pixel information
+        if ( _renderMode == SceneRenderMode::ToImage )
+        {
+            _image->CopyDeviceToHost();
+            hsd.Pixels = _image->GetDeviceMemory();
+        }
+        else if ( _renderMode == SceneRenderMode::ToOpenGL )
+        {
+            hsd.Pixels = _texture->GetDeviceMemory();
+        }
+        else
+        {
+            REX_DEBUG_LOG( "Invalid render mode." );
+            return false;
+        }
+
+
+        // copy our image's contents over to the device
+        _image->CopyHostToDevice();
+
+
+        // create the device scene data (and copy from the host)
+        SceneData = GC::DeviceAlloc<DeviceSceneData>( hsd );
+        if ( SceneData == nullptr )
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// handle post-rendering
+bool Scene::OnPostRender()
+{
+    // check for errors
+    cudaError_t err = cudaGetLastError();
+    if ( err != cudaSuccess )
+    {
+        REX_DEBUG_LOG( "Render kernel failed. Reason: ", cudaGetErrorString( err ) );
+        return false;
+    }
+
+    // wait for the kernel to finish executing
+    err = cudaDeviceSynchronize();
+    if ( err != cudaSuccess )
+    {
+        REX_DEBUG_LOG( "Failed to synchronize device. Reason: ", cudaGetErrorString( err ) );
+        return false;
+    }
+
+    return true;
+}
+
+// renders the scene
+void Scene::Render()
+{
+    // ensure our pre-render preparation is good
+    if ( !OnPreRender() )
+    {
+        return;
+    }
+
+
+    // prepare for the kernel
+    int32 imgWidth  = GetNextPowerOfTwo( _viewPlane.Width );
+    int32 imgHeight = GetNextPowerOfTwo( _viewPlane.Width );
+    dim3  blocks    = dim3( 16, 16 );
+    dim3  grid      = dim3( imgHeight / blocks.x + ( ( imgHeight % blocks.x ) == 0 ? 0 : 1 ),
+                            imgWidth  / blocks.y + ( ( imgWidth  % blocks.y ) == 0 ? 0 : 1 ) );
+
+
+    // if we're rendering to the image...
+    if ( _renderMode == SceneRenderMode::ToImage )
+    {
+        // we should time the render
+        Timer timer;
+
+        // run the kernel and time it
+        timer.Start();
+        SceneRenderKernel<<<grid, blocks>>>( SceneData );
+        timer.Stop();
+
+        // ensure post-rendering cleanup is good
+        if ( !OnPostRender() )
+        {
+            return;
+        }
+
+        // copy the information back to the image
+        _image->CopyDeviceToHost();
+
+        // log the render time
+        REX_DEBUG_LOG( "Rendering took ", timer.GetElapsed(), " seconds (~", 1 / timer.GetElapsed(), " FPS)" );
+    }
+    // and if we're rendering to OpenGL...
+    else if ( _renderMode == SceneRenderMode::ToOpenGL )
+    {
+        // let's create a timer so we can measure FPS
+        Timer  timer;
+        real_t tickCount;
+        uint_t frameCount;
+
+        // now let's show the window and start the loop
+        _window->Show();
+        while ( _window->IsOpen() )
+        {
+            timer.Start();
+
+            // call the scene render kernel
+            SceneRenderKernel<<<grid, blocks>>>( SceneData );
+
+            // ensure nothing went wrong
+            if ( !OnPostRender() )
+            {
+                _window->Close();
+                continue;
+            }
+
+
+
+            // DRAW TEXTURE TO WINDOW HERE
+
+
+
+            // swap buffers and poll the window events
+            _window->SwapBuffers();
+            _window->PollEvents();
+
+            // check on the FPS
+            timer.Stop();
+            tickCount += timer.GetElapsed();
+            ++frameCount;
+            if ( tickCount >= 1 )
+            {
+                tickCount -= 1;
+                REX_DEBUG_LOG( frameCount, " FPS" );
+                frameCount = 0;
+            }
+        }
+    }
+}
+
+REX_NS_END

@@ -12,7 +12,7 @@ REX_NS_BEGIN
 class GLWindow
 {
     static uint32 _windowCount;
-    mutable Handle<void> _handle;
+    mutable void* _handle;
 
     /// <summary>
     /// Initializes GLFW.
@@ -68,6 +68,11 @@ public:
     GLContext GetContext() const;
 
     /// <summary>
+    /// Checks to see if this window was created.
+    /// </summary>
+    bool WasCreated() const;
+
+    /// <summary>
     /// Closes this window.
     /// </summary>
     void Close();
@@ -87,7 +92,10 @@ public:
     /// </summary>
     void Show();
 
-
+    /// <summary>
+    /// Swaps this window's front and back buffers
+    /// </summary>
+    void SwapBuffers();
 
     /// <summary>
     /// Implicitly converts this window to a boolean to determine whether or not it exists.

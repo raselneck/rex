@@ -13,8 +13,8 @@ class Image
 {
     REX_NONCOPYABLE_CLASS( Image )
 
-    std::vector<Color> _hPixels;
-    Color* _dPixels;
+    std::vector<uchar4> _hPixels;
+    uchar4* _dPixels;
     const uint16 _width;
     const uint16 _height;
 
@@ -58,36 +58,9 @@ public:
     __host__ void CopyDeviceToHost();
 
     /// <summary>
-    /// Sets the host pixel at the given coordinates with bounds checking.
+    /// Gets this image's device memory.
     /// </summary>
-    /// <param name="x">The X coordinate.</param>
-    /// <param name="y">The Y coordinate.</param>
-    /// <param name="color">The new color.</param>
-    __host__ void SetHostPixel( uint16 x, uint16 y, const Color& color );
-
-    /// <summary>
-    /// Sets the host pixel at the given coordinates without bounds checking.
-    /// </summary>
-    /// <param name="x">The X coordinate.</param>
-    /// <param name="y">The Y coordinate.</param>
-    /// <param name="color">The new color.</param>
-    __host__ void SetHostPixelUnchecked( uint16 x, uint16 y, const Color& color );
-
-    /// <summary>
-    /// Sets the host pixel at the given coordinates with bounds checking.
-    /// </summary>
-    /// <param name="x">The X coordinate.</param>
-    /// <param name="y">The Y coordinate.</param>
-    /// <param name="color">The new color.</param>
-    __device__ void SetDevicePixel( uint16 x, uint16 y, const Color& color );
-
-    /// <summary>
-    /// Sets the host pixel at the given coordinates without bounds checking.
-    /// </summary>
-    /// <param name="x">The X coordinate.</param>
-    /// <param name="y">The Y coordinate.</param>
-    /// <param name="color">The new color.</param>
-    __device__ void SetDevicePixelUnchecked( uint16 x, uint16 y, const Color& color );
+    __host__ uchar4* GetDeviceMemory();
 };
 
 REX_NS_END

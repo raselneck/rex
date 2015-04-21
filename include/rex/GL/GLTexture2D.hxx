@@ -19,10 +19,9 @@ class GLTexture2D
     struct HandleData
     {
         GLuint GLHandle;
-        cudaGraphicsResource_t CudaHandle;
-        cudaArray_t CudaArray;
-        textureReference CudaTextureRef;
-        uchar3* TextureMemory;
+        cudaGraphicsResource* CudaHandle;
+        cudaArray* CudaArray;
+        uchar4* TextureMemory;
     };
 
     HandleData*  _handle;
@@ -36,12 +35,6 @@ class GLTexture2D
     /// <param name="width">The width of the texture.</param>
     /// <param name="height">The height of the texture.</param>
     static HandleData* CreateHandleData( GLContext& context, uint32 width, uint32 height );
-
-    /// <summary>
-    /// Destroys 2D texture handle data.
-    /// </summary>
-    /// <param name="handleData">The handle data.</param>
-    static void DeleteHandleData( void* handleData );
 
 public:
     /// <summary>
@@ -60,17 +53,17 @@ public:
     /// <summary>
     /// Gets this texture's width.
     /// </summary>
-    int32 GetWidth() const;
+    uint32 GetWidth() const;
 
     /// <summary>
     /// Gets this texture's height.
     /// </summary>
-    int32 GetHeight() const;
+    uint32 GetHeight() const;
 
     /// <summary>
     /// Gets the CUDA texture memory.
     /// </summary>
-    uchar3* GetCudaMemory();
+    uchar4* GetDeviceMemory();
 
     /// <summary>
     /// Updates the OpenGL texture's data.

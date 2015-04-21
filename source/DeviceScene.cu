@@ -9,29 +9,26 @@ REX_NS_BEGIN
 __global__ void SceneRenderKernel( DeviceSceneData* sd )
 {
     // get the image coordinates
-    int32  x = ( blockIdx.x * blockDim.x ) + threadIdx.x;
-    int32  y = ( blockIdx.y * blockDim.y ) + threadIdx.y;
-    Image* image = sd->Image;
+    const int32      x  = ( blockIdx.x * blockDim.x ) + threadIdx.x;
+    const int32      y  = ( blockIdx.y * blockDim.y ) + threadIdx.y;
+    const ViewPlane& vp = sd->ViewPlane;
 
-    if ( x >= image->GetWidth() || y >= image->GetHeight() )
+    if ( x >= vp.Width || y >= vp.Height )
     {
         return;
     }
 
     // prepare for the tracing!!
-    const Color&     bgColor = *sd->BackgroundColor;
-    const Camera*    camera = sd->Camera;
-    const ViewPlane* vp = sd->ViewPlane;
-    const Octree*    octree = sd->Octree;
-    const real_t     invSamples = 1.0f / vp->SampleCount;
-    const real_t     half = real_t( 0.5 );
-    const int32      n = static_cast<int32>( sqrtf( vp->SampleCount ) );
-    const real_t     invn = 1.0 / n;
-    Color            color = Color::Black();
-    real_t           t = 0;
-    int32            sy = 0;
-    int32            sx = 0;
-    Ray              ray = Ray( camera->GetPosition(), Vector3( 0, 0, 1 ) );
+    const Octree*    octree     = sd->Octree;
+    const real_t     invSamples = 1.0f / vp.SampleCount;
+    const real_t     half       = real_t( 0.5 );
+    const int32      n          = static_cast<int32>( sqrtf( vp.SampleCount ) );
+    const real_t     invn       = 1.0 / n;
+    Color            color      = Color::Black();
+    real_t           t          = 0;
+    int32            sy         = 0;
+    int32            sx         = 0;
+    Ray              ray        = Ray( sd->Camera.GetPosition(), Vector3( 0, 0, 1 ) );
     Vector2          samplePoint;
     ShadePoint       shadePoint;
 
@@ -41,12 +38,12 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
         for ( sx = 0; sx < n; ++sx )
         {
             // get the pixel point
-            samplePoint.X = x - half * vp->Width + ( sx + half ) * invn;
-            samplePoint.Y = y - half * vp->Height + ( sy + half ) * invn;
+            samplePoint.X = x - half * vp.Width  + ( sx + half ) * invn;
+            samplePoint.Y = y - half * vp.Height + ( sy + half ) * invn;
 
 
             // set the ray direction
-            ray.Direction = camera->GetRayDirection( samplePoint );
+            ray.Direction = sd->Camera.GetRayDirection( samplePoint );
 
 
             // hit the objects in the scene
@@ -62,7 +59,7 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
             }
             else
             {
-                color += bgColor;
+                color += sd->BackgroundColor;
             }
         }
     }
@@ -70,14 +67,8 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
 
     // set the pixel!
     color *= invSamples;
-    if ( sd->RenderMode == RenderMode::Image )
-    {
-        image->SetDevicePixel( x, y, color );
-    }
-    else
-    {
-        uint64 index = x + y * image->GetWidth();
-    }
+    uint32 index = x + y * vp.Width;
+    sd->Pixels[ index ] = color.ToUChar4();
 }
 
 REX_NS_END

@@ -47,8 +47,8 @@ GLWindow::GLWindow( int32 width, int32 height, const String& title, const GLWind
 
     // get the window for fullscreen mode
     int32         monitorCount = 0;
-    GLFWmonitor** monitors = glfwGetMonitors( &monitorCount );
-    GLFWmonitor*  monitor = nullptr;
+    GLFWmonitor** monitors     = glfwGetMonitors( &monitorCount );
+    GLFWmonitor*  monitor      = nullptr;
     if ( hints.Fullscreen )
     {
         monitor = monitors[ 0 ]; // fullscreen on default monitor
@@ -101,10 +101,7 @@ GLWindow::GLWindow( int32 width, int32 height, const String& title, const GLWind
 
     // record our window
     ++_windowCount;
-    _handle.reset( window, []( void* hWindow )
-    {
-        glfwDestroyWindow( static_cast<GLFWwindow*>( hWindow ) );
-    } );
+    _handle = window;
 }
 
 // copy another window
@@ -124,7 +121,7 @@ GLWindow::~GLWindow()
     --_windowCount;
 
     // delete our reference to the window
-    _handle.reset();
+    _handle = nullptr;
 
     // if there are no windows, terminate GLFW
     if ( !_windowCount )
@@ -158,27 +155,33 @@ bool GLWindow::InitializeGlfw()
 // check if window is open
 bool GLWindow::IsOpen() const
 {
-    GLFWwindow* window = static_cast<GLFWwindow*>( _handle.get() );
+    GLFWwindow* window = reinterpret_cast<GLFWwindow*>( _handle );
     return !static_cast<bool>( glfwWindowShouldClose( window ) );
 }
 
 // get OpenGL context
 GLContext GLWindow::GetContext() const
 {
-    return GLContext( _handle.get() );
+    return GLContext( _handle );
+}
+
+// check if window was created
+bool GLWindow::WasCreated() const
+{
+    return reinterpret_cast<bool>( _handle );
 }
 
 // close this window
 void GLWindow::Close()
 {
-    GLFWwindow* window = static_cast<GLFWwindow*>( _handle.get() );
+    GLFWwindow* window = reinterpret_cast<GLFWwindow*>( _handle );
     glfwSetWindowShouldClose( window, GL_TRUE );
 }
 
 // hide this window
 void GLWindow::Hide()
 {
-    GLFWwindow* window = static_cast<GLFWwindow*>( _handle.get() );
+    GLFWwindow* window = reinterpret_cast<GLFWwindow*>( _handle );
     glfwHideWindow( window );
 }
 
@@ -191,14 +194,21 @@ void GLWindow::PollEvents()
 // show this window
 void GLWindow::Show()
 {
-    GLFWwindow* window = static_cast<GLFWwindow*>( _handle.get() );
+    GLFWwindow* window = reinterpret_cast<GLFWwindow*>( _handle );
     glfwShowWindow( window );
+}
+
+// swap buffers
+void GLWindow::SwapBuffers()
+{
+    GLFWwindow* window = reinterpret_cast<GLFWwindow*>( _handle );
+    glfwSwapBuffers( window );
 }
 
 // convert window to bool
 GLWindow::operator bool() const
 {
-    return static_cast<bool>( _handle );
+    return WasCreated();
 }
 
 REX_NS_END

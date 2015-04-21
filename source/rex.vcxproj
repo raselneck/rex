@@ -201,6 +201,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="GC.cu" />
     <CudaCompile Include="Geometry.cu" />
     <CudaCompile Include="GlossySpecularBRDF.cu" />
+    <CudaCompile Include="GLTexture2D.cu" />
     <CudaCompile Include="Image.cu" />
     <CudaCompile Include="LambertianBRDF.cu" />
     <CudaCompile Include="Light.cu" />
@@ -216,7 +217,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="Ray.cu" />
     <CudaCompile Include="Scene.Build.cu" />
     <CudaCompile Include="Scene.cu" />
-    <CudaCompile Include="Scene.RenderToImage.cu" />
+    <CudaCompile Include="Scene.Dispose.cu" />
+    <CudaCompile Include="Scene.Render.cu" />
     <CudaCompile Include="ShadePoint.cu" />
     <CudaCompile Include="Sphere.cu" />
     <CudaCompile Include="Timer.cu" />
@@ -278,7 +280,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLContext.cxx" />
-    <ClCompile Include="GLTexture2D.cxx" />
     <ClCompile Include="GLWindow.cxx" />
     <ClCompile Include="GLWindowHints.cxx" />
   </ItemGroup>

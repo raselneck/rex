@@ -19,7 +19,7 @@ class GLTexture2D
     struct HandleData
     {
         GLuint GLHandle;
-        cudaGraphicsResource* CudaHandle;
+        cudaGraphicsResource* CudaResource;
         cudaArray* CudaArray;
         uchar4* TextureMemory;
     };

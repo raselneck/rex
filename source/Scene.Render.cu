@@ -46,7 +46,7 @@ bool Scene::OnPreRender()
         // set the pixel information
         if ( _renderMode == SceneRenderMode::ToImage )
         {
-            _image->CopyDeviceToHost();
+            _image->CopyHostToDevice();
             hsd.Pixels = _image->GetDeviceMemory();
         }
         else if ( _renderMode == SceneRenderMode::ToOpenGL )
@@ -58,10 +58,6 @@ bool Scene::OnPreRender()
             REX_DEBUG_LOG( "Invalid render mode." );
             return false;
         }
-
-
-        // copy our image's contents over to the device
-        _image->CopyHostToDevice();
 
 
         // create the device scene data (and copy from the host)
@@ -143,8 +139,8 @@ void Scene::Render()
     {
         // let's create a timer so we can measure FPS
         Timer  timer;
-        real_t tickCount;
-        uint_t frameCount;
+        real64 tickCount  = 0.0;
+        uint64 frameCount = 0;
 
         // now let's show the window and start the loop
         _window->Show();

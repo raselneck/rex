@@ -3,6 +3,10 @@
 #include <cuda_gl_interop.h>
 #include <cuda_texture_types.h>
 
+
+// TODO : http://stackoverflow.com/questions/19244191/cuda-opengl-interop-draw-to-opengl-texture-with-cuda
+
+
 REX_NS_BEGIN
 
 // create texture handle data
@@ -15,78 +19,63 @@ GLTexture2D::HandleData* GLTexture2D::CreateHandleData( GLContext& context, uint
     }
 
 
-
     // create the handle
     HandleData* handle = new HandleData();
-
 
 
     // create the OpenGL texture
     glGenTextures( 1, &( handle->GLHandle ) );
 
     // initialize the texture to be the given size
-    glBindTexture( GL_TEXTURE_2D, handle->GLHandle );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr );
-    //  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_POINT );
-    //  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT );
-    //  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    //  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glBindTexture( GL_TEXTURE_2D, 0 );
+    glBindTexture  ( GL_TEXTURE_2D, handle->GLHandle );
+    glTexImage2D   ( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_POINT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+    glBindTexture  ( GL_TEXTURE_2D, 0 );
 
 
-
-    // create the CUDA graphics resource
-    cudaError_t err = cudaGraphicsGLRegisterImage( &( handle->CudaHandle ), handle->GLHandle, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsNone );
+    // register the image with CUDA
+    cudaError_t err = cudaGraphicsGLRegisterImage( &( handle->CudaResource ),
+                                                   handle->GLHandle,
+                                                   GL_TEXTURE_2D,
+                                                   cudaGraphicsRegisterFlagsWriteDiscard );
     if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "Failed to register GL texture. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "Failed to register OpenGL texture. Reason: ", cudaGetErrorString( err ) );
         delete handle;
         return nullptr;
     }
 
-    // map the CUDA graphics resource to a CUDA array
-    err = cudaGraphicsMapResources( 1, &( handle->CudaHandle ), nullptr );
+
+    // map the resources
+    err = cudaGraphicsMapResources( 1, &( handle->CudaResource ) );
     if ( err != cudaSuccess )
     {
-        REX_DEBUG_LOG( "Failed to map graphics resource to array. Reason: ", cudaGetErrorString( err ) );
+        REX_DEBUG_LOG( "Failed to map resources. Reason: ", cudaGetErrorString( err ) );
         delete handle;
         return nullptr;
     }
+
 
     // get the mapped array
-    err = cudaGraphicsSubResourceGetMappedArray( &( handle->CudaArray ), handle->CudaHandle, 0, 0 );
+    err = cudaGraphicsSubResourceGetMappedArray( &( handle->CudaArray ),
+                                                 handle->CudaResource,
+                                                 0,
+                                                 0 );
     if ( err != cudaSuccess )
     {
         REX_DEBUG_LOG( "Failed to get mapped array. Reason: ", cudaGetErrorString( err ) );
         delete handle;
         return nullptr;
     }
+    
 
-
-    // create the CUDA texture reference
-    cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc<uchar4>();
-    texture<uchar4, 2, cudaReadModeElementType> tex;
-    tex.addressMode[ 0 ] = cudaAddressModeClamp;
-    tex.addressMode[ 1 ] = cudaAddressModeClamp;
-    tex.filterMode = cudaFilterModePoint;
-
-
-    // bind the CUDA array to a texture object
-    err = cudaBindTextureToArray( tex, handle->CudaArray, channelDesc );
-    if ( err != cudaSuccess )
-    {
-        REX_DEBUG_LOG( "Failed to bind texture to array. Reason: ", cudaGetErrorString( err ) );
-        delete handle;
-        return nullptr;
-    }
-
-
-
-    // allocate the texture memory array
-    uint_t memSize = width * height * sizeof( uchar4 );
-    cudaMalloc( &( handle->TextureMemory ), memSize );
-    cudaMemset( handle->TextureMemory, 0, memSize );
-
+    // allocate the texture memory
+    uint_t size = width * height * sizeof( uchar4 );
+    cudaMalloc( &( handle->TextureMemory ), size );
+    cudaMemset( handle->TextureMemory, 0, size );
 
 
     // return the handle
@@ -110,10 +99,10 @@ GLTexture2D::~GLTexture2D()
         cudaFree( _handle->TextureMemory );
 
         // un-map the resources
-        cudaGraphicsUnmapResources( 1, &( _handle->CudaHandle ) );
+        cudaGraphicsUnmapResources( 1, &( _handle->CudaResource ) );
 
         // unregister the resource
-        cudaGraphicsUnregisterResource( _handle->CudaHandle );
+        cudaGraphicsUnregisterResource( _handle->CudaResource );
 
         // delete the OpenGL texture
         glDeleteTextures( 1, &( _handle->GLHandle ) );

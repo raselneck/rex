@@ -21,6 +21,7 @@ class GLTexture2D
         GLuint GLHandle;
         cudaGraphicsResource* CudaResource;
         cudaArray* CudaArray;
+        cudaStream_t CudaStream;
         uchar4* TextureMemory;
     };
 

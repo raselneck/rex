@@ -36,11 +36,21 @@ GLTexture2D::HandleData* GLTexture2D::CreateHandleData( GLContext& context, uint
     glBindTexture  ( GL_TEXTURE_2D, 0 );
 
 
+    // create the CUDA stream
+    cudaError_t err = cudaStreamCreate( &( handle->CudaStream ) );
+    if ( err != cudaSuccess )
+    {
+        REX_DEBUG_LOG( "Failed to create CUDA stream. Reason: ", cudaGetErrorString( err ) );
+        delete handle;
+        return nullptr;
+    }
+
+
     // register the image with CUDA
-    cudaError_t err = cudaGraphicsGLRegisterImage( &( handle->CudaResource ),
-                                                   handle->GLHandle,
-                                                   GL_TEXTURE_2D,
-                                                   cudaGraphicsRegisterFlagsWriteDiscard );
+    err = cudaGraphicsGLRegisterImage( &( handle->CudaResource ),
+                                       handle->GLHandle,
+                                       GL_TEXTURE_2D,
+                                       cudaGraphicsRegisterFlagsWriteDiscard );
     if ( err != cudaSuccess )
     {
         REX_DEBUG_LOG( "Failed to register OpenGL texture. Reason: ", cudaGetErrorString( err ) );
@@ -50,7 +60,7 @@ GLTexture2D::HandleData* GLTexture2D::CreateHandleData( GLContext& context, uint
 
 
     // map the resources
-    err = cudaGraphicsMapResources( 1, &( handle->CudaResource ) );
+    err = cudaGraphicsMapResources( 1, &( handle->CudaResource ), handle->CudaStream );
     if ( err != cudaSuccess )
     {
         REX_DEBUG_LOG( "Failed to map resources. Reason: ", cudaGetErrorString( err ) );
@@ -71,6 +81,24 @@ GLTexture2D::HandleData* GLTexture2D::CreateHandleData( GLContext& context, uint
         return nullptr;
     }
     
+
+    // create the CUDA texture reference
+    cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc<uchar4>();
+    texture<uchar4, 2, cudaReadModeElementType> tex;
+    tex.addressMode[ 0 ] = cudaAddressModeClamp;
+    tex.addressMode[ 1 ] = cudaAddressModeClamp;
+    tex.filterMode = cudaFilterModePoint;
+
+
+    // bind the CUDA array to a texture object (THIS is where the error happens)
+    err = cudaBindTextureToArray( &tex, handle->CudaArray, &channelDesc );
+    if ( err != cudaSuccess )
+    {
+        REX_DEBUG_LOG( "Failed to bind texture to array. Reason: ", cudaGetErrorString( err ) );
+        delete handle;
+        return nullptr;
+    }
+
 
     // allocate the texture memory
     uint_t size = width * height * sizeof( uchar4 );
@@ -99,10 +127,13 @@ GLTexture2D::~GLTexture2D()
         cudaFree( _handle->TextureMemory );
 
         // un-map the resources
-        cudaGraphicsUnmapResources( 1, &( _handle->CudaResource ) );
+        cudaGraphicsUnmapResources( 1, &( _handle->CudaResource ), _handle->CudaStream );
 
         // unregister the resource
         cudaGraphicsUnregisterResource( _handle->CudaResource );
+
+        // destroy the stream
+        cudaStreamDestroy( _handle->CudaStream );
 
         // delete the OpenGL texture
         glDeleteTextures( 1, &( _handle->GLHandle ) );

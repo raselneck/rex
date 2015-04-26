@@ -65,7 +65,7 @@ uint16 Image::GetHeight() const
 // save image
 bool Image::Save( const char* fname ) const
 {
-    return 0 == stbi_write_png( fname, _width, _height, 3, &( _hPixels[ 0 ] ), _width * 3 );
+    return 0 == stbi_write_png( fname, _width, _height, 4, &( _hPixels[ 0 ] ), _width * 4 );
 }
 
 // copy host pixels to device

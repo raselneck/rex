@@ -80,24 +80,7 @@ GLTexture2D::HandleData* GLTexture2D::CreateHandleData( GLContext& context, uint
         delete handle;
         return nullptr;
     }
-    
 
-    // create the CUDA texture reference
-    cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc<uchar4>();
-    texture<uchar4, 2, cudaReadModeElementType> tex;
-    tex.addressMode[ 0 ] = cudaAddressModeClamp;
-    tex.addressMode[ 1 ] = cudaAddressModeClamp;
-    tex.filterMode = cudaFilterModePoint;
-
-
-    // bind the CUDA array to a texture object (THIS is where the error happens)
-    err = cudaBindTextureToArray( &tex, handle->CudaArray, &channelDesc );
-    if ( err != cudaSuccess )
-    {
-        REX_DEBUG_LOG( "Failed to bind texture to array. Reason: ", cudaGetErrorString( err ) );
-        delete handle;
-        return nullptr;
-    }
 
 
     // allocate the texture memory

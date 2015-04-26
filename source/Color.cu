@@ -38,7 +38,7 @@ uchar4 Color::ToUChar4() const
     return make_uchar4( static_cast<uint8>( Math::Clamp( R, 0.0f, 1.0f ) * 255 ),
                         static_cast<uint8>( Math::Clamp( G, 0.0f, 1.0f ) * 255 ),
                         static_cast<uint8>( Math::Clamp( B, 0.0f, 1.0f ) * 255 ),
-                        1 );
+                        255 );
 }
 
 // linearly interpolate two colors

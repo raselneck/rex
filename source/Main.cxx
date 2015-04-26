@@ -85,6 +85,7 @@ void PrintCudaDeviceInfo( int32 device )
     REX_DEBUG_LOG( "  Max threads / proc.: ", props.maxThreadsPerMultiProcessor );
 
     // get each thread's stack size
+    REX_DEBUG_LOG( "  Getting max thread stack size..." );
     size_t stackSize = 0;
     cudaDeviceGetLimit( &stackSize, cudaLimitStackSize );
     REX_DEBUG_LOG( "  Max thread stack:    ", stackSize );
@@ -104,7 +105,7 @@ int32 main( int32 argc, char** argv )
     {
         scene.Render();
 
-        /*
+#if 0
         // create our output directory
         mkdir( "render" );
 
@@ -119,7 +120,7 @@ int32 main( int32 argc, char** argv )
         // open the first image
         ShellExecuteA( 0, 0, "render\\img0.png", 0, 0, SW_SHOW );
 #endif
-        */
+#endif
     }
 
     return 0;

@@ -26,11 +26,12 @@ static int32 GetNextPowerOfTwo( int32 number )
 // handles pre-rendering
 bool Scene::OnPreRender()
 {
+    // make sure the camera is up to date
+    _camera.CalculateOrthonormalVectors();
+
+    // check if we need to create the scene data
     if ( !SceneData )
     {
-        // make sure the camera is up to date
-        _camera.CalculateOrthonormalVectors();
-
         // create the host scene data
         DeviceSceneData hsd =
         {
@@ -68,6 +69,21 @@ bool Scene::OnPreRender()
         }
     }
 
+    // copy over the camera if we're rendering to OpenGL
+    if ( _renderMode == SceneRenderMode::ToOpenGL )
+    {
+        cudaError_t err = cudaSuccess;
+        err = cudaMemcpy( (void*)( &( SceneData->Camera ) ),
+                          &_camera,
+                          sizeof( Camera ),
+                          cudaMemcpyHostToDevice );
+        if ( err != cudaSuccess )
+        {
+            REX_DEBUG_LOG( "Failed to copy camera. Reason: ", cudaGetErrorString( err ) );
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -96,13 +112,6 @@ bool Scene::OnPostRender()
 // renders the scene
 void Scene::Render()
 {
-    // ensure our pre-render preparation is good
-    if ( !OnPreRender() )
-    {
-        return;
-    }
-
-
     // prepare for the kernel
     int32 imgWidth  = GetNextPowerOfTwo( _viewPlane.Width );
     int32 imgHeight = GetNextPowerOfTwo( _viewPlane.Width );
@@ -114,6 +123,12 @@ void Scene::Render()
     // if we're rendering to the image...
     if ( _renderMode == SceneRenderMode::ToImage )
     {
+        // ensure our pre-render preparation is good
+        if ( !OnPreRender() )
+        {
+            return;
+        }
+
         // we should time the render
         Timer timer;
 
@@ -147,6 +162,13 @@ void Scene::Render()
         while ( _window->IsOpen() )
         {
             timer.Start();
+
+            // ensure our pre-render preparation is good
+            if ( !OnPreRender() )
+            {
+                _window->Close();
+                continue;
+            }
 
             // call the scene render kernel
             SceneRenderKernel<<<grid, blocks>>>( SceneData );

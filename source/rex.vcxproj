@@ -232,6 +232,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\CUDA.hxx" />
     <ClInclude Include="..\include\rex\CUDA\DeviceList.hxx" />
     <ClInclude Include="..\include\rex\GL\GLContext.hxx" />
+    <ClInclude Include="..\include\rex\GL\GLShaderProgram.hxx" />
     <ClInclude Include="..\include\rex\GL\GLTexture2D.hxx" />
     <ClInclude Include="..\include\rex\GL\GLWindow.hxx" />
     <ClInclude Include="..\include\rex\GL\GLWindowHints.hxx" />
@@ -254,6 +255,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\Materials\PhongMaterial.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Scene.hxx" />
     <ClInclude Include="..\include\rex\Graphics\ShadePoint.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\TextureRenderer.hxx" />
     <ClInclude Include="..\include\rex\Graphics\ViewPlane.hxx" />
     <ClInclude Include="..\include\rex\Math\BoundingBox.hxx" />
     <ClInclude Include="..\include\rex\Math\Math.hxx" />
@@ -280,8 +282,11 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLContext.cxx" />
+    <ClCompile Include="GLShader.cxx" />
+    <ClCompile Include="GLShaderProgram.cxx" />
     <ClCompile Include="GLWindow.cxx" />
     <ClCompile Include="GLWindowHints.cxx" />
+    <ClCompile Include="TextureRenderer.cxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

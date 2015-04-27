@@ -139,8 +139,14 @@ void Scene::Render()
     {
         // let's create a timer so we can measure FPS
         Timer  timer;
+        real64 elapsed    = 0.0;
         real64 tickCount  = 0.0;
         uint64 frameCount = 0;
+
+
+        // create the texture renderer
+        TextureRenderer renderer = TextureRenderer( _texture );
+
 
         // now let's show the window and start the loop
         _window->Show();
@@ -161,6 +167,7 @@ void Scene::Render()
 
 
             // DRAW TEXTURE TO WINDOW HERE
+            renderer.Render();
 
 
 
@@ -170,7 +177,8 @@ void Scene::Render()
 
             // check on the FPS
             timer.Stop();
-            tickCount += timer.GetElapsed();
+            elapsed    = timer.GetElapsed();
+            tickCount += elapsed;
             ++frameCount;
             if ( tickCount >= 1 )
             {

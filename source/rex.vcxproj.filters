@@ -289,6 +289,12 @@
     <ClInclude Include="DeviceScene.hxx">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\rex\GL\GLShaderProgram.hxx">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\TextureRenderer.hxx">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\rex\Math\Math.inl">
@@ -322,6 +328,15 @@
     </ClCompile>
     <ClCompile Include="GLContext.cxx">
       <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShader.cxx">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShaderProgram.cxx">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureRenderer.cxx">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

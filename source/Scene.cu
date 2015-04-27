@@ -12,6 +12,8 @@ Scene::Scene( SceneRenderMode renderMode )
       _window    ( nullptr    ),
       _renderMode( renderMode )
 {
+    //cudaSetDevice( 0 );
+    //cudaGLSetGLDevice( 0 );
 }
 
 // destroy this scene

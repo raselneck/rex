@@ -105,6 +105,15 @@ bool Scene::Build( uint16 width, uint16 height )
             return false;
         }
 
+        _window->GetContext().MakeCurrent();
+
+        glewExperimental = GL_TRUE;
+        if ( glewInit() != GLEW_OK )
+        {
+            REX_DEBUG_LOG( "Failed to initialize GLEW." );
+            return false;
+        }
+
         // now create the texture
         _texture = new GLTexture2D( _window->GetContext(), width, height );
     }

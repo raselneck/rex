@@ -99,12 +99,11 @@ int32 main( int32 argc, char** argv )
 {
     PrintCudaDeviceInfo( 0 );
 
-    Scene scene( SceneRenderMode::ToOpenGL );
+    Scene scene( SceneRenderMode::ToImage );
     if ( scene.Build( 1024, 768 ) )
     {
-        scene.Render();
+        //scene.Render();
 
-        /*
         // create our output directory
         mkdir( "render" );
 
@@ -119,7 +118,7 @@ int32 main( int32 argc, char** argv )
         // open the first image
         ShellExecuteA( 0, 0, "render\\img0.png", 0, 0, SW_SHOW );
 #endif
-        */
+        //*/
     }
 
     return 0;

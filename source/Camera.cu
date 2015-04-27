@@ -18,6 +18,24 @@ Camera::~Camera()
     _viewPlaneDist = real_t( 0.0 );
 }
 
+// get ortho X axis
+const Vector3& Camera::GetOrthoX() const
+{
+    return _orthoU;
+}
+
+// get ortho Y axis
+const Vector3& Camera::GetOrthoY() const
+{
+    return _orthoV;
+}
+
+// get ortho Z axis
+const Vector3& Camera::GetOrthoZ() const
+{
+    return _orthoW;
+}
+
 // get camera position
 const Vector3& Camera::GetPosition() const
 {

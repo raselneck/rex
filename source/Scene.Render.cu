@@ -170,10 +170,8 @@ void Scene::Render()
         {
             timer.Start();
 
-            // set the camera's position
-            _camera.SetPosition( real_t( 100.0 * sin( total ) ),
-                                 real_t( 0.0 ),
-                                 real_t( 100.0 * cos( total ) ) );
+            // update the camera
+            UpdateCamera( elapsed );
 
             // ensure our pre-render preparation is good
             if ( !OnPreRender() )

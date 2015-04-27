@@ -52,6 +52,15 @@ class Scene
     __host__ bool OnPostRender();
 
     /// <summary>
+    /// Updates the camera based on user input.
+    /// <summary>
+    /// <param name="dt">The time since the last frame.</param>
+    /// <remarks>
+    /// Only called when rendering to an OpenGL window.
+    /// </remarks>
+    __host__ void UpdateCamera( real64 dt );
+
+    /// <summary>
     /// Disposes of this scene.
     /// </summary>
     __host__ void Dispose();

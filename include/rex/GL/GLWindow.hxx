@@ -11,6 +11,8 @@ REX_NS_BEGIN
 /// </summary>
 class GLWindow
 {
+    friend class Scene;
+
     static uint32 _windowCount;
     mutable void* _handle;
 

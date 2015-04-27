@@ -47,6 +47,21 @@ public:
     __both__ const Vector3& GetTarget() const;
 
     /// <summary>
+    /// Gets this camera's orthogonal X axis.
+    /// </summary>
+    __both__ const Vector3& GetOrthoX() const;
+
+    /// <summary>
+    /// Gets this camera's orthogonal Y axis.
+    /// </summary>
+    __both__ const Vector3& GetOrthoY() const;
+
+    /// <summary>
+    /// Gets this camera's orthogonal Z axis.
+    /// </summary>
+    __both__ const Vector3& GetOrthoZ() const;
+
+    /// <summary>
     /// Calculates the orthonormal basis vectors.
     /// </summary>
     __both__ void CalculateOrthonormalVectors();

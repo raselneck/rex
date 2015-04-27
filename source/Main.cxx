@@ -99,7 +99,7 @@ int32 main( int32 argc, char** argv )
 {
     PrintCudaDeviceInfo( 0 );
 
-    Scene scene( SceneRenderMode::ToImage );
+    Scene scene( SceneRenderMode::ToOpenGL );
     if ( scene.Build( 1024, 768 ) )
     {
         scene.Render();

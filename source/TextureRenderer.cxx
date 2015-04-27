@@ -32,15 +32,14 @@ void TextureRenderer::CreateBufferObjects()
 
     // create the buffer data
     GLfloat data[] =
-    {
-        //     x      y       u     v  
-        -1.0f, -1.0f, 0.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, -1.0f, 1.0f, 0.0f,
-
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f, 1.0f
+    { //   x      y        u     v  
+        -1.0f, -1.0f,    0.0f, 1.0f,
+        -1.0f,  1.0f,    0.0f, 0.0f,
+         1.0f, -1.0f,    1.0f, 1.0f,
+                         
+         1.0f,  1.0f,    1.0f, 0.0f,
+         1.0f, -1.0f,    1.0f, 1.0f,
+        -1.0f,  1.0f,    0.0f, 0.0f
     };
 
     // upload the buffer data

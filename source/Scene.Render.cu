@@ -155,6 +155,7 @@ void Scene::Render()
         // let's create a timer so we can measure FPS
         Timer  timer;
         real64 elapsed    = 0.0;
+        real64 total      = 0.0;
         real64 tickCount  = 0.0;
         uint64 frameCount = 0;
 
@@ -168,6 +169,11 @@ void Scene::Render()
         while ( _window->IsOpen() )
         {
             timer.Start();
+
+            // set the camera's position
+            _camera.SetPosition( real_t( 100.0 * sin( total ) ),
+                                 real_t( 0.0 ),
+                                 real_t( 100.0 * cos( total ) ) );
 
             // ensure our pre-render preparation is good
             if ( !OnPreRender() )
@@ -188,6 +194,10 @@ void Scene::Render()
 
 
 
+            // update the OpenGL texture
+            _texture->UpdateOpenGLTexture();
+
+            // render the texture
             renderer.Render();
 
 
@@ -199,11 +209,12 @@ void Scene::Render()
             // check on the FPS
             timer.Stop();
             elapsed    = timer.GetElapsed();
+            total     += elapsed;
             tickCount += elapsed;
             ++frameCount;
-            if ( tickCount >= 1 )
+            if ( tickCount >= 1.0 )
             {
-                tickCount -= 1;
+                tickCount -= 1.0;
                 REX_DEBUG_LOG( frameCount, " FPS" );
                 frameCount = 0;
             }

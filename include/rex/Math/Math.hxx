@@ -1,8 +1,25 @@
 #pragma once
 
 #include "../Config.hxx"
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 REX_NS_BEGIN
+
+/// <summary>
+/// The 2-component vector type used in Rex.
+/// </summary>
+typedef glm::vec2 Vector2;
+
+/// <summary>
+/// The 3-component vector type used in Rex.
+/// </summary>
+typedef glm::vec3 Vector3;
+
+/// <summary>
+/// The matrix type used in Rex.
+/// </summary>
+typedef glm::mat4 Matrix;
 
 /// <summary>
 /// Defines static math methods.

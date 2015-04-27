@@ -71,16 +71,7 @@
     <CudaCompile Include="Math.cu">
       <Filter>Source Files\Math</Filter>
     </CudaCompile>
-    <CudaCompile Include="Matrix.cu">
-      <Filter>Source Files\Math</Filter>
-    </CudaCompile>
     <CudaCompile Include="Ray.cu">
-      <Filter>Source Files\Math</Filter>
-    </CudaCompile>
-    <CudaCompile Include="Vector2.cu">
-      <Filter>Source Files\Math</Filter>
-    </CudaCompile>
-    <CudaCompile Include="Vector3.cu">
       <Filter>Source Files\Math</Filter>
     </CudaCompile>
     <CudaCompile Include="ShadePoint.cu">
@@ -181,16 +172,7 @@
     <ClInclude Include="..\include\rex\Math\Math.hxx">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\rex\Math\Matrix.hxx">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\rex\Math\Ray.hxx">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Math\Vector2.hxx">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rex\Math\Vector3.hxx">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="..\include\rex\Utility\Timer.hxx">

@@ -209,7 +209,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="Main.cxx" />
     <CudaCompile Include="Material.cu" />
     <CudaCompile Include="Math.cu" />
-    <CudaCompile Include="Matrix.cu" />
     <CudaCompile Include="MatteMaterial.cu" />
     <CudaCompile Include="Octree.cu" />
     <CudaCompile Include="PhongMaterial.cu" />
@@ -223,8 +222,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="Sphere.cu" />
     <CudaCompile Include="Timer.cu" />
     <CudaCompile Include="Triangle.cu" />
-    <CudaCompile Include="Vector2.cu" />
-    <CudaCompile Include="Vector3.cu" />
     <CudaCompile Include="ViewPlane.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -259,10 +256,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\ViewPlane.hxx" />
     <ClInclude Include="..\include\rex\Math\BoundingBox.hxx" />
     <ClInclude Include="..\include\rex\Math\Math.hxx" />
-    <ClInclude Include="..\include\rex\Math\Matrix.hxx" />
     <ClInclude Include="..\include\rex\Math\Ray.hxx" />
-    <ClInclude Include="..\include\rex\Math\Vector2.hxx" />
-    <ClInclude Include="..\include\rex\Math\Vector3.hxx" />
     <ClInclude Include="..\include\rex\OpenGL.hxx" />
     <ClInclude Include="..\include\rex\Rex.hxx" />
     <ClInclude Include="..\include\rex\Utility\GC.hxx" />

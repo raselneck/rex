@@ -10,9 +10,9 @@ __device__ GlossySpecularBRDF::GlossySpecularBRDF()
 
 // create g-s BRDF w/ coefficient, color, power
 __device__ GlossySpecularBRDF::GlossySpecularBRDF( real32 ks, const Color& color, real32 pow )
-    : _coefficient( ks ),
-      _color      ( color ),
-      _power      ( pow )
+    : _coefficient( ks )
+    , _color      ( color )
+    , _power      ( pow )
 {
 }
 
@@ -34,20 +34,24 @@ __device__ Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const vec3& 
 {
     // from Suffern, 284
 
-    Color   color;
-    real32  angle     = glm::dot( sp.Normal, wi );
-    vec3 reflected = -wi + 2.0f * sp.Normal * angle;
+    Color  color;
+    vec3   reflected = -wi + 2.0f * sp.Normal * dot( sp.Normal, wi );
 
-    angle = glm::dot( reflected, wo );
-    if ( angle > 0.0 )
+    // BRANCHLESS CONDITIONAL, WOOOO
+    real32 d = dot( reflected, wo );
+    /* if ( d > 0.0f )
     {
-        color = _coefficient * _color * pow( angle, _power );
-    }
+        color = _coefficient * _color * pow( d, _power );
+    } */
+    color = Color::Lerp( color,
+                         _coefficient * _color * pow( d, _power ),
+                         d > 0.0f );
+    
 
     return color;
 }
 
-// get ks
+// get specular coefficient
 __device__ real32 GlossySpecularBRDF::GetSpecularCoefficient() const
 {
     return _coefficient;

@@ -104,6 +104,23 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
         vec3          wi    = light->GetLightDirection( sp );
         real32        angle = glm::dot( sp.Normal, wi );
 
+
+        if ( angle > 0.0f )
+        {
+            // calculate shadow information
+            Ray   shadowRay   = Ray( sp.HitPoint, wi );
+            bool  isInShadow  = light->CastsShadows() && light->IsInShadow( shadowRay, octree, sp );
+            Color diffuse     = _diffuse.GetBRDF( sp, wo, wi );
+            Color shadowColor = diffuse * light->GetRadiance( sp ) * angle;
+
+            // calculate the color with a branchless conditional
+            color += Color::Lerp( Color::Black(),
+                                  shadowColor,
+                                  !isInShadow );
+        }
+
+
+        /*
         if ( angle > 0.0f )
         {
             // check if we need to perform shadow calculations
@@ -121,6 +138,7 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
                 color         += diffuse * light->GetRadiance( sp ) * angle;
             }
         }
+        */
     }
 
     return color;

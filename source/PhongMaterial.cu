@@ -96,16 +96,36 @@ __device__ void PhongMaterial::SetSpecularPower( real32 pow )
 __device__ Color PhongMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const
 {
     // from Suffern, 285
-    vec3 wo    = -sp.Ray.Direction;
-    Color   color = _ambient.GetBHR( sp, wo );
+    vec3  wo    = -sp.Ray.Direction;
+    Color color = _ambient.GetBHR( sp, wo );
 
     for ( uint32 i = 0; i < lights->GetSize(); ++i )
     {
-        const Light* light = lights->Get( i );
-        vec3         wi    = light->GetLightDirection( sp );
-        real32       angle = glm::dot( sp.Normal, wi );
+        const Light* light       = lights->Get( i );
+        vec3         wi          = light->GetLightDirection( sp );
+        real32       angle       = glm::dot( sp.Normal, wi );
+        //real32       shadowAngle = Math::Lerp( 0.0f,
+        //                                       angle,
+        //                                       static_cast<real32>( angle > 0.0f ) );
+        
+        if ( angle > 0.0f )
+        {
+            // calculate shadow information
+            Ray   shadowRay   = Ray( sp.HitPoint, wi );
+            bool  isInShadow  = light->CastsShadows() && light->IsInShadow( shadowRay, octree, sp );
+            Color diffuse     = _diffuse.GetBRDF( sp, wo, wi );
+            Color specular    = _specular.GetBRDF( sp, wo, wi );
+            Color shadowColor = ( diffuse + specular ) * light->GetRadiance( sp ) * angle;
 
-        if ( angle > 0.0 )
+            // calculate the color with a branchless conditional
+            color += Color::Lerp( Color::Black(),
+                                  shadowColor,
+                                  !isInShadow );
+        }
+
+
+        /*
+        if ( angle > 0.0f )
         {
             // check if we need to perform shadow calculations
             bool isInShadow = false;
@@ -118,11 +138,12 @@ __device__ Color PhongMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
             // add the shadow-inclusive light information
             if ( !isInShadow )
             {
-                Color diffuse   = _diffuse.GetBRDF( sp, wo, wi );
-                Color specular  = _specular.GetBRDF( sp, wo, wi );
-                color          += ( diffuse + specular ) * light->GetRadiance( sp ) * angle;
+                Color diffuse = _diffuse.GetBRDF( sp, wo, wi );
+                Color specular = _specular.GetBRDF( sp, wo, wi );
+                color += ( diffuse + specular ) * light->GetRadiance( sp ) * angle;
             }
         }
+        */
     }
 
     return color;

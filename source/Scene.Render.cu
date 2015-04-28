@@ -14,11 +14,11 @@ static DeviceSceneData* SceneData = nullptr;
 /// Gets the next power of two that is higher than the given number.
 /// </summary>
 /// <param name="number">The number.</param>
-static int32 GetNextPowerOfTwo( int32 number )
+static uint32 GetNextPowerOfTwo( uint32 number )
 {
     real64 logBase2 = log( static_cast<real64>( number ) ) / log( 2.0 );
     uint32 power    = static_cast<uint32>( Math::Ceiling( logBase2 ) );
-
+    
     int32 value = 1 << power;
     return value;
 }
@@ -113,8 +113,8 @@ bool Scene::OnPostRender()
 void Scene::Render()
 {
     // prepare for the kernel
-    int32 imgWidth  = GetNextPowerOfTwo( _viewPlane.Width );
-    int32 imgHeight = GetNextPowerOfTwo( _viewPlane.Width );
+    uint32 imgWidth  = GetNextPowerOfTwo( _viewPlane.Width  );
+    uint32 imgHeight = GetNextPowerOfTwo( _viewPlane.Height );
     dim3  blocks    = dim3( 16, 16 );
     dim3  grid      = dim3( imgHeight / blocks.x + ( ( imgHeight % blocks.x ) == 0 ? 0 : 1 ),
                             imgWidth  / blocks.y + ( ( imgWidth  % blocks.y ) == 0 ? 0 : 1 ) );

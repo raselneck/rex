@@ -33,13 +33,13 @@ void Scene::SaveImage( const char* fname ) const
 }
 
 // set camera position
-void Scene::SetCameraPosition( const Vector3& pos )
+void Scene::SetCameraPosition( const vec3& pos )
 {
     _camera.SetPosition( pos );
 }
 
 // set camera position
-void Scene::SetCameraPosition( real_t x, real_t y, real_t z )
+void Scene::SetCameraPosition( real32 x, real32 y, real32 z )
 {
     _camera.SetPosition( x, y, z );
 }
@@ -51,14 +51,14 @@ void Scene::UpdateCamera( real64 dt )
     static real64 newMouseX = 0.0, newMouseY = 0.0;
 
     // get local axes
-    const Vector3& xAxis = _camera.GetOrthoX();
-    const Vector3& yAxis = _camera.GetOrthoY();
-    const Vector3& zAxis = _camera.GetOrthoZ();
+    const vec3& xAxis = _camera.GetOrthoX();
+    const vec3& yAxis = _camera.GetOrthoY();
+    const vec3& zAxis = _camera.GetOrthoZ();
 
     // get helper variables
-    Vector3     translation;
-    real_t      moveSpeed = real_t( 25.0 * dt );
-    real_t      rotSpeed  = real_t(  5.0 * dt );
+    vec3     translation;
+    real32      moveSpeed = real32( 25.0 * dt );
+    real32      rotSpeed  = real32(  5.0 * dt );
     GLFWwindow* window    = reinterpret_cast<GLFWwindow*>( _window->_handle );
 
     // check keys for movement
@@ -97,7 +97,7 @@ void Scene::UpdateCamera( real64 dt )
     // move
     if ( hasMoved )
     {
-        translation = moveSpeed * Vector3::Normalize( translation );
+        translation = moveSpeed * glm::normalize( translation );
     }
     _camera.SetPosition( _camera.GetPosition() + translation );
 }

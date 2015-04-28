@@ -6,9 +6,9 @@ REX_NS_BEGIN
 
 // create ambient light
 __device__ AmbientLight::AmbientLight()
-    : Light( LightType::Ambient ),
-      _radianceScale( 1.0f ),
-      _color( Color::White() )
+    : Light         ( LightType::Ambient )
+    , _radianceScale( 1.0f )
+    , _color        ( Color::White() )
 {
     _castShadows = false;
 }
@@ -26,9 +26,9 @@ __device__ const Color& AmbientLight::GetColor() const
 }
 
 // get light direction
-__device__ Vector3 AmbientLight::GetLightDirection( ShadePoint& sp ) const
+__device__ vec3 AmbientLight::GetLightDirection( ShadePoint& sp ) const
 {
-    return Vector3( 0.0 );
+    return vec3( 0.0f );
 }
 
 // get radiance
@@ -38,7 +38,7 @@ __device__ Color AmbientLight::GetRadiance( ShadePoint& sp ) const
 }
 
 // get radiance scale
-__device__ real_t AmbientLight::GetRadianceScale() const
+__device__ real32 AmbientLight::GetRadianceScale() const
 {
     return _radianceScale;
 }
@@ -62,7 +62,7 @@ __device__ void AmbientLight::SetColor( const Color& color )
 }
 
 // set color by components
-__device__ void AmbientLight::SetColor( real_t r, real_t g, real_t b )
+__device__ void AmbientLight::SetColor( real32 r, real32 g, real32 b )
 {
     _color.R = r;
     _color.G = g;
@@ -70,7 +70,7 @@ __device__ void AmbientLight::SetColor( real_t r, real_t g, real_t b )
 }
 
 // set radiance scale
-__device__ void AmbientLight::SetRadianceScale( real_t ls )
+__device__ void AmbientLight::SetRadianceScale( real32 ls )
 {
     _radianceScale = ls;
 }

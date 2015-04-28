@@ -10,7 +10,7 @@ __device__ LambertianBRDF::LambertianBRDF()
 }
 
 // create Lambertian BRDF w/ coefficient, color
-__device__ LambertianBRDF::LambertianBRDF( real_t kd, const Color& dc )
+__device__ LambertianBRDF::LambertianBRDF( real32 kd, const Color& dc )
     : _coefficient( kd ),
       _color( dc )
 {
@@ -23,13 +23,13 @@ __device__ LambertianBRDF::~LambertianBRDF()
 }
 
 // get bi-hemispherical reflectance
-__device__ Color LambertianBRDF::GetBHR( const ShadePoint& sp, const Vector3& wo ) const
+__device__ Color LambertianBRDF::GetBHR( const ShadePoint& sp, const vec3& wo ) const
 {
     return _coefficient * _color;
 }
 
 // get BRDF
-__device__ Color LambertianBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const
+__device__ Color LambertianBRDF::GetBRDF( const ShadePoint& sp, const vec3& wo, const vec3& wi ) const
 {
     return _coefficient * _color * Math::InvPi();
 }
@@ -41,7 +41,7 @@ __device__ Color LambertianBRDF::GetDiffuseColor() const
 }
 
 // get diffuse reflection coefficient
-__device__ real_t LambertianBRDF::GetDiffuseCoefficient() const
+__device__ real32 LambertianBRDF::GetDiffuseCoefficient() const
 {
     return _coefficient;
 }
@@ -53,7 +53,7 @@ __device__ void LambertianBRDF::SetDiffuseColor( const Color& color )
 }
 
 // set diffuse reflection coefficient
-__device__ void LambertianBRDF::SetDiffuseCoefficient( real_t coeff )
+__device__ void LambertianBRDF::SetDiffuseCoefficient( real32 coeff )
 {
     _coefficient = coeff;
 }

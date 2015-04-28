@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Geometry.hxx"
-#include "../../Math/Vector3.hxx"
+#include "../../Math/Math.hxx"
 
 // TODO : Make get and set methods for the radius and center ?
 
@@ -12,10 +12,8 @@ REX_NS_BEGIN
 /// </summary>
 class Sphere : public Geometry
 {
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
-
-    Vector3 _center;
-    real_t  _radius;
+    vec3 _center;
+    real32  _radius;
 
 public:
     /// <summary>
@@ -30,7 +28,7 @@ public:
     /// <param name="material">The material to use with this sphere.</param>
     /// <param name="center">The initial center of the sphere.</param>
     /// <param name="radius">The initial radius of the sphere.</param>
-    template<typename T> __device__ Sphere( const T& material, const Vector3& center, real_t radius );
+    template<typename T> __device__ Sphere( const T& material, const vec3& center, real32 radius );
 
     /// <summary>
     /// Destroys this sphere.
@@ -49,14 +47,14 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="tmin">The distance to intersection.</param>
     /// <param name="sp">The shading point information.</param>
-    __device__ virtual bool Hit( const Ray& ray, real_t& tmin, ShadePoint& sp ) const;
+    __device__ virtual bool Hit( const Ray& ray, real32& tmin, ShadePoint& sp ) const;
 
     /// <summary>
     /// Performs the same thing as a normal ray hit, but for shadow rays.
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="tmin">The distance to intersection.</param>
-    __device__ virtual bool ShadowHit( const Ray& ray, real_t& tmin ) const;
+    __device__ virtual bool ShadowHit( const Ray& ray, real32& tmin ) const;
 };
 
 REX_NS_END

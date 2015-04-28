@@ -9,7 +9,7 @@ __device__ GlossySpecularBRDF::GlossySpecularBRDF()
 }
 
 // create g-s BRDF w/ coefficient, color, power
-__device__ GlossySpecularBRDF::GlossySpecularBRDF( real_t ks, const Color& color, real_t pow )
+__device__ GlossySpecularBRDF::GlossySpecularBRDF( real32 ks, const Color& color, real32 pow )
     : _coefficient( ks ),
       _color      ( color ),
       _power      ( pow )
@@ -24,21 +24,21 @@ __device__ GlossySpecularBRDF::~GlossySpecularBRDF()
 }
 
 // get bi-hemispherical reflectance (rho)
-__device__ Color GlossySpecularBRDF::GetBHR( const ShadePoint& sp, const Vector3& wo ) const
+__device__ Color GlossySpecularBRDF::GetBHR( const ShadePoint& sp, const vec3& wo ) const
 {
     return Color::Magenta();
 }
 
 // get BRDF (f)
-__device__ Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const
+__device__ Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const vec3& wo, const vec3& wi ) const
 {
     // from Suffern, 284
 
     Color   color;
-    real_t  angle     = Vector3::Dot( sp.Normal, wi );
-    Vector3 reflected = -wi + 2.0 * sp.Normal * angle;
+    real32  angle     = glm::dot( sp.Normal, wi );
+    vec3 reflected = -wi + 2.0f * sp.Normal * angle;
 
-    angle = Vector3::Dot( reflected, wo );
+    angle = glm::dot( reflected, wo );
     if ( angle > 0.0 )
     {
         color = _coefficient * _color * pow( angle, _power );
@@ -48,7 +48,7 @@ __device__ Color GlossySpecularBRDF::GetBRDF( const ShadePoint& sp, const Vector
 }
 
 // get ks
-__device__ real_t GlossySpecularBRDF::GetSpecularCoefficient() const
+__device__ real32 GlossySpecularBRDF::GetSpecularCoefficient() const
 {
     return _coefficient;
 }
@@ -60,13 +60,13 @@ __device__ const Color& GlossySpecularBRDF::GetSpecularColor() const
 }
 
 // get power
-__device__ real_t GlossySpecularBRDF::GetSpecularPower() const
+__device__ real32 GlossySpecularBRDF::GetSpecularPower() const
 {
     return _power;
 }
 
 // set ks
-__device__ void GlossySpecularBRDF::SetSpecularCoefficient( real_t ks )
+__device__ void GlossySpecularBRDF::SetSpecularCoefficient( real32 ks )
 {
     _coefficient = ks;
 }
@@ -78,7 +78,7 @@ __device__ void GlossySpecularBRDF::SetSpecularColor( const Color& color )
 }
 
 // set color w/ components
-__device__ void GlossySpecularBRDF::SetSpecularColor( real_t r, real_t g, real_t b )
+__device__ void GlossySpecularBRDF::SetSpecularColor( real32 r, real32 g, real32 b )
 {
     _color.R = r;
     _color.G = g;
@@ -86,7 +86,7 @@ __device__ void GlossySpecularBRDF::SetSpecularColor( real_t r, real_t g, real_t
 }
 
 // set power
-__device__ void GlossySpecularBRDF::SetSpecularPower( real_t pow )
+__device__ void GlossySpecularBRDF::SetSpecularPower( real32 pow )
 {
     _power = pow;
 }

@@ -19,18 +19,18 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
     }
 
     // prepare for the tracing!!
-    const Octree*    octree     = sd->Octree;
-    const real_t     invSamples = 1.0f / vp.SampleCount;
-    const real_t     half       = real_t( 0.5 );
-    const int32      n          = static_cast<int32>( sqrtf( vp.SampleCount ) );
-    const real_t     invn       = 1.0 / n;
-    Color            color      = Color::Black();
-    real_t           t          = 0;
-    int32            sy         = 0;
-    int32            sx         = 0;
-    Ray              ray        = Ray( sd->Camera.GetPosition(), Vector3( 0, 0, 1 ) );
-    Vector2          samplePoint;
-    ShadePoint       shadePoint;
+    const Octree* octree     = sd->Octree;
+    const real32  invSamples = 1.0f / vp.SampleCount;
+    const real32  half       = 0.5f;
+    const int32   n          = static_cast<int32>( sqrtf( vp.SampleCount ) );
+    const real32  invn       = 1.0f / n;
+    Color         color      = Color::Black();
+    real32        t          = 0.0f;
+    int32         sy         = 0;
+    int32         sx         = 0;
+    Ray           ray        = Ray( sd->Camera.GetPosition(), vec3( 0, 0, 1 ) );
+    vec2          samplePoint;
+    ShadePoint    shadePoint;
 
     // sample
     for ( sy = 0; sy < n; ++sy )
@@ -38,8 +38,8 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
         for ( sx = 0; sx < n; ++sx )
         {
             // get the pixel point
-            samplePoint.X = x - half * vp.Width  + ( sx + half ) * invn;
-            samplePoint.Y = y - half * vp.Height + ( sy + half ) * invn;
+            samplePoint.x = x - half * vp.Width  + ( sx + half ) * invn;
+            samplePoint.y = y - half * vp.Height + ( sy + half ) * invn;
 
 
             // set the ray direction

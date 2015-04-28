@@ -9,10 +9,8 @@ REX_NS_BEGIN
 /// </summary>
 class LambertianBRDF : public BRDF
 {
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
-
     Color  _color;
-    real_t _coefficient;
+    real32 _coefficient;
 
 public:
     /// <summary>
@@ -25,7 +23,7 @@ public:
     /// </summary>
     /// <param name="kd">The diffuse reflection coefficient.</param>
     /// <param name="dc">The diffuse color.</param>
-    __device__ LambertianBRDF( real_t kd, const Color& dc );
+    __device__ LambertianBRDF( real32 kd, const Color& dc );
 
     /// <summary>
     /// Destroys this Lambertian BRDF.
@@ -37,7 +35,7 @@ public:
     /// </summary>
     /// <param name="sp">The shade point information.</param>
     /// <param name="wo">The outgoing, reflected light direction.</param>
-    __device__ virtual Color GetBHR( const ShadePoint& sp, const Vector3& wo ) const;
+    __device__ virtual Color GetBHR( const ShadePoint& sp, const vec3& wo ) const;
 
     /// <summary>
     /// Gets the BRDF itself. (f in Suffern.)
@@ -45,7 +43,7 @@ public:
     /// <param name="sp">The shade point information.</param>
     /// <param name="wo">The outgoing, reflected light direction.</param>
     /// <param name="wi">The incoming light direction.</param>
-    __device__ virtual Color GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const;
+    __device__ virtual Color GetBRDF( const ShadePoint& sp, const vec3& wo, const vec3& wi ) const;
 
     /// <summary>
     /// Gets the color.
@@ -55,7 +53,7 @@ public:
     /// <summary>
     /// Gets the reflection coefficient.
     /// </summary>
-    __device__ real_t GetDiffuseCoefficient() const;
+    __device__ real32 GetDiffuseCoefficient() const;
 
     /// <summary>
     /// Sets the color.
@@ -67,7 +65,7 @@ public:
     /// Sets the reflection coefficient.
     /// </summary>
     /// <param name="coeff">The new reflection coefficient.</param>
-    __device__ void SetDiffuseCoefficient( real_t coeff );
+    __device__ void SetDiffuseCoefficient( real32 coeff );
 };
 
 REX_NS_END

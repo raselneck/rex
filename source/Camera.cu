@@ -7,52 +7,52 @@ REX_NS_BEGIN
 // create new camera
 Camera::Camera()
 {
-    _up             = Vector3( 0.0, 1.0, 0.0 );
-    _target         = Vector3( 0.0, 0.0, 1.0 );
-    _viewPlaneDist  = real_t( 1000.0 );
+    _up             = vec3( 0.0, 1.0, 0.0 );
+    _target         = vec3( 0.0, 0.0, 1.0 );
+    _viewPlaneDist  = real32( 1000.0 );
 }
 
 // destroy camera
 Camera::~Camera()
 {
-    _viewPlaneDist = real_t( 0.0 );
+    _viewPlaneDist = real32( 0.0 );
 }
 
 // get ortho X axis
-const Vector3& Camera::GetOrthoX() const
+const vec3& Camera::GetOrthoX() const
 {
     return _orthoU;
 }
 
 // get ortho Y axis
-const Vector3& Camera::GetOrthoY() const
+const vec3& Camera::GetOrthoY() const
 {
     return _orthoV;
 }
 
 // get ortho Z axis
-const Vector3& Camera::GetOrthoZ() const
+const vec3& Camera::GetOrthoZ() const
 {
     return _orthoW;
 }
 
 // get camera position
-const Vector3& Camera::GetPosition() const
+const vec3& Camera::GetPosition() const
 {
     return _position;
 }
 
 // get ray to sample point
-Vector3 Camera::GetRayDirection( const Vector2& sp ) const
+vec3 Camera::GetRayDirection( const vec2& sp ) const
 {
-    Vector3 dir = sp.X * _orthoU            // +x is right
-                - sp.Y * _orthoV            // +y is up
-                - _viewPlaneDist * _orthoW; // +z is out of screen (I think)
-    return Vector3::Normalize( dir );
+    vec3 dir = sp.x * _orthoU            // +x is right
+             - sp.y * _orthoV            // +y is up
+             + _viewPlaneDist * _orthoW; // +z is out of screen (I think)
+    return glm::normalize( dir );
 }
 
 // get camera target
-const Vector3& Camera::GetTarget() const
+const vec3& Camera::GetTarget() const
 {
     return _target;
 }
@@ -61,70 +61,70 @@ const Vector3& Camera::GetTarget() const
 void Camera::CalculateOrthonormalVectors()
 {
     // calculate basis vectors
-    _orthoW = Vector3::Normalize( _position - _target );
-    _orthoU = Vector3::Normalize( Vector3::Cross( _up, _orthoW ) );
-    _orthoV = Vector3::Cross( _orthoW, _orthoU );
+    _orthoW = glm::normalize( _position - _target );
+    _orthoU = glm::normalize( glm::cross( _up, _orthoW ) );
+    _orthoV = glm::cross( _orthoW, _orthoU );
 
 
     // handle the singularity if the camera if looking directly down
-    if ( _position.X == _target.X &&
-         _position.Z == _target.Z &&
-         _position.Y >  _target.Y )
+    if ( _position.x == _target.x &&
+         _position.z == _target.z &&
+         _position.y >  _target.y )
     {
-        _orthoV = Vector3( 1.0, 0.0, 0.0 );
-        _orthoW = Vector3( 0.0, 1.0, 0.0 );
-        _orthoU = Vector3( 0.0, 0.0, 1.0 );
+        _orthoV = vec3( 1.0f, 0.0f, 0.0f );
+        _orthoW = vec3( 0.0f, 1.0f, 0.0f );
+        _orthoU = vec3( 0.0f, 0.0f, 1.0f );
     }
 
     // handle the singularity if the camera is looking directly up
-    if ( _position.X == _target.X &&
-         _position.Z == _target.Z &&
-         _position.Y <  _target.Y )
+    if ( _position.x == _target.x &&
+         _position.z == _target.z &&
+         _position.y <  _target.y )
     {
-        _orthoU = Vector3( 1.0,  0.0, 0.0 );
-        _orthoW = Vector3( 0.0, -1.0, 0.0 );
-        _orthoV = Vector3( 0.0,  0.0, 1.0 );
+        _orthoU = vec3( 1.0f,  0.0f, 0.0f );
+        _orthoW = vec3( 0.0f, -1.0f, 0.0f );
+        _orthoV = vec3( 0.0f,  0.0f, 1.0f );
     }
 }
 
 // set camera position
-void Camera::SetPosition( const Vector3& position )
+void Camera::SetPosition( const vec3& position )
 {
     _position = position;
 }
 
 // set camera position
-void Camera::SetPosition( real_t x, real_t y, real_t z )
+void Camera::SetPosition( real32 x, real32 y, real32 z )
 {
-    _position = Vector3( x, y, z );
+    _position = vec3( x, y, z );
 }
 
 // set camera target
-void Camera::SetTarget( const Vector3& target )
+void Camera::SetTarget( const vec3& target )
 {
     _target = target;
 }
 
 // set camera target
-void Camera::SetTarget( real_t x, real_t y, real_t z )
+void Camera::SetTarget( real32 x, real32 y, real32 z )
 {
-    _target = Vector3( x, y, z );
+    _target = vec3( x, y, z );
 }
 
 // set camera up
-void Camera::SetUp( const Vector3& up )
+void Camera::SetUp( const vec3& up )
 {
     _up = up;
 }
 
 // set camera up
-void Camera::SetUp( real_t x, real_t y, real_t z )
+void Camera::SetUp( real32 x, real32 y, real32 z )
 {
-    _up = Vector3( x, y, z );
+    _up = vec3( x, y, z );
 }
 
 // set camera view plane distance
-void Camera::SetViewPlaneDistance( real_t dist )
+void Camera::SetViewPlaneDistance( real32 dist )
 {
     _viewPlaneDist = dist;
 }

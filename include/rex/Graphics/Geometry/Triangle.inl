@@ -7,7 +7,7 @@ template<typename T> __device__ Triangle::Triangle( const T& material )
 }
 
 // create a new triangle
-template<typename T> __device__ Triangle::Triangle( const T& material, const Vector3& p1, const Vector3& p2, const Vector3& p3 )
+template<typename T> __device__ Triangle::Triangle( const T& material, const vec3& p1, const vec3& p2, const vec3& p3 )
     : Geometry( GeometryType::Triangle, material ),
       _p1( p1 ),
       _p2( p2 ),

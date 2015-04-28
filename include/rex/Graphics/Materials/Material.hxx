@@ -25,7 +25,6 @@ enum class MaterialType
 class Material
 {
     REX_NONCOPYABLE_CLASS( Material )
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
 
 protected:
     friend class Geometry;

@@ -99,7 +99,7 @@ public:
     /// Sets the camera's position.
     /// </summary>
     /// <param name="pos">The new position.</param>
-    __host__ void SetCameraPosition( const Vector3& pos );
+    __host__ void SetCameraPosition( const vec3& pos );
 
     /// <summary>
     /// Sets the camera's position.
@@ -107,7 +107,7 @@ public:
     /// <param name="x">The new position's X coordinate.</param>
     /// <param name="y">The new position's Y coordinate.</param>
     /// <param name="z">The new position's Z coordinate.</param>
-    __host__ void SetCameraPosition( real_t x, real_t y, real_t z );
+    __host__ void SetCameraPosition( real32 x, real32 y, real32 z );
 };
 
 REX_NS_END

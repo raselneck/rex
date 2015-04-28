@@ -10,8 +10,6 @@ REX_NS_BEGIN
 /// </summary>
 class MatteMaterial : public Material
 {
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
-
 protected:
     friend class Geometry;
 
@@ -30,7 +28,7 @@ protected:
     /// <param name="ka">The initial ambient coefficient.</param>
     /// <param name="kd">The initial diffuse coefficient.</param>
     /// <param name="type">The actual material type.</param>
-    __device__ MatteMaterial( const Color& color, real_t ka, real_t kd, MaterialType type );
+    __device__ MatteMaterial( const Color& color, real32 ka, real32 kd, MaterialType type );
 
 public:
     /// <summary>
@@ -50,7 +48,7 @@ public:
     /// <param name="color">The initial material color.</param>
     /// <param name="ka">The initial ambient coefficient.</param>
     /// <param name="kd">The initial diffuse coefficient.</param>
-    __device__ MatteMaterial( const Color& color, real_t ka, real_t kd );
+    __device__ MatteMaterial( const Color& color, real32 ka, real32 kd );
 
     /// <summary>
     /// Destroys this matte material.
@@ -60,7 +58,7 @@ public:
     /// <summary>
     /// Gets the ambient BRDF's diffuse coefficient.
     /// </summary>
-    __device__ real_t GetAmbientCoefficient() const;
+    __device__ real32 GetAmbientCoefficient() const;
 
     /// <summary>
     /// Gets this material's color.
@@ -70,13 +68,13 @@ public:
     /// <summary>
     /// Gets the diffuse BRDF's diffuse coefficient.
     /// </summary>
-    __device__ real_t GetDiffuseCoefficient() const;
+    __device__ real32 GetDiffuseCoefficient() const;
     
     /// <summary>
     /// Sets the ambient BRDF's diffuse coefficient.
     /// </summary>
     /// <param name="ka">The new ambient coefficient.</param>
-    __device__ virtual void SetAmbientCoefficient( real_t ka );
+    __device__ virtual void SetAmbientCoefficient( real32 ka );
 
     /// <summary>
     /// Sets this material's color.
@@ -90,13 +88,13 @@ public:
     /// <param name="r">The new color's red component..</param>
     /// <param name="g">The new color's green component..</param>
     /// <param name="b">The new color's blue component..</param>
-    __device__ virtual void SetColor( real_t r, real_t g, real_t b );
+    __device__ virtual void SetColor( real32 r, real32 g, real32 b );
 
     /// <summary>
     /// Sets the diffuse BRDF's diffuse coefficient.
     /// </summary>
     /// <param name="kd">The new diffuse coefficient.</param>
-    __device__ virtual void SetDiffuseCoefficient( real_t kd );
+    __device__ virtual void SetDiffuseCoefficient( real32 kd );
 
     /// <summary>
     /// Gets a shaded color given hit point data.

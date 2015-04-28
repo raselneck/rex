@@ -61,7 +61,7 @@ template<typename T> T* GC::DeviceAlloc( const T& source )
 }
 
 // allocate space for an array
-template<typename T> T* GC::DeviceAllocArray( uint_t count )
+template<typename T> T* GC::DeviceAllocArray( uint32 count )
 {
     // attempt to allocate the memory
     T*          memory = nullptr;
@@ -83,7 +83,7 @@ template<typename T> T* GC::DeviceAllocArray( uint_t count )
 }
 
 // allocate space for an array and copy data from a source
-template<typename T> T* GC::DeviceAllocArray( uint_t count, const T* source )
+template<typename T> T* GC::DeviceAllocArray( uint32 count, const T* source )
 {
     // allocate the memory
     T* memory = DeviceAllocArray<T>( count );

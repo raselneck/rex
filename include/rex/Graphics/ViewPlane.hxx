@@ -9,9 +9,9 @@ REX_NS_BEGIN
 /// </summary>
 struct ViewPlane
 {
-    uint_t Width;
-    uint_t Height;
-    uint_t SampleCount;
+    uint32 Width;
+    uint32 Height;
+    uint32 SampleCount;
 
     /// <summary>
     /// Creates a new view plane.

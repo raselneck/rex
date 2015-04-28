@@ -9,18 +9,18 @@ REX_NS_BEGIN
 
 // create point light
 __device__ PointLight::PointLight()
-    : PointLight( Vector3( 0.0, 0.0, 0.0 ) )
+    : PointLight( vec3( 0.0, 0.0, 0.0 ) )
 {
 }
 
 // create point light w/ position components
-__device__ PointLight::PointLight( real_t x, real_t y, real_t z )
-    : PointLight( Vector3( x, y, z ) )
+__device__ PointLight::PointLight( real32 x, real32 y, real32 z )
+    : PointLight( vec3( x, y, z ) )
 {
 }
 
 // create point light w/ position
-__device__ PointLight::PointLight( const Vector3& position )
+__device__ PointLight::PointLight( const vec3& position )
     : Light( LightType::Point ),
       _position( position ),
       _color( Color::White() ),
@@ -42,13 +42,13 @@ __device__ const Color& PointLight::GetColor() const
 }
 
 // get light direction
-__device__ Vector3 PointLight::GetLightDirection( ShadePoint& sp ) const
+__device__ vec3 PointLight::GetLightDirection( ShadePoint& sp ) const
 {
-    return Vector3::Normalize( _position - sp.HitPoint );
+    return glm::normalize( _position - sp.HitPoint );
 }
 
 // get position
-__device__ const Vector3& PointLight::GetPosition() const
+__device__ const vec3& PointLight::GetPosition() const
 {
     return _position;
 }
@@ -60,7 +60,7 @@ __device__ Color PointLight::GetRadiance( ShadePoint& sp ) const
 }
 
 // get radiance scale
-__device__ real_t PointLight::GetRadianceScale() const
+__device__ real32 PointLight::GetRadianceScale() const
 {
     return _radianceScale;
 }
@@ -70,8 +70,8 @@ __device__ bool PointLight::IsInShadow( const Ray& ray, const Octree* octree, co
 {
     // based on Suffern, 300
 
-    real_t t = 0.0;
-    real_t d = Vector3::Distance( _position, ray.Origin );
+    real32 t = 0.0;
+    real32 d = glm::distance( _position, ray.Origin );
 
     if ( octree->QueryShadowRay( ray, t ) && ( t < d ) )
     {
@@ -88,7 +88,7 @@ __device__ void PointLight::SetColor( const Color& color )
 }
 
 // set color components
-__device__ void PointLight::SetColor( real_t r, real_t g, real_t b )
+__device__ void PointLight::SetColor( real32 r, real32 g, real32 b )
 {
     _color.R = r;
     _color.B = g;
@@ -96,21 +96,21 @@ __device__ void PointLight::SetColor( real_t r, real_t g, real_t b )
 }
 
 // set position
-__device__ void PointLight::SetPosition( const Vector3& position )
+__device__ void PointLight::SetPosition( const vec3& position )
 {
     _position = position;
 }
 
 // set position
-__device__ void PointLight::SetPosition( real_t x, real_t y, real_t z )
+__device__ void PointLight::SetPosition( real32 x, real32 y, real32 z )
 {
-    _position.X = x;
-    _position.Y = y;
-    _position.Z = z;
+    _position.x = x;
+    _position.y = y;
+    _position.z = z;
 }
 
 // set radiance scale
-__device__ void PointLight::SetRadianceScale( real_t ls )
+__device__ void PointLight::SetRadianceScale( real32 ls )
 {
     _radianceScale = ls;
 }

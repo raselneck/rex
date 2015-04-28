@@ -23,7 +23,6 @@ enum class GeometryType
 class Geometry
 {
     REX_NONCOPYABLE_CLASS( Geometry )
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
 
 protected:
     Material*           _material;
@@ -64,14 +63,14 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="tmin">The distance to intersection.</param>
     /// <param name="sp">The shading point information.</param>
-    __device__ virtual bool Hit( const Ray& ray, real_t& tmin, ShadePoint& sp ) const = 0;
+    __device__ virtual bool Hit( const Ray& ray, real32& tmin, ShadePoint& sp ) const = 0;
 
     /// <summary>
     /// Performs the same thing as a normal ray hit, but for shadow rays.
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="tmin">The distance to intersection.</param>
-    __device__ virtual bool ShadowHit( const Ray& ray, real_t& tmin ) const = 0;
+    __device__ virtual bool ShadowHit( const Ray& ray, real32& tmin ) const = 0;
 
     /// <summary>
     /// Sets this geometry's material.

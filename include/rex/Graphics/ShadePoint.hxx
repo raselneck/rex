@@ -2,7 +2,7 @@
 
 #include "../Config.hxx"
 #include "../Math/Ray.hxx"
-#include "../Math/Vector3.hxx"
+#include "../Math/Math.hxx"
 #include "Color.hxx"
 
 REX_NS_BEGIN
@@ -16,9 +16,9 @@ class Material;
 struct ShadePoint
 {
     Ray                  Ray;
-    Vector3              HitPoint;
-    Vector3              Normal;
-    real_t               T;
+    vec3              HitPoint;
+    vec3              Normal;
+    real32               T;
     const rex::Material* Material;
 
     /// <summary>

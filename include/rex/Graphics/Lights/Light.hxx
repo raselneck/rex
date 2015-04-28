@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Math/Ray.hxx"
-#include "../../Math/Vector3.hxx"
+#include "../../Math/Math.hxx"
 #include "../Geometry/Octree.hxx"
 #include "../Color.hxx"
 
@@ -25,7 +25,6 @@ enum class LightType
 class Light
 {
     REX_NONCOPYABLE_CLASS( Light )
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
 
 protected:
     bool  _castShadows;
@@ -52,7 +51,7 @@ public:
     /// Gets the direction of the incoming light at a hit point.
     /// </summary>
     /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) const = 0;
+    __device__ virtual vec3 GetLightDirection( ShadePoint& sp ) const = 0;
 
     /// <summary>
     /// Gets the incident radiance at a hit point.

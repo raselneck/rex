@@ -30,7 +30,7 @@ void TextureRenderer::CreateBufferObjects()
     glCreateBuffers( 1, &_vbo );
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
 
-    // create the buffer data
+    // create the buffer data (flip the Y values for UV coordinates because OpenGL is dumb like that)
     GLfloat data[] =
     { //   x      y        u     v  
         -1.0f, -1.0f,    0.0f, 1.0f,

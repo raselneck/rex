@@ -28,10 +28,9 @@ struct BoundsGeometryPair
 class Octree
 {
     REX_NONCOPYABLE_CLASS( Octree )
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
 
     BoundingBox                    _bounds;
-    const uint_t                   _countBeforeSubivide;
+    const uint32                   _countBeforeSubivide;
     Octree*                        _children[ 8 ];
     DeviceList<BoundsGeometryPair> _objects;
 
@@ -51,7 +50,7 @@ class Octree
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the piece of geometry.</param>
     /// <param name="sp">The shade point data.</param>
-    __device__ const Geometry* QueryIntersectionsForReal( const Ray& ray, real_t& dist, ShadePoint& sp ) const;
+    __device__ const Geometry* QueryIntersectionsForReal( const Ray& ray, real32& dist, ShadePoint& sp ) const;
 
 public:
     /// <summary>
@@ -65,14 +64,14 @@ public:
     /// </summary>
     /// <param name="min">The minimum corner of the bounds.</param>
     /// <param name="max">The maximum corner of the bounds.</param>
-    __device__ Octree( const Vector3& min, const Vector3& max );
+    __device__ Octree( const vec3& min, const vec3& max );
 
     /// <summary>
     /// Creates a new octree.
     /// </summary>
     /// <param name="bounds">The octree's bounds.</param>
     /// <param name="maxItemCount">The maximum number of items to allow per-node before that node subdivides.</param>
-    __device__ Octree( const BoundingBox& bounds, uint_t maxItemCount );
+    __device__ Octree( const BoundingBox& bounds, uint32 maxItemCount );
 
     /// <summary>
     /// Creates a new octree.
@@ -80,7 +79,7 @@ public:
     /// <param name="min">The minimum corner of the bounds.</param>
     /// <param name="max">The maximum corner of the bounds.</param>
     /// <param name="maxItemCount">The maximum number of items to allow per-node before that node subdivides.</param>
-    __device__ Octree( const Vector3& min, const Vector3& max, uint_t maxItemCount );
+    __device__ Octree( const vec3& min, const vec3& max, uint32 maxItemCount );
 
     /// <summary>
     /// Destroys this octree.
@@ -98,14 +97,14 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the piece of geometry.</param>
     /// <param name="sp">The shade point data.</param>
-    __device__ const Geometry* QueryIntersections( const Ray& ray, real_t& dist, ShadePoint& sp ) const;
+    __device__ const Geometry* QueryIntersections( const Ray& ray, real32& dist, ShadePoint& sp ) const;
 
     /// <summary>
     /// Queries this octree to see if the given shadow ray intersects anything.
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to collision.</param>
-    __device__ bool QueryShadowRay( const Ray& ray, real_t& dist ) const;
+    __device__ bool QueryShadowRay( const Ray& ray, real32& dist ) const;
 
     /// <summary>
     /// Adds the given bounding box to this octree.

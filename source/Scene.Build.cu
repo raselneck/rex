@@ -30,17 +30,17 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
 
     // add a directional light
     DirectionalLight* dl = new DirectionalLight();
-    dl->SetDirection( Vector3( 1, 1, 1 ) );
-    dl->SetRadianceScale( real_t( 1.5 ) );
+    dl->SetDirection( vec3( 1.0f, 1.0f, 1.0f ) );
+    dl->SetRadianceScale( real32( 1.5f ) );
     data->Lights->Add( dl );
 
 
 
     // prepare some materials
-    const real_t ka    = 0.25f;
-    const real_t kd    = 0.75f;
-    const real_t ks    = 0.30f;
-    const real_t kpow  = 2.00f;
+    const real32 ka    = 0.25f;
+    const real32 kd    = 0.75f;
+    const real32 ks    = 0.30f;
+    const real32 kpow  = 2.00f;
     const PhongMaterial white ( Color::White(),  ka, kd, ks, kpow );
     const PhongMaterial red   ( Color::Red(),    ka, kd, ks, kpow );
     const PhongMaterial green ( Color::Green(),  ka, kd, ks, kpow );
@@ -49,31 +49,31 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
     const PhongMaterial purple( Color::Purple(), ka, kd, ks, kpow );
 
     // add some spheres
-    data->Geometry->Add( new Sphere( purple, Vector3(   0.0,   0.0,   0.0 ), 10.0 ) );
-    data->Geometry->Add( new Sphere( green,  Vector3(  10.0,  10.0,  10.0 ),  6.0 ) );
-    data->Geometry->Add( new Sphere( white,  Vector3( -15.0, -15.0, -15.0 ), 12.0 ) );
+    data->Geometry->Add( new Sphere( purple, vec3(   0.0,   0.0,   0.0 ), 10.0 ) );
+    data->Geometry->Add( new Sphere( green,  vec3(  10.0,  10.0,  10.0 ),  6.0 ) );
+    data->Geometry->Add( new Sphere( white,  vec3( -15.0, -15.0, -15.0 ), 12.0 ) );
 
     // add some triangles
-    data->Geometry->Add( new Triangle( orange, Vector3(), Vector3(  20.0, 0.0, 0.0 ), Vector3(  20.0,  20.0,  15.0 ) ) );
-    data->Geometry->Add( new Triangle( blue,   Vector3(), Vector3( -20.0, 0.0, 0.0 ), Vector3( -20.0, -20.0, -15.0 ) ) );
+    data->Geometry->Add( new Triangle( orange, vec3(), vec3(  20.0, 0.0, 0.0 ), vec3(  20.0,  20.0,  15.0 ) ) );
+    data->Geometry->Add( new Triangle( blue,   vec3(), vec3( -20.0, 0.0, 0.0 ), vec3( -20.0, -20.0, -15.0 ) ) );
 
 
 
 
     // calculate the min and max of the bounds
-    Vector3 min, max;
-    for ( uint_t i = 0; i < data->Geometry->GetSize(); ++i )
+    vec3 min, max;
+    for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
     {
         Geometry* geom = data->Geometry->operator[]( i );
-        min = Vector3::Min( min, geom->GetBounds().GetMin() );
-        max = Vector3::Max( max, geom->GetBounds().GetMax() );
+        min = glm::min( min, geom->GetBounds().GetMin() );
+        max = glm::max( max, geom->GetBounds().GetMax() );
     }
 
     // create the octree
     data->Octree = new Octree( min, max );
 
     // add the objects to the octree
-    for ( uint_t i = 0; i < data->Geometry->GetSize(); ++i )
+    for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
     {
         Geometry*   geom   = data->Geometry->operator[]( i );
         BoundingBox bounds = geom->GetBounds();
@@ -126,9 +126,9 @@ bool Scene::Build( uint16 width, uint16 height )
 
 
     // set the background color
-    _backgroundColor = Color( real_t( 0.392157 ),
-                              real_t( 0.584314 ),
-                              real_t( 0.929412 ) ); // cornflower blue ;)
+    _backgroundColor = Color( real32( 0.392157 ),
+                              real32( 0.584314 ),
+                              real32( 0.929412 ) ); // cornflower blue ;)
     if ( _renderMode == SceneRenderMode::ToOpenGL )
     {
         glClearColor( _backgroundColor.R, _backgroundColor.G, _backgroundColor.B, 1.0f );

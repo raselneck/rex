@@ -15,13 +15,13 @@ REX_NS_BEGIN
 
 // create image w/ width and height
 Image::Image( uint16 width, uint16 height )
-    : _width( width ),
-      _height( height ),
-      _dPixels( nullptr )
+    : _width( width )
+    , _height( height )
+    , _dPixels( nullptr )
 {
     // create host pixels
-    const uint_t arraySize = _width * _height;
-    const uint_t cudaSize  = arraySize * sizeof( uchar4 );
+    const uint32 arraySize = _width * _height;
+    const uint32 cudaSize  = arraySize * sizeof( uchar4 );
     _hPixels.resize( arraySize );
 
 
@@ -71,14 +71,14 @@ bool Image::Save( const char* fname ) const
 // copy host pixels to device
 void Image::CopyHostToDevice()
 {
-    uint_t size = _hPixels.size() * sizeof( uchar4 );
+    uint32 size = _hPixels.size() * sizeof( uchar4 );
     cudaMemcpy( _dPixels, &_hPixels[ 0 ], size, cudaMemcpyHostToDevice );
 }
 
 // copy device pixels to host
 void Image::CopyDeviceToHost()
 {
-    uint_t size = _hPixels.size() * sizeof( uchar4 );
+    uint32 size = _hPixels.size() * sizeof( uchar4 );
     cudaMemcpy( &_hPixels[ 0 ], _dPixels, size, cudaMemcpyDeviceToHost );
 }
 

@@ -2,7 +2,7 @@
 
 #include "../Config.hxx"
 #include "Ray.hxx"
-#include "Vector3.hxx"
+#include "Math.hxx"
 
 REX_NS_BEGIN
 
@@ -21,8 +21,8 @@ enum class ContainmentType : int32
 /// </summary>
 class BoundingBox
 {
-    Vector3 _min;
-    Vector3 _max;
+    vec3 _min;
+    vec3 _max;
 
 public:
     /// <summary>
@@ -30,7 +30,7 @@ public:
     /// </summary>
     /// <param name="min">The "minimum" corner.</param>
     /// <param name="max">The "maximum" corner.</param>
-    __both__ BoundingBox( const Vector3& min, const Vector3& max );
+    __both__ BoundingBox( const vec3& min, const vec3& max );
 
     /// <summary>
     /// Creates a new bounding box.
@@ -41,8 +41,8 @@ public:
     /// <param name="maxX">The "maximum" corner's X.</param>
     /// <param name="maxY">The "maximum" corner's Y.</param>
     /// <param name="maxZ">The "maximum" corner's Z.</param>
-    __both__ BoundingBox( real_t minX, real_t minY, real_t minZ,
-                          real_t maxX, real_t maxY, real_t maxZ );
+    __both__ BoundingBox( real32 minX, real32 minY, real32 minZ,
+                          real32 maxX, real32 maxY, real32 maxZ );
 
     /// <summary>
     /// Destroys this bounding box.
@@ -58,29 +58,29 @@ public:
     /// <summary>
     /// Gets the center of the bounding box.
     /// </summary>
-    __both__ Vector3 GetCenter() const;
+    __both__ vec3 GetCenter() const;
 
     /// <summary>
     /// Gets this bounding box's "minimum" corner.
     /// </summary>
-    __both__ const Vector3& GetMin() const;
+    __both__ const vec3& GetMin() const;
 
     /// <summary>
     /// Gets this bounding box's "maximum" corner.
     /// </summary>
-    __both__ const Vector3& GetMax() const;
+    __both__ const vec3& GetMax() const;
 
     /// <summary>
     /// Gets the size of the bounding box.
     /// </summary>
-    __both__ Vector3 GetSize() const;
+    __both__ vec3 GetSize() const;
 
     /// <summary>
     /// Checks to see if this bounding box intersects the given ray.
     /// </summary>
     /// <param name="ray">The ray to check.</param>
     /// <param name="dist">The distance to the collision.</param>
-    __both__ bool Intersects( const Ray& ray, real_t& dist ) const;
+    __both__ bool Intersects( const Ray& ray, real32& dist ) const;
 };
 
 REX_NS_END

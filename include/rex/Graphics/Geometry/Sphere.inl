@@ -8,7 +8,7 @@ template<typename T> __device__ Sphere::Sphere( const T& material )
 }
 
 // create new sphere
-template<typename T> __device__ Sphere::Sphere( const T& material, const Vector3& center, real_t radius )
+template<typename T> __device__ Sphere::Sphere( const T& material, const vec3& center, real32 radius )
     : Geometry( GeometryType::Sphere, material ),
       _center ( center ),
       _radius ( radius )

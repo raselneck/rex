@@ -58,14 +58,14 @@ public:
     /// Allocates memory for an array of the given type on the device.
     /// </summary>
     /// <param name="count">The number of items to allocate for.</param>
-    template<typename T> __host__ static T* DeviceAllocArray( uint_t count );
+    template<typename T> __host__ static T* DeviceAllocArray( uint32 count );
 
     /// <summary>
     /// Allocates memory for an array of the given type on the device and copies data from an initial source.
     /// </summary>
     /// <param name="count">The number of items to allocate for.</param>
     /// <param name="source">The source to copy from.</param>
-    template<typename T> __host__ static T* DeviceAllocArray( uint_t count, const T* source );
+    template<typename T> __host__ static T* DeviceAllocArray( uint32 count, const T* source );
 
     /// <summary>
     /// Releases all device memory.

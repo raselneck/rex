@@ -96,7 +96,7 @@ Handle<GLTexture2D::HandleData> GLTexture2D::CreateHandleData( GLContext& contex
 
 
     // allocate the texture memory
-    uint_t size = width * height * sizeof( uchar4 );
+    uint32 size = width * height * sizeof( uchar4 );
     cudaMalloc( &( handle->TextureMemory ), size );
     cudaMemset( handle->TextureMemory, 0, size );
 
@@ -181,7 +181,7 @@ uchar4* GLTexture2D::GetDeviceMemory()
 // update GL texture
 void GLTexture2D::UpdateOpenGLTexture()
 {
-    uint_t bufferSize = _width * _height * sizeof( uchar4 );
+    uint32 bufferSize = _width * _height * sizeof( uchar4 );
     cudaError_t err = cudaMemcpyToArray( _handle->CudaArray, 0, 0, _handle->TextureMemory, bufferSize, cudaMemcpyDeviceToDevice );
 }
 

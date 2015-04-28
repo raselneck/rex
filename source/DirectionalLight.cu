@@ -7,22 +7,22 @@ REX_NS_BEGIN
 
 // create light
 __device__ DirectionalLight::DirectionalLight()
-    : DirectionalLight( Vector3() )
+    : DirectionalLight( vec3( 0.0f, -1.0f, 0.0f ) )
 {
 }
 
 // create light w/ direction components
-__device__ DirectionalLight::DirectionalLight( real_t x, real_t y, real_t z )
-    : DirectionalLight( Vector3( x, y, z ) )
+__device__ DirectionalLight::DirectionalLight( real32 x, real32 y, real32 z )
+    : DirectionalLight( vec3( x, y, z ) )
 {
 }
 
 // create light w/ direction
-__device__ DirectionalLight::DirectionalLight( const Vector3& direction )
-    : Light( LightType::Directional ),
-      _direction( Vector3::Normalize( direction ) ),
-      _color( Color::White() ),
-      _radianceScale( 1.0f )
+__device__ DirectionalLight::DirectionalLight( const vec3& direction )
+    : Light         ( LightType::Directional      )
+    , _direction    ( glm::normalize( direction ) )
+    , _color        ( Color::White()              )
+    , _radianceScale( 1.0f                        )
 {
     _castShadows = true;
 }
@@ -40,13 +40,13 @@ __device__ const Color& DirectionalLight::GetColor() const
 }
 
 // get direction
-__device__ const Vector3& DirectionalLight::GetDirection() const
+__device__ const vec3& DirectionalLight::GetDirection() const
 {
     return _direction;
 }
 
 // get direction of incoming light
-__device__ Vector3 DirectionalLight::GetLightDirection( ShadePoint& sp ) const
+__device__ vec3 DirectionalLight::GetLightDirection( ShadePoint& sp ) const
 {
     return _direction;
 }
@@ -58,7 +58,7 @@ __device__ Color DirectionalLight::GetRadiance( ShadePoint& sp ) const
 }
 
 // get radiance scale
-__device__ real_t DirectionalLight::GetRadianceScale() const
+__device__ real32 DirectionalLight::GetRadianceScale() const
 {
     return _radianceScale;
 }
@@ -69,9 +69,9 @@ __device__ bool DirectionalLight::IsInShadow( const Ray& ray, const Octree* octr
     // I'm guessing at this implementation, as Suffern does not provide one.
     // it seems to work, so if the glove fits...
 
-    const Vector3 myRayOffset = _direction * real_t( 0.1 );
+    const vec3 myRayOffset = _direction * real32( 0.1 );
     Ray    myRay = Ray( ray.Origin + myRayOffset, _direction );
-    real_t d     = 0.0;
+    real32 d     = 0.0;
     return octree->QueryShadowRay( myRay, d );
 }
 
@@ -82,7 +82,7 @@ __device__ void DirectionalLight::SetColor( const Color& color )
 }
 
 // set color w/ components
-__device__ void DirectionalLight::SetColor( real_t r, real_t g, real_t b )
+__device__ void DirectionalLight::SetColor( real32 r, real32 g, real32 b )
 {
     _color.R = r;
     _color.G = g;
@@ -90,20 +90,20 @@ __device__ void DirectionalLight::SetColor( real_t r, real_t g, real_t b )
 }
 
 // set direction
-__device__ void DirectionalLight::SetDirection( const Vector3& direction )
+__device__ void DirectionalLight::SetDirection( const vec3& direction )
 {
-    _direction = Vector3::Normalize( direction );
+    _direction = glm::normalize( direction );
 }
 
 // set direction w/ components
-__device__ void DirectionalLight::SetDirection( real_t x, real_t y, real_t z )
+__device__ void DirectionalLight::SetDirection( real32 x, real32 y, real32 z )
 {
-    Vector3 dir = Vector3( x, y, z );
+    vec3 dir = vec3( x, y, z );
     SetDirection( dir );
 }
 
 // set radiance scale
-__device__ void DirectionalLight::SetRadianceScale( real_t ls )
+__device__ void DirectionalLight::SetRadianceScale( real32 ls )
 {
     _radianceScale = ls;
 }

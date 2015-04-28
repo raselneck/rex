@@ -9,11 +9,9 @@ REX_NS_BEGIN
 /// </summary>
 class GlossySpecularBRDF : public BRDF
 {
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
-
     Color  _color;
-    real_t _coefficient;
-    real_t _power;
+    real32 _coefficient;
+    real32 _power;
 
 public:
     /// <summary>
@@ -27,7 +25,7 @@ public:
     /// <param name="ks">The specular coefficient.</param>
     /// <param name="color">The specular color.</param>
     /// <param name="pow">The specular power.</param>
-    __device__ GlossySpecularBRDF( real_t ks, const Color& color, real_t pow );
+    __device__ GlossySpecularBRDF( real32 ks, const Color& color, real32 pow );
 
     /// <summary>
     /// Destroys this glossy-specular BRDF.
@@ -39,7 +37,7 @@ public:
     /// </summary>
     /// <param name="sp">The shade point information.</param>
     /// <param name="wo">The outgoing, reflected light direction.</param>
-    __device__ virtual Color GetBHR( const ShadePoint& sp, const Vector3& wo ) const;
+    __device__ virtual Color GetBHR( const ShadePoint& sp, const vec3& wo ) const;
 
     /// <summary>
     /// Gets the BRDF itself. (f in Suffern.)
@@ -47,12 +45,12 @@ public:
     /// <param name="sp">The shade point information.</param>
     /// <param name="wo">The outgoing, reflected light direction.</param>
     /// <param name="wi">The incoming light direction.</param>
-    __device__ virtual Color GetBRDF( const ShadePoint& sp, const Vector3& wo, const Vector3& wi ) const;
+    __device__ virtual Color GetBRDF( const ShadePoint& sp, const vec3& wo, const vec3& wi ) const;
 
     /// <summary>
     /// Gets the specular coefficient.
     /// </summary>
-    __device__ real_t GetSpecularCoefficient() const;
+    __device__ real32 GetSpecularCoefficient() const;
 
     /// <summary>
     /// Gets the specular color.
@@ -62,13 +60,13 @@ public:
     /// <summary>
     /// Gets the specular power.
     /// </summary>
-    __device__ real_t GetSpecularPower() const;
+    __device__ real32 GetSpecularPower() const;
 
     /// <summary>
     /// Sets the specular coefficient.
     /// </summary>
     /// <param name="ks">The new coefficient.</param>
-    __device__ void SetSpecularCoefficient( real_t ks );
+    __device__ void SetSpecularCoefficient( real32 ks );
 
     /// <summary>
     /// Sets the specular color.
@@ -82,13 +80,13 @@ public:
     /// <param name="r">The new color's red component..</param>
     /// <param name="g">The new color's green component..</param>
     /// <param name="b">The new color's blue component..</param>
-    __device__ void SetSpecularColor( real_t r, real_t g, real_t b );
+    __device__ void SetSpecularColor( real32 r, real32 g, real32 b );
 
     /// <summary>
     /// Sets the specular power.
     /// </summary>
     /// <param name="pow">The new power.</param>
-    __device__ void SetSpecularPower( real_t pow );
+    __device__ void SetSpecularPower( real32 pow );
 };
 
 REX_NS_END

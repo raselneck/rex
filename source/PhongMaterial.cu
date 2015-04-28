@@ -18,7 +18,7 @@ __device__ PhongMaterial::PhongMaterial( const Color& color )
 }
 
 // create material w/ color, ambient coefficient, diffuse coefficient, specular coefficient, specular power
-__device__ PhongMaterial::PhongMaterial( const Color& color, real_t ka, real_t kd, real_t ks, real_t pow )
+__device__ PhongMaterial::PhongMaterial( const Color& color, real32 ka, real32 kd, real32 ks, real32 pow )
     : MatteMaterial( color, ka, kd, MaterialType::Phong ),
       _specular( ks, color, pow )
 {
@@ -42,19 +42,19 @@ __device__ Material* PhongMaterial::Copy() const
 }
 
 // get specular coefficient
-__device__ real_t PhongMaterial::GetSpecularCoefficient() const
+__device__ real32 PhongMaterial::GetSpecularCoefficient() const
 {
     return _specular.GetSpecularCoefficient();
 }
 
 // get specular power
-__device__ real_t PhongMaterial::GetSpecularPower() const
+__device__ real32 PhongMaterial::GetSpecularPower() const
 {
     return _specular.GetSpecularPower();
 }
 
 // set ambient coefficient
-__device__ void PhongMaterial::SetAmbientCoefficient( real_t ka )
+__device__ void PhongMaterial::SetAmbientCoefficient( real32 ka )
 {
     _ambient.SetDiffuseCoefficient( ka );
 }
@@ -68,26 +68,26 @@ __device__ void PhongMaterial::SetColor( const Color& color )
 }
 
 // set color w/ components
-__device__ void PhongMaterial::SetColor( real_t r, real_t g, real_t b )
+__device__ void PhongMaterial::SetColor( real32 r, real32 g, real32 b )
 {
     Color color = Color( r, g, b );
     SetColor( color );
 }
 
 // set diffuse coefficient
-__device__ void PhongMaterial::SetDiffuseCoefficient( real_t kd )
+__device__ void PhongMaterial::SetDiffuseCoefficient( real32 kd )
 {
     _diffuse.SetDiffuseCoefficient( kd );
 }
 
 // set specular coefficient
-__device__ void PhongMaterial::SetSpecularCoefficient( real_t ks )
+__device__ void PhongMaterial::SetSpecularCoefficient( real32 ks )
 {
     _specular.SetSpecularCoefficient( ks );
 }
 
 // set specular power
-__device__ void PhongMaterial::SetSpecularPower( real_t pow )
+__device__ void PhongMaterial::SetSpecularPower( real32 pow )
 {
     _specular.SetSpecularPower( pow );
 }
@@ -96,14 +96,14 @@ __device__ void PhongMaterial::SetSpecularPower( real_t pow )
 __device__ Color PhongMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const
 {
     // from Suffern, 285
-    Vector3 wo    = -sp.Ray.Direction;
+    vec3 wo    = -sp.Ray.Direction;
     Color   color = _ambient.GetBHR( sp, wo );
 
-    for ( uint_t i = 0; i < lights->GetSize(); ++i )
+    for ( uint32 i = 0; i < lights->GetSize(); ++i )
     {
         const Light* light = lights->Get( i );
-        Vector3      wi    = light->GetLightDirection( sp );
-        real_t       angle = Vector3::Dot( sp.Normal, wi );
+        vec3      wi    = light->GetLightDirection( sp );
+        real32       angle = glm::dot( sp.Normal, wi );
 
         if ( angle > 0.0 )
         {

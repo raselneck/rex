@@ -8,7 +8,7 @@ Ray::Ray()
 }
 
 // new ray
-Ray::Ray( const Vector3& origin, const Vector3& direction )
+Ray::Ray( const vec3& origin, const vec3& direction )
     : Origin( origin ),
       Direction( direction )
 {

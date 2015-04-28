@@ -9,10 +9,8 @@ REX_NS_BEGIN
 /// </summary>
 class AmbientLight : public Light
 {
-    REX_IMPLEMENT_DEVICE_MEM_OPS()
-
     Color  _color;
-    real_t _radianceScale;
+    real32 _radianceScale;
 
 public:
     /// <summary>
@@ -33,13 +31,13 @@ public:
     /// <summary>
     /// Gets this ambient light's radiance scale.
     /// </summary>
-    __device__ real_t GetRadianceScale() const;
+    __device__ real32 GetRadianceScale() const;
 
     /// <summary>
     /// Gets the direction of the incoming light at a hit point.
     /// </summary>
     /// <param name="sp">The shading point information containing hit data.</param>
-    __device__ virtual Vector3 GetLightDirection( ShadePoint& sp ) const;
+    __device__ virtual vec3 GetLightDirection( ShadePoint& sp ) const;
 
     /// <summary>
     /// Gets the incident radiance at a hit point.
@@ -73,13 +71,13 @@ public:
     /// <param name="r">The new color's red component.</param>
     /// <param name="g">The new color's green component.</param>
     /// <param name="b">The new color's blue component.</param>
-    __device__ void SetColor( real_t r, real_t g, real_t b );
+    __device__ void SetColor( real32 r, real32 g, real32 b );
 
     /// <summary>
     /// Sets this ambient light's radiance scale.
     /// </summary>
     /// <param name="ls">The new radiance scale.</param>
-    __device__ void SetRadianceScale( real_t ls );
+    __device__ void SetRadianceScale( real32 ls );
 };
 
 REX_NS_END

@@ -1,25 +1,16 @@
 #pragma once
 
 #include "../Config.hxx"
+
+#define GLM_FORCE_CUDA
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
+using glm::vec2;
+using glm::vec3;
+using glm::mat4;
+
 REX_NS_BEGIN
-
-/// <summary>
-/// The 2-component vector type used in Rex.
-/// </summary>
-typedef glm::vec2 Vector2;
-
-/// <summary>
-/// The 3-component vector type used in Rex.
-/// </summary>
-typedef glm::vec3 Vector3;
-
-/// <summary>
-/// The matrix type used in Rex.
-/// </summary>
-typedef glm::mat4 Matrix;
 
 /// <summary>
 /// Defines static math methods.
@@ -32,37 +23,37 @@ public:
     /// <summary>
     /// Gets the constant Pi.
     /// </summary>
-    __both__ static real_t Pi();
+    __both__ static real32 Pi();
 
     /// <summary>
     /// Gets the constant 2 * Pi.
     /// </summary>
-    __both__ static real_t TwoPi();
+    __both__ static real32 TwoPi();
 
     /// <summary>
     /// Gets the constant Pi / 180.
     /// </summary>
-    __both__ static real_t PiOver180();
+    __both__ static real32 PiOver180();
 
     /// <summary>
     /// Gets the constant 1 / Pi.
     /// </summary>
-    __both__ static real_t InvPi();
+    __both__ static real32 InvPi();
 
     /// <summary>
     /// Gets the constant 1 / ( 2 * Pi ).
     /// </summary>
-    __both__ static real_t InvTwoPi();
+    __both__ static real32 InvTwoPi();
 
     /// <summary>
     /// Gets a really small value.
     /// </summary>
-    __both__ static real_t Epsilon();
+    __both__ static real32 Epsilon();
 
     /// <summary>
     /// Gets a really big value.
     /// </summary>
-    __both__ static real_t HugeValue();
+    __both__ static real32 HugeValue();
 
     /// <summary>
     /// Returns the floor of the given value.

@@ -22,13 +22,13 @@ template<typename T> DeviceList<T>::~DeviceList()
 }
 
 // get item in list
-template<typename T> __device__ const T& DeviceList<T>::Get( uint_t index ) const
+template<typename T> __device__ const T& DeviceList<T>::Get( uint32 index ) const
 {
     return _items[ index ];
 }
 
 // get size of device list
-template<typename T> __device__ uint_t DeviceList<T>::GetSize() const
+template<typename T> __device__ uint32 DeviceList<T>::GetSize() const
 {
     return _size;
 }
@@ -41,15 +41,15 @@ template<typename T> __device__ void DeviceList<T>::Add( const T& item )
 }
 
 // get item in list
-template<typename T> __device__ T& DeviceList<T>::Get( uint_t index )
+template<typename T> __device__ T& DeviceList<T>::Get( uint32 index )
 {
     return _items[ index ];
 }
 
 // remove item from the list
-template<typename T> __device__ void DeviceList<T>::Remove( uint_t index )
+template<typename T> __device__ void DeviceList<T>::Remove( uint32 index )
 {
-    for ( uint_t i = index; i < _size - 1; ++i )
+    for ( uint32 i = index; i < _size - 1; ++i )
     {
         _items[ i ] = _items[ i + 1 ];
     }
@@ -60,14 +60,14 @@ template<typename T> __device__ void DeviceList<T>::Remove( uint_t index )
 }
 
 // resize list
-template<typename T> __device__ void DeviceList<T>::Resize( uint_t size )
+template<typename T> __device__ void DeviceList<T>::Resize( uint32 size )
 {
     // create the new items
     T*     newItems = new T[ size ];
-    uint_t toSize   = Math::Min( _size, size );
+    uint32 toSize   = Math::Min( _size, size );
 
     // copy over the data
-    for ( uint_t i = 0; i < toSize; ++i )
+    for ( uint32 i = 0; i < toSize; ++i )
     {
         newItems[ i ] = _items[ i ];
     }
@@ -85,13 +85,13 @@ template<typename T> __device__ void DeviceList<T>::Resize( uint_t size )
 }
 
 // get item in list
-template<typename T> __device__ const T& DeviceList<T>::operator[]( uint_t index ) const
+template<typename T> __device__ const T& DeviceList<T>::operator[]( uint32 index ) const
 {
     return Get( index );
 }
 
 // get item in list
-template<typename T> __device__ T& DeviceList<T>::operator[]( uint_t index )
+template<typename T> __device__ T& DeviceList<T>::operator[]( uint32 index )
 {
     return Get( index );
 }

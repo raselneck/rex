@@ -1,45 +1,45 @@
 REX_NS_BEGIN
 
 // get pi
-inline real_t Math::Pi()
+inline real32 Math::Pi()
 {
-    return real_t( 3.14159265358979323846264338327950 );
+    return real32( 3.14159265358979323846264338327950 );
 }
 
 // get 2 * pi
-inline real_t Math::TwoPi()
+inline real32 Math::TwoPi()
 {
-    return real_t( 6.28318530717958647692528676655900 );
+    return real32( 6.28318530717958647692528676655900 );
 }
 
 // get pi / 180
-inline real_t Math::PiOver180()
+inline real32 Math::PiOver180()
 {
-    return real_t( 0.01745329251994329576923690768489 );
+    return real32( 0.01745329251994329576923690768489 );
 }
 
 // get 1 / pi
-inline real_t Math::InvPi()
+inline real32 Math::InvPi()
 {
-    return real_t( 0.31830988618379067153776752674503 );
+    return real32( 0.31830988618379067153776752674503 );
 }
 
 // get 1 / ( 2 * pi )
-inline real_t Math::InvTwoPi()
+inline real32 Math::InvTwoPi()
 {
-    return real_t( 0.15915494309189533576888376337251 );
+    return real32( 0.15915494309189533576888376337251 );
 }
 
 // get a really small value
-inline real_t Math::Epsilon()
+inline real32 Math::Epsilon()
 {
-    return real_t( 0.0001 );
+    return real32( 0.0001 );
 }
 
 // get a huge value
-inline real_t Math::HugeValue()
+inline real32 Math::HugeValue()
 {
-    return real_t( 1.0E10 );
+    return real32( 1.0E10 );
 }
 
 // get absolute value

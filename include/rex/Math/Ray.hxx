@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Config.hxx"
-#include "Vector3.hxx"
+#include "Math.hxx"
 
 REX_NS_BEGIN
 
@@ -10,8 +10,8 @@ REX_NS_BEGIN
 /// </summary>
 struct Ray
 {
-    Vector3 Origin;
-    Vector3 Direction;
+    vec3 Origin;
+    vec3 Direction;
 
     /// <summary>
     /// Creates a new ray.
@@ -23,7 +23,7 @@ struct Ray
     /// <summary>
     /// <param name="origin">The ray's origin.</param>
     /// <param name="direction">The ray's direction.</param>
-    __both__ Ray( const Vector3& origin, const Vector3& direction );
+    __both__ Ray( const vec3& origin, const vec3& direction );
 
     /// <summary>
     /// Destroys this ray.

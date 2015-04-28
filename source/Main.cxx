@@ -32,13 +32,13 @@ using namespace std;
 void RenderFrame( Scene& scene, uint32 currFrame, uint32 totalFrames )
 {
     // get the camera's position
-    const real_t distance = real_t( 100.0 );
-    const real_t angle    = Math::TwoPi() / totalFrames * currFrame;
-    real_t       x        = distance * std::sin( angle );
-    real_t       z        = distance * std::cos( angle );
+    const real32 distance = 100.0f;
+    const real32 angle    = Math::TwoPi() / totalFrames * currFrame;
+    real32       x        = distance * std::sin( angle );
+    real32       z        = distance * std::cos( angle );
 
     // set the camera's position
-    scene.SetCameraPosition( x, real_t( 0.0 ), z );
+    scene.SetCameraPosition( x, 0.0f, z );
 
 
 

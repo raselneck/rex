@@ -6,6 +6,12 @@ inline real32 Math::Pi()
     return real32( 3.14159265358979323846264338327950 );
 }
 
+// half pi
+inline real32 Math::HalfPi()
+{
+    return real32( 1.5707963267948966192313216916398 );
+}
+
 // get 2 * pi
 inline real32 Math::TwoPi()
 {

@@ -5,16 +5,14 @@ REX_NS_BEGIN
 
 // create a new scene
 Scene::Scene( SceneRenderMode renderMode )
-    : _lights    ( nullptr    ),
-      _geometry  ( nullptr    ),
-      _octree    ( nullptr    ),
-      _texture   ( nullptr    ),
-      _image     ( nullptr    ),
-      _window    ( nullptr    ),
-      _renderMode( renderMode )
+    : _lights    ( nullptr    )
+    , _geometry  ( nullptr    )
+    , _octree    ( nullptr    )
+    , _texture   ( nullptr    )
+    , _image     ( nullptr    )
+    , _window    ( nullptr    )
+    , _renderMode( renderMode )
 {
-    //cudaSetDevice( 0 );
-    //cudaGLSetGLDevice( 0 );
 }
 
 // destroy this scene
@@ -35,13 +33,13 @@ void Scene::SaveImage( const char* fname ) const
 // set camera position
 void Scene::SetCameraPosition( const vec3& pos )
 {
-    _camera.SetPosition( pos );
+    _camera.MoveTo( pos );
 }
 
 // set camera position
 void Scene::SetCameraPosition( real32 x, real32 y, real32 z )
 {
-    _camera.SetPosition( x, y, z );
+    _camera.MoveTo( x, y, z );
 }
 
 // update the scene camera
@@ -51,9 +49,9 @@ void Scene::UpdateCamera( real64 dt )
     static real64 newMouseX = 0.0, newMouseY = 0.0;
 
     // get local axes
-    const vec3& xAxis = _camera.GetOrthoX();
-    const vec3& yAxis = _camera.GetOrthoY();
-    const vec3& zAxis = _camera.GetOrthoZ();
+    const vec3& xAxis = _camera.GetLocalXAxis();
+    const vec3& yAxis = _camera.GetLocalYAxis();
+    const vec3& zAxis = _camera.GetLocalZAxis();
 
     // get helper variables
     vec3     translation;
@@ -99,7 +97,8 @@ void Scene::UpdateCamera( real64 dt )
     {
         translation = moveSpeed * glm::normalize( translation );
     }
-    _camera.SetPosition( _camera.GetPosition() + translation );
+    _camera.Move( translation );
+    _camera.Update();
 }
 
 REX_NS_END

@@ -10,13 +10,15 @@ REX_NS_BEGIN
 /// </summary>
 class Camera
 {
+    mat4 _rotation;
     vec3 _position;
-    vec3 _target;
+    vec3 _translation;
+    vec3 _forward;
     vec3 _up;
-    vec3 _orthoU;
-    vec3 _orthoV;
-    vec3 _orthoW;
-    real32  _viewPlaneDist;
+    vec3 _right;
+    real32 _yaw;
+    real32 _pitch;
+    real32 _viewPlaneDist;
 
 public:
     /// <summary>
@@ -41,77 +43,90 @@ public:
     __both__ vec3 GetRayDirection( const vec2& sp ) const;
 
     /// <summary>
-    /// Gets this camera's target.
+    /// Gets this camera's local X axis.
     /// </summary>
-    __both__ const vec3& GetTarget() const;
+    __both__ const vec3& GetLocalXAxis() const;
 
     /// <summary>
-    /// Gets this camera's orthogonal X axis.
+    /// Gets this camera's local Y axis.
     /// </summary>
-    __both__ const vec3& GetOrthoX() const;
+    __both__ const vec3& GetLocalYAxis() const;
 
     /// <summary>
-    /// Gets this camera's orthogonal Y axis.
+    /// Gets this camera's local Z axis.
     /// </summary>
-    __both__ const vec3& GetOrthoY() const;
+    __both__ const vec3& GetLocalZAxis() const;
 
     /// <summary>
-    /// Gets this camera's orthogonal Z axis.
+    /// Moves this camera to the given position and rotates it to look at the given target.
     /// </summary>
-    __both__ const vec3& GetOrthoZ() const;
+    /// <param name="position">The position to move to.</param>
+    /// <param name="target">The target to look at.</param>
+    __both__ void LookAt( const vec3& position, const vec3& target );
 
     /// <summary>
-    /// Calculates the orthonormal basis vectors.
+    /// Moves this camera.
     /// </summary>
-    __both__ void CalculateOrthonormalVectors();
+    /// <param name="amount">The amount to move.</param>
+    __both__ void Move( const vec3& amount );
 
     /// <summary>
-    /// Sets this camera's position.
+    /// Moves this camera.
+    /// </summary>
+    /// <param name="x">The X amount to move.</param>
+    /// <param name="y">The Y amount to move.</param>
+    /// <param name="z">The Z amount to move.</param>
+    __both__ void Move( real32 x, real32 y, real32 z );
+
+    /// <summary>
+    /// Moves this camera to the given position.
     /// </summary>
     /// <param name="position">The new position.</param>
-    __both__ void SetPosition( const vec3& position );
+    __both__ void MoveTo( const vec3& position );
 
     /// <summary>
-    /// Sets this camera's position.
+    /// Moves this camera to the given position.
     /// </summary>
-    /// <param name="x">The new position's X component.</param>
-    /// <param name="y">The new position's Y component.</param>
-    /// <param name="z">The new position's Z component.</param>
-    __both__ void SetPosition( real32 x, real32 y, real32 z );
+    /// <param name="x">The new position's X coordinate.</param>
+    /// <param name="y">The new position's Y coordinate.</param>
+    /// <param name="z">The new position's Z coordinate.</param>
+    __both__ void MoveTo( real32 x, real32 y, real32 z );
 
     /// <summary>
-    /// Sets this camera's target.
+    /// Rotates this camera.
     /// </summary>
-    /// <param name="target">The new target.</param>
-    __both__ void SetTarget( const vec3& target );
+    /// <param name="amount">The amount to rotate.</param>
+    __both__ void Rotate( const vec2& amount );
 
     /// <summary>
-    /// Sets this camera's target.
+    /// Rotates this camera.
     /// </summary>
-    /// <param name="x">The new target's X component.</param>
-    /// <param name="y">The new target's Y component.</param>
-    /// <param name="z">The new target's Z component.</param>
-    __both__ void SetTarget( real32 x, real32 y, real32 z );
+    /// <param name="x">The X amount to rotate.</param>
+    /// <param name="y">The Y amount to rotate.</param>
+    __both__ void Rotate( real32 x, real32 y );
 
     /// <summary>
-    /// Sets the relative up vector.
+    /// Sets this camera's pitch value (i.e. the rotation about the X-axis).
     /// </summary>
-    /// <param name="up">The new up vector.</param>
-    __both__ void SetUp( const vec3& up );
+    /// <param name="pitch">The new pitch value, in radians.</param>
+    __both__ void SetPitch( real32 pitch );
 
     /// <summary>
-    /// Sets the relative up vector.
+    /// Sets this camera's yaw value (i.e. the rotation about the Y-axis).
     /// </summary>
-    /// <param name="x">The new up vector's X component.</param>
-    /// <param name="y">The new up vector's Y component.</param>
-    /// <param name="z">The new up vector's Z component.</param>
-    __both__ void SetUp( real32 x, real32 y, real32 z );
+    /// <param name="yaw">The new yaw value, in radians.</param>
+    __both__ void SetYaw( real32 yaw );
 
     /// <summary>
     /// Sets the view plane's distance.
     /// </summary>
     /// <param name="dist">The new distance.</param>
     __both__ void SetViewPlaneDistance( real32 dist );
+
+    /// <summary>
+    /// Updates this camera to account for any changes.
+    /// </summary>
+    __both__ void Update();
 };
 
 REX_NS_END

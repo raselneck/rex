@@ -2,38 +2,29 @@
 #include <rex/Graphics/Color.hxx>
 #include <rex/Graphics/Scene.hxx>
 
+using namespace glm;
+
 REX_NS_BEGIN
+
+#define UnitXAxis vec3( 1, 0, 0 )
+#define UnitYAxis vec3( 0, 1, 0 )
+#define UnitZAxis vec3( 0, 0, 1 )
 
 // create new camera
 Camera::Camera()
+    : _yaw          ( 0.0f )
+    , _pitch        ( 0.0f )
+    , _viewPlaneDist( 2000.0f )
+    , _forward      ( UnitZAxis )
+    , _up           ( UnitYAxis )
+    , _right        ( UnitXAxis )
 {
-    _up             = vec3( 0.0, 1.0, 0.0 );
-    _target         = vec3( 0.0, 0.0, 1.0 );
-    _viewPlaneDist  = real32( 1000.0 );
 }
 
 // destroy camera
 Camera::~Camera()
 {
-    _viewPlaneDist = real32( 0.0 );
-}
-
-// get ortho X axis
-const vec3& Camera::GetOrthoX() const
-{
-    return _orthoU;
-}
-
-// get ortho Y axis
-const vec3& Camera::GetOrthoY() const
-{
-    return _orthoV;
-}
-
-// get ortho Z axis
-const vec3& Camera::GetOrthoZ() const
-{
-    return _orthoW;
+    _viewPlaneDist = 0.0f;
 }
 
 // get camera position
@@ -45,88 +36,130 @@ const vec3& Camera::GetPosition() const
 // get ray to sample point
 vec3 Camera::GetRayDirection( const vec2& sp ) const
 {
-    vec3 dir = sp.x * _orthoU            // +x is right
-             - sp.y * _orthoV            // +y is up
-             + _viewPlaneDist * _orthoW; // +z is out of screen (I think)
-    return glm::normalize( dir );
+    vec3 dir = _right   * sp.x            // +x is right
+             - _up      * sp.y            // +y is up
+             - _forward * _viewPlaneDist; // +z is out of screen (I think)
+    return normalize( dir );
 }
 
-// get camera target
-const vec3& Camera::GetTarget() const
+// get local X axis
+const vec3& Camera::GetLocalXAxis() const
 {
-    return _target;
+    return _right;
 }
 
-// calculate orthonormal basis vectors
-void Camera::CalculateOrthonormalVectors()
+// get local Y axis
+const vec3& Camera::GetLocalYAxis() const
 {
-    // calculate basis vectors
-    _orthoW = glm::normalize( _position - _target );
-    _orthoU = glm::normalize( glm::cross( _up, _orthoW ) );
-    _orthoV = glm::cross( _orthoW, _orthoU );
-
-
-    // handle the singularity if the camera if looking directly down
-    if ( _position.x == _target.x &&
-         _position.z == _target.z &&
-         _position.y >  _target.y )
-    {
-        _orthoV = vec3( 1.0f, 0.0f, 0.0f );
-        _orthoW = vec3( 0.0f, 1.0f, 0.0f );
-        _orthoU = vec3( 0.0f, 0.0f, 1.0f );
-    }
-
-    // handle the singularity if the camera is looking directly up
-    if ( _position.x == _target.x &&
-         _position.z == _target.z &&
-         _position.y <  _target.y )
-    {
-        _orthoU = vec3( 1.0f,  0.0f, 0.0f );
-        _orthoW = vec3( 0.0f, -1.0f, 0.0f );
-        _orthoV = vec3( 0.0f,  0.0f, 1.0f );
-    }
+    return _up;
 }
 
-// set camera position
-void Camera::SetPosition( const vec3& position )
+// get local Z axis
+const vec3& Camera::GetLocalZAxis() const
 {
+    return _forward;
+}
+
+// look at the given target from the given position
+void Camera::LookAt( const vec3& position, const vec3& target )
+{
+    // calculations taken from http://stackoverflow.com/a/4036151/1491629
+
+    vec3 delta = normalize( position - target );
+    SetPitch( atan2( delta.y, delta.z ) );
+    SetYaw  ( atan2( delta.x, sqrt( delta.y * delta.y + delta.z * delta.z ) ) );
+
     _position = position;
 }
 
-// set camera position
-void Camera::SetPosition( real32 x, real32 y, real32 z )
+// move the camera
+void Camera::Move( const vec3& amount )
 {
-    _position = vec3( x, y, z );
+    _translation += amount;
 }
 
-// set camera target
-void Camera::SetTarget( const vec3& target )
+// move the camera
+void Camera::Move( real32 x, real32 y, real32 z )
 {
-    _target = target;
+    _translation.x += x;
+    _translation.y += y;
+    _translation.z += z;
 }
 
-// set camera target
-void Camera::SetTarget( real32 x, real32 y, real32 z )
+// move to position
+void Camera::MoveTo( const vec3& position )
 {
-    _target = vec3( x, y, z );
+    _position = position;
+    _translation.x = _translation.y = _translation.z = 0.0f;
 }
 
-// set camera up
-void Camera::SetUp( const vec3& up )
+// move to position
+void Camera::MoveTo( real32 x, real32 y, real32 z )
 {
-    _up = up;
+    _position.x = x;
+    _position.y = y;
+    _position.z = z;
+    _translation.x = _translation.y = _translation.z = 0.0f;
 }
 
-// set camera up
-void Camera::SetUp( real32 x, real32 y, real32 z )
+// rotate the camera
+void Camera::Rotate( const vec2& amount )
 {
-    _up = vec3( x, y, z );
+    SetPitch( _pitch + amount.x );
+    SetYaw  ( _yaw   + amount.y );
 }
 
-// set camera view plane distance
+// rotate the camera
+void Camera::Rotate( real32 x, real32 y )
+{
+    SetPitch( _pitch + x );
+    SetYaw  ( _yaw   + y );
+}
+
+// set pitch
+void Camera::SetPitch( real32 pitch )
+{
+    const real32 halfPi = Math::HalfPi();
+
+    _pitch = clamp( _pitch, -halfPi, halfPi );
+}
+
+// set yaw
+void Camera::SetYaw( real32 yaw )
+{
+    const real32 twoPi = Math::TwoPi();
+
+    while ( yaw > twoPi ) yaw -= twoPi;
+    while ( yaw < 0.0f  ) yaw += twoPi;
+
+    _yaw = yaw;
+}
+
+// set view plane distance
 void Camera::SetViewPlaneDistance( real32 dist )
 {
     _viewPlaneDist = dist;
+}
+
+// update to account for changes
+void Camera::Update()
+{
+    // calculate the rotation matrix
+    _rotation = rotate( _pitch, UnitXAxis )
+              * rotate( _yaw,   UnitYAxis );
+
+
+    // calculate the actual transformation and new position
+    _translation    = Math::Transform( _translation, _rotation );
+    _position      += _translation;
+    _translation.x  = _translation.y = _translation.z = 0.0f;
+
+
+    // update the local coordinate axes
+    // TODO : Account for when the camera is looking directly up and down?
+    _right   = Math::Transform( UnitXAxis, _rotation );
+    _up      = Math::Transform( UnitYAxis, _rotation );
+    _forward = Math::Transform( UnitZAxis, _rotation );
 }
 
 REX_NS_END

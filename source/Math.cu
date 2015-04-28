@@ -1,5 +1,7 @@
 #include <rex/Math/Math.hxx>
 
+using glm::vec4;
+
 REX_NS_BEGIN
 
 // take 32-bit floor
@@ -50,6 +52,15 @@ int64 Math::Round( real64 value )
     return ( value > 0.0 )
         ? Math::Floor( value + 0.5 )
         : Math::Ceiling( value - 0.5 );
+}
+
+// transform a vec3
+vec3 Math::Transform( const vec3& vec, const mat4& mat )
+{
+    vec4 v = vec4( vec, 1.0f );
+    v = v * mat;
+    v /= v.w;
+    return vec3( v );
 }
 
 REX_NS_END

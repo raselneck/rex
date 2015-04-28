@@ -11,6 +11,8 @@
 #include "ShadePoint.hxx"
 #include "ViewPlane.hxx"
 
+struct GLFWwindow; // forward declare
+
 REX_NS_BEGIN
 
 /// <summary>
@@ -64,6 +66,12 @@ class Scene
     /// Disposes of this scene.
     /// </summary>
     __host__ void Dispose();
+
+    /// <summary>
+    /// Handles when the 
+    /// <summary>
+    /// <param name="dt">The time since the last frame.</param>
+    static void OnKeyPress( GLFWwindow* window, int key, int scancode, int action, int mods );
 
 public:
     /// <summary>

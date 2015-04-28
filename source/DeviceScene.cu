@@ -2,10 +2,13 @@
 
 REX_NS_BEGIN
 
-/// <summary>
-/// The scene render kernel.
-/// </summary>
-/// <param name="sd">The scene data.</param>
+// launches the scene render kernel
+void LaunchRenderKernel( const dim3& blocks, const dim3& grid, DeviceSceneData* sceneData )
+{
+    SceneRenderKernel<<<grid, blocks>>>( sceneData );
+}
+
+// the scene render kernel, where the magic happens
 __global__ void SceneRenderKernel( DeviceSceneData* sd )
 {
     // get the image coordinates

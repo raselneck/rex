@@ -26,6 +26,11 @@ public:
     __both__ static real32 Pi();
 
     /// <summary>
+    /// Gets the constant Pi / 2.
+    /// </summary>
+    __both__ static real32 HalfPi();
+
+    /// <summary>
     /// Gets the constant 2 * Pi.
     /// </summary>
     __both__ static real32 TwoPi();
@@ -90,6 +95,13 @@ public:
     /// </summary>
     /// <param name="value">The value to round.</param>
     __both__ static int64 Round( real64 value );
+
+    /// <summary>
+    /// Transforms the given 3-dimensional vector by the given matrix.
+    /// </summary>
+    /// <param name="vec">The vector.</param>
+    /// <param name="mat">The matrix.</param>
+    __both__ static vec3 Transform( const vec3& vec, const mat4& mat );
 
     /// <summary>
     /// Returns the absolute value of the given value.

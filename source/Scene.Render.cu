@@ -27,7 +27,7 @@ static int32 GetNextPowerOfTwo( int32 number )
 bool Scene::OnPreRender()
 {
     // make sure the camera is up to date
-    _camera.CalculateOrthonormalVectors();
+    _camera.Update();
 
     // check if we need to create the scene data
     if ( !SceneData )
@@ -134,7 +134,7 @@ void Scene::Render()
 
         // run the kernel and time it
         timer.Start();
-        SceneRenderKernel<<<grid, blocks>>>( SceneData );
+        LaunchRenderKernel( blocks, grid, SceneData );
         timer.Stop();
 
         // ensure post-rendering cleanup is good
@@ -181,7 +181,7 @@ void Scene::Render()
             }
 
             // call the scene render kernel
-            SceneRenderKernel<<<grid, blocks>>>( SceneData );
+            LaunchRenderKernel( blocks, grid, SceneData );
 
             // ensure nothing went wrong
             if ( !OnPostRender() )

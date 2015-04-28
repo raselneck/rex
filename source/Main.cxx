@@ -13,13 +13,6 @@
 #  define mkdir(path) mkdir(path, S_IRWXU)
 #endif
 
-// Older OpenGL interop
-// http://rauwendaal.net/2011/02/10/how-to-use-cuda-3-0s-new-graphics-interoperability-api-with-opengl/
-// Non-deprecated OpenGL interop
-// http://developer.download.nvidia.com/compute/cuda/4_1/rel/toolkit/docs/online/group__CUDART__OPENGL.html
-// Graphics interop
-// http://developer.download.nvidia.com/compute/cuda/4_1/rel/toolkit/docs/online/group__CUDART__INTEROP.html
-
 using namespace rex;
 using namespace std;
 
@@ -88,6 +81,18 @@ void PrintCudaDeviceInfo( int32 device )
     size_t stackSize = 0;
     cudaDeviceGetLimit( &stackSize, cudaLimitStackSize );
     REX_DEBUG_LOG( "  Max thread stack:    ", stackSize );
+
+    // attempt to increase the limit
+    const size_t desiredStackSize = 2048;
+    err = cudaDeviceSetLimit( cudaLimitStackSize, desiredStackSize );
+    if ( err == cudaSuccess )
+    {
+        REX_DEBUG_LOG( "  Changed stack size to ", desiredStackSize );
+    }
+    else
+    {
+        REX_DEBUG_LOG( "  Failed to increase stack size to ", desiredStackSize );
+    }
 }
 
 /// <summary>

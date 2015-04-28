@@ -200,10 +200,11 @@ bool Scene::Build( uint16 width, uint16 height )
 
 
     // configure the camera
-    _camera.SetPosition( 0.0, 0.0, 100.0 );
-    _camera.SetTarget( 0.0, 0.0, 0.0 );
-    _camera.SetUp( 0.0, 1.0, 0.0 );
-    _camera.SetViewPlaneDistance( 2000.0 );
+    vec3 camPosition = vec3( 0.0f, 0.0f, 100.0f );
+    vec3 camTarget   = vec3( 0.0f, 0.0f, 0.0f );
+    _camera.LookAt( camPosition, camTarget );
+    _camera.SetViewPlaneDistance( 2000.0f );
+    _camera.Update();
 
 
 

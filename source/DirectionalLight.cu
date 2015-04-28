@@ -69,7 +69,7 @@ __device__ bool DirectionalLight::IsInShadow( const Ray& ray, const Octree* octr
     // I'm guessing at this implementation, as Suffern does not provide one.
     // it seems to work, so if the glove fits...
 
-    const vec3 myRayOffset = _direction * real32( 0.1 );
+    const vec3 myRayOffset = _direction * 0.001f;
     Ray    myRay = Ray( ray.Origin + myRayOffset, _direction );
     real32 d     = 0.0;
     return octree->QueryShadowRay( myRay, d );

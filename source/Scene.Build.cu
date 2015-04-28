@@ -1,4 +1,5 @@
 #include <rex/Rex.hxx>
+#include <GLFW/glfw3.h>
 #include <stdio.h>
 
 #define REX_SAMPLE_COUNT 1
@@ -98,6 +99,7 @@ bool Scene::Build( uint16 width, uint16 height )
         hints.Visible   = false;
         _window = new GLWindow( width, height, "REX" );
 
+
         // ensure it was created
         if ( !_window->WasCreated() )
         {
@@ -105,8 +107,20 @@ bool Scene::Build( uint16 width, uint16 height )
             return false;
         }
 
-        _window->GetContext().MakeCurrent();
 
+        // set the window pointer to be this scene
+        GLFWwindow* win = reinterpret_cast<GLFWwindow*>( _window->_handle );
+        glfwSetWindowUserPointer( win, this );
+
+        // set the window's callbacks
+        glfwSetKeyCallback( win, Scene::OnKeyPress );
+
+        // set the window's mouse input mode
+        glfwSetInputMode( win, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+
+        
+
+        // intialize GLEW
         glewExperimental = GL_TRUE;
         if ( glewInit() != GLEW_OK )
         {

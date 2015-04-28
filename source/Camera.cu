@@ -1,6 +1,7 @@
 #include <rex/Graphics/Camera.hxx>
 #include <rex/Graphics/Color.hxx>
 #include <rex/Graphics/Scene.hxx>
+#include <rex/Utility/Logger.hxx>
 
 using namespace glm;
 
@@ -121,7 +122,7 @@ void Camera::SetPitch( real32 pitch )
 {
     const real32 halfPi = Math::HalfPi();
 
-    _pitch = clamp( _pitch, -halfPi, halfPi );
+    _pitch = clamp( pitch, -halfPi, halfPi );
 }
 
 // set yaw

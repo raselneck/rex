@@ -101,10 +101,10 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
     for ( uint32 i = 0; i < lights->GetSize(); ++i )
     {
         const Light*  light = lights->Get( i );
-        vec3       wi    = light->GetLightDirection( sp );
+        vec3          wi    = light->GetLightDirection( sp );
         real32        angle = glm::dot( sp.Normal, wi );
 
-        if ( angle > 0.0 )
+        if ( angle > 0.0f )
         {
             // check if we need to perform shadow calculations
             bool isInShadow = false;
@@ -117,8 +117,8 @@ __device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>*
             // add the shadow-inclusive light information
             if ( !isInShadow )
             {
-                Color diffuse = _diffuse.GetBRDF( sp, wo, wi );
-                color += diffuse * light->GetRadiance( sp ) * angle;
+                Color diffuse  = _diffuse.GetBRDF( sp, wo, wi );
+                color         += diffuse * light->GetRadiance( sp ) * angle;
             }
         }
     }

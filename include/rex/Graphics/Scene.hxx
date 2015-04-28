@@ -68,10 +68,10 @@ class Scene
     __host__ void Dispose();
 
     /// <summary>
-    /// Handles when the 
+    /// The GLFW window key press callback.
     /// <summary>
     /// <param name="dt">The time since the last frame.</param>
-    static void OnKeyPress( GLFWwindow* window, int key, int scancode, int action, int mods );
+    __host__ static void OnKeyPress( GLFWwindow* window, int key, int scancode, int action, int mods );
 
 public:
     /// <summary>

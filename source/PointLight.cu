@@ -73,12 +73,7 @@ __device__ bool PointLight::IsInShadow( const Ray& ray, const Octree* octree, co
     real32 t = 0.0;
     real32 d = glm::distance( _position, ray.Origin );
 
-    if ( octree->QueryShadowRay( ray, t ) && ( t < d ) )
-    {
-        return true;
-    }
-
-    return false;
+    return octree->QueryShadowRay( ray, t ) && ( t < d );
 }
 
 // set color

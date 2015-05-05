@@ -26,9 +26,6 @@ static uint32 GetNextPowerOfTwo( uint32 number )
 // handles pre-rendering
 bool Scene::OnPreRender()
 {
-    // make sure the camera is up to date
-    _camera.Update();
-
     // check if we need to create the scene data
     if ( !SceneData )
     {
@@ -69,19 +66,19 @@ bool Scene::OnPreRender()
         }
     }
 
-    // copy over the camera if we're rendering to OpenGL
-    if ( _renderMode == SceneRenderMode::ToOpenGL )
+    // make sure the camera is up to date
+    _camera.Update();
+
+    // copy over the camera
+    cudaError_t err = cudaSuccess;
+    err = cudaMemcpy( (void*)( &( SceneData->Camera ) ),
+                      &_camera,
+                      sizeof( Camera ),
+                      cudaMemcpyHostToDevice );
+    if ( err != cudaSuccess )
     {
-        cudaError_t err = cudaSuccess;
-        err = cudaMemcpy( (void*)( &( SceneData->Camera ) ),
-                          &_camera,
-                          sizeof( Camera ),
-                          cudaMemcpyHostToDevice );
-        if ( err != cudaSuccess )
-        {
-            REX_DEBUG_LOG( "Failed to copy camera. Reason: ", cudaGetErrorString( err ) );
-            return false;
-        }
+        REX_DEBUG_LOG( "Failed to copy camera. Reason: ", cudaGetErrorString( err ) );
+        return false;
     }
 
     return true;
@@ -135,13 +132,13 @@ void Scene::Render()
         // run the kernel and time it
         timer.Start();
         LaunchRenderKernel( blocks, grid, SceneData );
-        timer.Stop();
 
         // ensure post-rendering cleanup is good
         if ( !OnPostRender() )
         {
             return;
         }
+        timer.Stop();
 
         // copy the information back to the image
         _image->CopyDeviceToHost();

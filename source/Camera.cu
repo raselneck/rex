@@ -64,13 +64,28 @@ const vec3& Camera::GetLocalZAxis() const
 // look at the given target from the given position
 void Camera::LookAt( const vec3& position, const vec3& target )
 {
-    // calculations taken from http://stackoverflow.com/a/4036151/1491629
-
-    vec3 delta = normalize( position - target );
-    SetPitch( atan2( delta.y, delta.z ) );
-    SetYaw  ( atan2( delta.x, sqrt( delta.y * delta.y + delta.z * delta.z ) ) );
-
+    // set the position and translation
     _position = position;
+    _translation.x = _translation.y = _translation.z = 0.0f;
+
+    // ensure the position and target aren't the same
+    if ( position == target )
+    {
+        SetPitch( 0.0f );
+        SetYaw  ( 0.0f );
+    }
+    else
+    {
+        // math from http://math.stackexchange.com/q/470112
+
+        vec3 d = position - target;
+        
+        real32 yaw   =  atan2f( d.z, d.x ) - Math::HalfPi();
+        real32 pitch = -atan2f( d.y, sqrtf( d.x * d.x + d.z * d.z ) );
+        
+        SetPitch( pitch );
+        SetYaw  ( yaw );
+    }
 }
 
 // move the camera
@@ -120,20 +135,33 @@ void Camera::Rotate( real32 x, real32 y )
 // set pitch
 void Camera::SetPitch( real32 pitch )
 {
-    const real32 halfPi = Math::HalfPi();
-
-    _pitch = clamp( pitch, -halfPi, halfPi );
+    if ( abs( pitch ) < epsilon<real32>() )
+    {
+        _pitch = 0.0f;
+    }
+    else
+    {
+        const real32 halfPi = Math::HalfPi();
+        _pitch = clamp( pitch, -halfPi, halfPi );
+    }
 }
 
 // set yaw
 void Camera::SetYaw( real32 yaw )
 {
-    const real32 twoPi = Math::TwoPi();
+    if ( abs( yaw ) < epsilon<real32>() )
+    {
+        _yaw = 0.0f;
+    }
+    else
+    {
+        const real32 twoPi = Math::TwoPi();
 
-    while ( yaw > twoPi ) yaw -= twoPi;
-    while ( yaw < 0.0f  ) yaw += twoPi;
+        while ( yaw > twoPi ) yaw -= twoPi;
+        while ( yaw < 0.0f ) yaw += twoPi;
 
-    _yaw = yaw;
+        _yaw = yaw;
+    }
 }
 
 // set view plane distance

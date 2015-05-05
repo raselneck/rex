@@ -99,23 +99,31 @@ public:
     __host__ bool Build( uint16 width, uint16 height );
 
     /// <summary>
+    /// Builds this scene.
+    /// </summary>
+    /// <param name="width">The width of the rendered scene.</param>
+    /// <param name="height">The height of the rendered scene.</param>
+    /// <param name="samples">The sample count to render with.</param>
+    __host__ bool Build( uint16 width, uint16 height, int32 samples );
+
+    /// <summary>
+    /// Builds this scene.
+    /// </summary>
+    /// <param name="width">The width of the rendered scene.</param>
+    /// <param name="height">The height of the rendered scene.</param>
+    /// <param name="samples">The sample count to render with.</param>
+    /// <param name="fullscreen">Whether or not to be building for a fullscreen window (only applies when rendering to OpenGL).</param>
+    __host__ bool Build( uint16 width, uint16 height, int32 samples, bool fullscreen );
+
+    /// <summary>
+    /// Gets this scene's camera.
+    /// </summary>
+    __host__ Camera& GetCamera();
+
+    /// <summary>
     /// Renders this scene.
     /// </summary>
     __host__ void Render();
-
-    /// <summary>
-    /// Sets the camera's position.
-    /// </summary>
-    /// <param name="pos">The new position.</param>
-    __host__ void SetCameraPosition( const vec3& pos );
-
-    /// <summary>
-    /// Sets the camera's position.
-    /// </summary>
-    /// <param name="x">The new position's X coordinate.</param>
-    /// <param name="y">The new position's Y coordinate.</param>
-    /// <param name="z">The new position's Z coordinate.</param>
-    __host__ void SetCameraPosition( real32 x, real32 y, real32 z );
 };
 
 REX_NS_END

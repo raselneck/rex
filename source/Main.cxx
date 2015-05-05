@@ -21,14 +21,18 @@ struct LaunchParameters
     SceneRenderMode RenderMode;
     int32 RenderWidth;
     int32 RenderHeight;
+    int32 SampleCount;
     int32 FrameCount;
+    bool  Fullscreen;
 
     LaunchParameters()
     {
         RenderMode   = SceneRenderMode::ToOpenGL;
         RenderWidth  = 640;
         RenderHeight = 480;
+        Fullscreen   = false;
         FrameCount   = 1;
+        SampleCount  = 1;
     }
 };
 
@@ -58,6 +62,11 @@ LaunchParameters GetPaunchParameters( int32 argc, char** argv )
             }
             i += 1;
         }
+        // check for fullscreen
+        if ( 0 == strcmp( argv[ i ], "--fullscreen" ) )
+        {
+            params.Fullscreen = true;
+        }
         // check for render height
         else if ( 0 == strcmp( argv[ i ], "--height" ) && i < argc - 1 )
         {
@@ -75,6 +84,12 @@ LaunchParameters GetPaunchParameters( int32 argc, char** argv )
         else if ( 0 == strcmp( argv[ i ], "--frame-count" ) && i < argc - 1 )
         {
             params.FrameCount = atoi( argv[ i + 1 ] );
+            i += 1;
+        }
+        // check for sample count
+        else if ( 0 == strcmp( argv[ i ], "--samples" ) && i < argc - 1 )
+        {
+            params.SampleCount = atoi( argv[ i + 1 ] );
             i += 1;
         }
     }
@@ -96,8 +111,8 @@ void RenderFrame( Scene& scene, uint32 currFrame, uint32 totalFrames )
     real32       x        = distance * std::sin( angle );
     real32       z        = distance * std::cos( angle );
 
-    // set the camera's position
-    scene.SetCameraPosition( x, 0.0f, z );
+    // tell the camera to look at the center of the world from our position
+    scene.GetCamera().LookAt( vec3( x, 10.0f, z ), vec3() );
 
 
 
@@ -112,7 +127,6 @@ void RenderFrame( Scene& scene, uint32 currFrame, uint32 totalFrames )
         // save the image
         scene.SaveImage( fname.c_str() );
     }
-    GC::ReleaseDeviceMemory();
 }
 
 /// <summary>
@@ -176,7 +190,7 @@ bool PrintCudaDeviceInfo( int32 device )
 void RunOpenGLScene( const LaunchParameters& params )
 {
     Scene scene( SceneRenderMode::ToOpenGL );
-    if ( scene.Build( params.RenderWidth, params.RenderHeight ) )
+    if ( scene.Build( params.RenderWidth, params.RenderHeight, params.SampleCount, params.Fullscreen ) )
     {
         scene.Render();
     }
@@ -189,7 +203,7 @@ void RunOpenGLScene( const LaunchParameters& params )
 void RunImageScene( const LaunchParameters& params )
 {
     Scene scene( SceneRenderMode::ToImage );
-    if ( scene.Build( params.RenderWidth, params.RenderHeight ) )
+    if ( scene.Build( params.RenderWidth, params.RenderHeight, params.SampleCount ) )
     {
         // create our output directory
         mkdir( "render" );
@@ -200,6 +214,9 @@ void RunImageScene( const LaunchParameters& params )
         {
             RenderFrame( scene, i, uFrameCount );
         }
+
+        // release all device memory
+        GC::ReleaseDeviceMemory();
 
 #if defined( _WIN32 ) || defined( _WIN64 )
         // open the first image
@@ -221,12 +238,24 @@ int32 main( int32 argc, char** argv )
         return -1;
     }
 
-    // get the launch parameters and ensure the width and height are okay
+    // get the launch parameters and ensure they're legit
     LaunchParameters params = GetPaunchParameters( argc, argv );
     if ( params.RenderHeight < 1 || params.RenderWidth < 1 )
     {
         REX_DEBUG_LOG( "ERROR: Cannot render with dimensions less than 1x1." );
         REX_DEBUG_LOG( "Given dimensions: ", params.RenderWidth, "x", params.RenderHeight );
+        return -1;
+    }
+    else if ( params.SampleCount < 1 )
+    {
+        REX_DEBUG_LOG( "ERROR: Cannot render with less than 1 sample." );
+        REX_DEBUG_LOG( "Given sample count: ", params.SampleCount );
+        return -1;
+    }
+    else if ( params.RenderMode == SceneRenderMode::ToImage && params.FrameCount < 1 )
+    {
+        REX_DEBUG_LOG( "ERROR: Cannot render to less than 1 image." );
+        REX_DEBUG_LOG( "Given frame count: ", params.FrameCount );
         return -1;
     }
 

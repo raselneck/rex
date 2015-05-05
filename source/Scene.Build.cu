@@ -2,8 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
-#define REX_SAMPLE_COUNT 1
-
 REX_NS_BEGIN
 
 /// <summary>
@@ -22,6 +20,10 @@ struct SceneBuildData
 /// </summary>
 __global__ void SceneBuildKernel( SceneBuildData* data )
 {
+    clock_t startTime = clock();
+
+
+
     // create the lists and the ambient light
     data->Lights       = new DeviceList<Light*>();
     data->Geometry     = new DeviceList<Geometry*>();
@@ -65,7 +67,7 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
     vec3 min, max;
     for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
     {
-        Geometry* geom = data->Geometry->operator[]( i );
+        Geometry* geom = data->Geometry->Get( i );
         min = glm::min( min, geom->GetBounds().GetMin() );
         max = glm::max( max, geom->GetBounds().GetMax() );
     }
@@ -76,14 +78,32 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
     // add the objects to the octree
     for ( uint32 i = 0; i < data->Geometry->GetSize(); ++i )
     {
-        Geometry*   geom   = data->Geometry->operator[]( i );
+        Geometry*   geom   = data->Geometry->Get( i );
         BoundingBox bounds = geom->GetBounds();
         data->Octree->Add( geom, bounds );
     }
+
+
+
+    clock_t endTime = clock();
+    clock_t elapsed = abs( endTime - startTime );
+    printf( "Elapsed: %f\n", elapsed / 1E-9f );
 }
 
 // build the scene
 bool Scene::Build( uint16 width, uint16 height )
+{
+    return Build( width, height, 1, false );
+}
+
+// build the scene
+bool Scene::Build( uint16 width, uint16 height, int32 samples )
+{
+    return Build( width, height, samples, false );
+}
+
+// build the scene
+bool Scene::Build( uint16 width, uint16 height, int32 samples, bool fullscreen )
 {
     // if we're rendering to an image, create the image
     if ( _renderMode == SceneRenderMode::ToImage )
@@ -95,9 +115,10 @@ bool Scene::Build( uint16 width, uint16 height )
     {
         // create the OpenGL window
         GLWindowHints hints;
-        hints.Resizable = false;
-        hints.Visible   = false;
-        _window = new GLWindow( width, height, "REX" );
+        hints.Resizable  = false;
+        hints.Visible    = false;
+        hints.Fullscreen = fullscreen;
+        _window = new GLWindow( width, height, "REX", hints );
 
 
         // ensure it was created
@@ -144,7 +165,7 @@ bool Scene::Build( uint16 width, uint16 height )
     // setup the view plane
     _viewPlane.Width       = width;
     _viewPlane.Height      = height;
-    _viewPlane.SampleCount = REX_SAMPLE_COUNT;
+    _viewPlane.SampleCount = samples;
 
 
     

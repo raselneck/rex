@@ -45,16 +45,10 @@ void Scene::SaveImage( const char* fname ) const
     }
 }
 
-// set camera position
-void Scene::SetCameraPosition( const vec3& pos )
+// get scene camera
+Camera& Scene::GetCamera()
 {
-    _camera.MoveTo( pos );
-}
-
-// set camera position
-void Scene::SetCameraPosition( real32 x, real32 y, real32 z )
-{
-    _camera.MoveTo( x, y, z );
+    return _camera;
 }
 
 // update the scene camera

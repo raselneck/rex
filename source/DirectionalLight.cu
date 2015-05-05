@@ -64,7 +64,7 @@ __device__ real32 DirectionalLight::GetRadianceScale() const
 }
 
 // check if in shadow
-__device__ bool DirectionalLight::IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const
+__device__ bool DirectionalLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 {
     // I'm guessing at this implementation, as Suffern does not provide one.
     // it seems to work, so if the glove fits...
@@ -72,7 +72,7 @@ __device__ bool DirectionalLight::IsInShadow( const Ray& ray, const Octree* octr
     const vec3 myRayOffset = _direction * 0.001f;
     Ray    myRay = Ray( ray.Origin + myRayOffset, _direction );
     real32 d     = 0.0;
-    return octree->QueryShadowRay( myRay, d );
+    return sp.Octree->QueryShadowRay( myRay, d );
 }
 
 // set color

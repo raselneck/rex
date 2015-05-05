@@ -19,6 +19,13 @@ public:
     __device__ AmbientLight();
 
     /// <summary>
+    /// Creates a new ambient light.
+    /// </summary>
+    /// <param name="color">The ambient light's color.</param>
+    /// <param name="ls">The ambient light's radiance scale.</param>
+    __device__ AmbientLight( const Color& color, real32 ls );
+
+    /// <summary>
     /// Destroys this ambient light.
     /// </summary>
     __device__ virtual ~AmbientLight();
@@ -51,7 +58,7 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="octree">The octree containing all of the geometry to check for.</param>
     /// <param name="sp">Current hit point information.</param>
-    __device__ virtual bool IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const;
+    __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const;
 
     /// <summary>
     /// Sets whether or not this light should cast shadows.

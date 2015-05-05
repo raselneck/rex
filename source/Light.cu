@@ -1,4 +1,5 @@
 #include <rex/Graphics/Lights/Light.hxx>
+#include <rex/Graphics/ShadePoint.hxx>
 
 REX_NS_BEGIN
 
@@ -19,6 +20,18 @@ __device__ Light::~Light()
 __device__ bool Light::CastsShadows() const
 {
     return _castShadows;
+}
+
+// get geometric inverse area
+__device__ real32 Light::GetGeometricArea( ShadePoint& sp ) const
+{
+    return 1.0f;
+}
+
+// get the geometric factor
+__device__ real32 Light::GetGeometricFactor( const ShadePoint& sp ) const
+{
+    return 1.0f;
 }
 
 // get light type

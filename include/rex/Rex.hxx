@@ -15,6 +15,7 @@
 #include "Graphics/Lights/AmbientLight.hxx"
 #include "Graphics/Lights/DirectionalLight.hxx"
 #include "Graphics/Lights/PointLight.hxx"
+#include "Graphics/Materials/EmissiveMaterial.hxx"
 #include "Graphics/Materials/MatteMaterial.hxx"
 #include "Graphics/Materials/PhongMaterial.hxx"
 #include "Graphics/Camera.hxx"

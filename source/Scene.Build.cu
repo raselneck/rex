@@ -25,7 +25,7 @@ __global__ void SceneBuildKernel( SceneBuildData* data )
     // create the lists and the ambient light
     data->Lights       = new DeviceList<Light*>();
     data->Geometry     = new DeviceList<Geometry*>();
-    data->AmbientLight = new AmbientLight();
+    data->AmbientLight = new AmbientLight( Color::White(), 1.0f );
 
 
 
@@ -119,15 +119,6 @@ bool Scene::Build( uint16 width, uint16 height )
         glfwSetInputMode( win, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
 
         
-
-        // intialize GLEW
-        glewExperimental = GL_TRUE;
-        if ( glewInit() != GLEW_OK )
-        {
-            REX_DEBUG_LOG( "Failed to initialize GLEW." );
-            return false;
-        }
-
         // now create the texture
         _texture = new GLTexture2D( _window->GetContext(), width, height );
     }

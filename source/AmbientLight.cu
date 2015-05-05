@@ -6,9 +6,15 @@ REX_NS_BEGIN
 
 // create ambient light
 __device__ AmbientLight::AmbientLight()
+    : AmbientLight( Color::White(), 1.0f )
+{
+}
+
+// create ambient light
+__device__ AmbientLight::AmbientLight( const Color& color, real32 ls )
     : Light         ( LightType::Ambient )
-    , _radianceScale( 1.0f )
-    , _color        ( Color::White() )
+    , _radianceScale( ls )
+    , _color        ( color )
 {
     _castShadows = false;
 }
@@ -44,7 +50,7 @@ __device__ real32 AmbientLight::GetRadianceScale() const
 }
 
 // check if in shadow
-__device__ bool AmbientLight::IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const
+__device__ bool AmbientLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 {
     return false;
 }

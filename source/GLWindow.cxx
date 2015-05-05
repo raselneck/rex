@@ -7,6 +7,16 @@
 
 REX_NS_BEGIN
 
+/// <summary>
+/// The GLFW error function callback.
+/// </summary>
+/// <param name="code">The error code.</param>
+/// <param name="message">The error message.</param>
+static void GlfwErrorFunction( int code, const char* message )
+{
+    REX_DEBUG_LOG( message );
+}
+
 // the total number of windows
 uint32 GLWindow::_windowCount = 0;
 
@@ -73,6 +83,7 @@ GLWindow::GLWindow( int32 width, int32 height, const String& title, const GLWind
 
 
     // initialize GLEW and ensure we can support the graphics card
+    glewExperimental = GL_TRUE;
     if ( ( glewInit() != GLEW_OK ) && !GLEW_VERSION_4_0 )
     {
         REX_DEBUG_LOG( "Failed to load OpenGL 4.0" );
@@ -137,10 +148,7 @@ bool GLWindow::InitializeGlfw()
     if ( !_windowCount )
     {
         // set the error callback
-        glfwSetErrorCallback( []( int code, const char* err )
-        {
-            REX_DEBUG_LOG( "GLFW Error: ", err, " (code: ", code, ")" );
-        } );
+        glfwSetErrorCallback( GlfwErrorFunction );
 
         // try to initalize GLFW
         if ( glfwInit() != GL_TRUE )

@@ -73,7 +73,7 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="octree">The octree containing all of the geometry to check for.</param>
     /// <param name="sp">Current hit point information.</param>
-    __device__ virtual bool IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const;
+    __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const;
 
     /// <summary>
     /// Sets this light's color.

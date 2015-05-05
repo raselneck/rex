@@ -21,10 +21,10 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
         return;
     }
 
+
     // prepare for the tracing!!
     const Octree* octree     = sd->Octree;
     const real32  invSamples = 1.0f / vp.SampleCount;
-    const real32  half       = 0.5f;
     const int32   n          = static_cast<int32>( sqrtf( vp.SampleCount ) );
     const real32  invn       = 1.0f / n;
     Color         color      = Color::Black();
@@ -35,14 +35,22 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
     vec2          samplePoint;
     ShadePoint    shadePoint;
 
-    // sample
+
+    // configure the shade point
+    shadePoint.Octree       = sd->Octree;
+    shadePoint.AmbientLight = sd->AmbientLight;
+    shadePoint.LightCount   = sd->Lights->GetSize();
+    shadePoint.Lights       = &( sd->Lights->Get( 0 ) );
+
+
+    // sample the scene!
     for ( sy = 0; sy < n; ++sy )
     {
         for ( sx = 0; sx < n; ++sx )
         {
             // get the pixel point
-            samplePoint.x = x - half * vp.Width  + ( sx + half ) * invn;
-            samplePoint.y = y - half * vp.Height + ( sy + half ) * invn;
+            samplePoint.x = x - ( 0.5f * vp.Width  ) + ( ( sx + 0.5f ) * invn );
+            samplePoint.y = y - ( 0.5f * vp.Height ) + ( ( sy + 0.5f ) * invn );
 
 
             // set the ray direction
@@ -58,7 +66,7 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
 
                 // add to the color if the ray hit
                 const Material* mat = shadePoint.Material;
-                color += mat->Shade( shadePoint, sd->Lights, sd->Octree );
+                color += mat->Shade( shadePoint );
             }
             else
             {
@@ -70,8 +78,7 @@ __global__ void SceneRenderKernel( DeviceSceneData* sd )
 
     // set the pixel!
     color *= invSamples;
-    uint32 index = x + y * vp.Width;
-    sd->Pixels[ index ] = color.ToUChar4();
+    sd->Pixels[ x + y * vp.Width ] = color.ToUChar4();
 }
 
 REX_NS_END

@@ -23,7 +23,7 @@ public:
     __device__ virtual ~BRDF();
 
     /// <summary>
-    /// Gets the BRDF itself.
+    /// Gets the BRDF itself. (f in Suffern.)
     /// </summary>
     /// <param name="sp">The shade point information.</param>
     /// <param name="wo">The outgoing, reflected light direction.</param>
@@ -31,7 +31,7 @@ public:
     __device__ virtual Color GetBRDF( const ShadePoint& sp, const vec3& wo, const vec3& wi ) const = 0;
 
     /// <summary>
-    /// Gets the bi-hemispherical reflectance.
+    /// Gets the bi-hemispherical reflectance. (rho in Suffern.)
     /// </summary>
     /// <param name="sp">The shade point information.</param>
     /// <param name="wo">The outgoing, reflected light direction.</param>

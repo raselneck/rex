@@ -16,7 +16,8 @@ enum class LightType
 {
     Ambient,
     Directional,
-    Point
+    Point,
+    Area
 };
 
 /// <summary>
@@ -60,6 +61,18 @@ public:
     __device__ virtual Color GetRadiance( ShadePoint& sp ) const = 0;
 
     /// <summary>
+    /// Gets the geometric area, if this light is used with a piece of geometry.
+    /// </summary>
+    /// <param name="sp">The shade point to use.</param>
+    __device__ virtual real32 GetGeometricArea( ShadePoint& sp ) const;
+
+    /// <summary>
+    /// Gets this light's geometric factor.
+    /// </summary>
+    /// <param name="sp">The shade point to use.</param>
+    __device__ virtual real32 GetGeometricFactor( const ShadePoint& sp ) const;
+
+    /// <summary>
     /// Gets this light's type.
     /// </summary>
     __device__ LightType GetType() const;
@@ -70,7 +83,7 @@ public:
     /// <param name="ray">The ray to check.</param>
     /// <param name="octree">The octree containing all of the geometry to check for.</param>
     /// <param name="sp">Current hit point information.</param>
-    __device__ virtual bool IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const = 0;
+    __device__ virtual bool IsInShadow( const Ray& ray, const ShadePoint& sp ) const = 0;
 
     /// <summary>
     /// Sets whether or not this light should cast shadows.

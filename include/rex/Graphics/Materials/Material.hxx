@@ -16,7 +16,8 @@ class  Light;
 enum class MaterialType
 {
     Matte,
-    Phong
+    Phong,
+    Emissive
 };
 
 /// <summary>
@@ -24,8 +25,6 @@ enum class MaterialType
 /// </summary>
 class Material
 {
-    REX_NONCOPYABLE_CLASS( Material )
-
 protected:
     friend class Geometry;
 
@@ -49,6 +48,14 @@ public:
     __device__ virtual ~Material();
 
     /// <summary>
+    /// Gets an area light shaded color given hit point data.
+    /// </summary>
+    /// <param name="sp">The hit point data.</param>
+    /// <param name="lights">All of the lights in the current scene.</param>
+    /// <param name="octree">The octree containing the objects to pass to the lights.</param>
+    __device__ virtual Color AreaLightShade( ShadePoint& sp ) const;
+
+    /// <summary>
     /// Gets this material's type.
     /// </summary>
     __device__ MaterialType GetType() const;
@@ -59,7 +66,7 @@ public:
     /// <param name="sp">The hit point data.</param>
     /// <param name="lights">All of the lights in the current scene.</param>
     /// <param name="octree">The octree containing the objects to pass to the lights.</param>
-    __device__ virtual Color Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const;
+    __device__ virtual Color Shade( ShadePoint& sp ) const;
 };
 
 REX_NS_END

@@ -244,9 +244,11 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\include\rex\Graphics\Geometry\Triangle.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Geometry\Sphere.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\AmbientLight.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Lights\AreaLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\DirectionalLight.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\Light.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Lights\PointLight.hxx" />
+    <ClInclude Include="..\include\rex\Graphics\Materials\EmissiveMaterial.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\Material.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\MatteMaterial.hxx" />
     <ClInclude Include="..\include\rex\Graphics\Materials\PhongMaterial.hxx" />

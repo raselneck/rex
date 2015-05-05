@@ -56,6 +56,14 @@ public:
     __device__ virtual ~MatteMaterial();
 
     /// <summary>
+    /// Gets an area light shaded color given hit point data.
+    /// </summary>
+    /// <param name="sp">The hit point data.</param>
+    /// <param name="lights">All of the lights in the current scene.</param>
+    /// <param name="octree">The octree containing the objects to pass to the lights.</param>
+    __device__ virtual Color AreaLightShade( ShadePoint& sp ) const;
+
+    /// <summary>
     /// Gets the ambient BRDF's diffuse coefficient.
     /// </summary>
     __device__ real32 GetAmbientCoefficient() const;
@@ -69,6 +77,14 @@ public:
     /// Gets the diffuse BRDF's diffuse coefficient.
     /// </summary>
     __device__ real32 GetDiffuseCoefficient() const;
+
+    /// <summary>
+    /// Gets a shaded color given hit point data.
+    /// </summary>
+    /// <param name="sp">The hit point data.</param>
+    /// <param name="lights">All of the lights in the current scene.</param>
+    /// <param name="octree">The octree containing the objects to pass to the lights.</param>
+    __device__ virtual Color Shade( ShadePoint& sp ) const;
     
     /// <summary>
     /// Sets the ambient BRDF's diffuse coefficient.
@@ -95,14 +111,6 @@ public:
     /// </summary>
     /// <param name="kd">The new diffuse coefficient.</param>
     __device__ virtual void SetDiffuseCoefficient( real32 kd );
-
-    /// <summary>
-    /// Gets a shaded color given hit point data.
-    /// </summary>
-    /// <param name="sp">The hit point data.</param>
-    /// <param name="lights">All of the lights in the current scene.</param>
-    /// <param name="octree">The octree containing the objects to pass to the lights.</param>
-    __device__ virtual Color Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const;
 };
 
 REX_NS_END

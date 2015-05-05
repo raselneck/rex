@@ -48,6 +48,14 @@ public:
     __device__ virtual ~PhongMaterial();
 
     /// <summary>
+    /// Gets an area light shaded color given hit point data.
+    /// </summary>
+    /// <param name="sp">The hit point data.</param>
+    /// <param name="lights">All of the lights in the current scene.</param>
+    /// <param name="octree">The octree containing the objects to pass to the lights.</param>
+    __device__ virtual Color AreaLightShade( ShadePoint& sp ) const;
+
+    /// <summary>
     /// Gets the specular coefficient.
     /// </summary>
     __device__ real32 GetSpecularCoefficient() const;
@@ -56,6 +64,14 @@ public:
     /// Gets the specular power.
     /// </summary>
     __device__ real32 GetSpecularPower() const;
+
+    /// <summary>
+    /// Gets a shaded color given hit point data.
+    /// </summary>
+    /// <param name="sp">The hit point data.</param>
+    /// <param name="lights">All of the lights in the current scene.</param>
+    /// <param name="octree">The octree containing the objects to pass to the lights.</param>
+    __device__ virtual Color Shade( ShadePoint& sp ) const;
 
     /// <summary>
     /// Sets the ambient BRDF's diffuse coefficient.
@@ -94,14 +110,6 @@ public:
     /// </summary>
     /// <param name="pow">The new power.</param>
     __device__ void SetSpecularPower( real32 pow );
-
-    /// <summary>
-    /// Gets a shaded color given hit point data.
-    /// </summary>
-    /// <param name="sp">The hit point data.</param>
-    /// <param name="lights">All of the lights in the current scene.</param>
-    /// <param name="octree">The octree containing the objects to pass to the lights.</param>
-    __device__ virtual Color Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const;
 };
 
 REX_NS_END

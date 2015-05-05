@@ -66,14 +66,14 @@ __device__ real32 PointLight::GetRadianceScale() const
 }
 
 // check if in shadow
-__device__ bool PointLight::IsInShadow( const Ray& ray, const Octree* octree, const ShadePoint& sp ) const
+__device__ bool PointLight::IsInShadow( const Ray& ray, const ShadePoint& sp ) const
 {
     // based on Suffern, 300
 
     real32 t = 0.0;
     real32 d = glm::distance( _position, ray.Origin );
 
-    return octree->QueryShadowRay( ray, t ) && ( t < d );
+    return sp.Octree->QueryShadowRay( ray, t ) && ( t < d );
 }
 
 // set color

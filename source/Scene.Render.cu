@@ -115,9 +115,9 @@ void Scene::Render()
     // prepare for the kernel
     uint32 imgWidth  = GetNextPowerOfTwo( _viewPlane.Width  );
     uint32 imgHeight = GetNextPowerOfTwo( _viewPlane.Height );
-    dim3  blocks    = dim3( 16, 16 );
-    dim3  grid      = dim3( imgHeight / blocks.x + ( ( imgHeight % blocks.x ) == 0 ? 0 : 1 ),
-                            imgWidth  / blocks.y + ( ( imgWidth  % blocks.y ) == 0 ? 0 : 1 ) );
+    dim3  blocks     = dim3( 16, 16 );
+    dim3  grid       = dim3( imgWidth  / blocks.y + ( ( imgWidth  % blocks.y ) == 0 ? 0 : 1 ),
+                             imgHeight / blocks.x + ( ( imgHeight % blocks.x ) == 0 ? 0 : 1 ) );
 
 
     // if we're rendering to the image...

@@ -16,6 +16,72 @@
 using namespace rex;
 using namespace std;
 
+struct LaunchParameters
+{
+    SceneRenderMode RenderMode;
+    int32 RenderWidth;
+    int32 RenderHeight;
+    int32 FrameCount;
+
+    LaunchParameters()
+    {
+        RenderMode   = SceneRenderMode::ToOpenGL;
+        RenderWidth  = 640;
+        RenderHeight = 480;
+        FrameCount   = 1;
+    }
+};
+
+/// <summary>
+/// Gets the launch parameters from the given command line arguments.
+/// </summary>
+/// <param name="argc">The argument count.</param>
+/// <param name="argv">The argument values.</param>
+LaunchParameters GetPaunchParameters( int32 argc, char** argv )
+{
+    LaunchParameters params;
+
+    for ( int32 i = 0; i < argc; ++i )
+    {
+        // check for render mode
+        if ( 0 == strcmp( argv[ i ], "--render-mode" ) && i < argc - 1 )
+        {
+            // OpenGL
+            if ( 0 == strcmp( argv[ i + 1 ], "opengl" ) )
+            {
+                params.RenderMode = SceneRenderMode::ToOpenGL;
+            }
+            // Image
+            else if ( 0 == strcmp( argv[ i + 1 ], "image" ) )
+            {
+                params.RenderMode = SceneRenderMode::ToImage;
+            }
+            i += 1;
+        }
+        // check for render height
+        else if ( 0 == strcmp( argv[ i ], "--height" ) && i < argc - 1 )
+        {
+            params.RenderHeight = atoi( argv[ i + 1 ] );
+            i += 1;
+        }
+        // check for render width
+        else if ( 0 == strcmp( argv[ i ], "--width" ) && i < argc - 1 )
+        {
+            params.RenderWidth = atoi( argv[ i + 1 ] );
+
+            i += 1;
+        }
+        // check for frame count
+        else if ( 0 == strcmp( argv[ i ], "--frame-count" ) && i < argc - 1 )
+        {
+            params.FrameCount = atoi( argv[ i + 1 ] );
+            i += 1;
+        }
+    }
+
+    return params;
+}
+
 /// <summary>
 /// Renders a frame.
 /// </summary>
@@ -53,7 +119,7 @@ void RenderFrame( Scene& scene, uint32 currFrame, uint32 totalFrames )
 /// Prints information about the given CUDA device.
 /// </summary>
 /// <param name="device">The device number to get the information about.</param>
-void PrintCudaDeviceInfo( int32 device )
+bool PrintCudaDeviceInfo( int32 device )
 {
     // get the device properties
     cudaDeviceProp props;
@@ -61,7 +127,7 @@ void PrintCudaDeviceInfo( int32 device )
     if ( err != cudaSuccess )
     {
         REX_DEBUG_LOG( "Failed to get device properties. Reason: ", cudaGetErrorString( err ) );
-        return;
+        return false;
     }
 
     // print out the device properties
@@ -78,8 +144,14 @@ void PrintCudaDeviceInfo( int32 device )
     REX_DEBUG_LOG( "  Max threads / proc.: ", props.maxThreadsPerMultiProcessor );
 
     // get each thread's stack size
+    REX_DEBUG_LOG( "  Retrieving max stack size per thread..." );
     size_t stackSize = 0;
-    cudaDeviceGetLimit( &stackSize, cudaLimitStackSize );
+    err = cudaDeviceGetLimit( &stackSize, cudaLimitStackSize );
+    if ( err != cudaSuccess )
+    {
+        REX_DEBUG_LOG( "Failed to get stack limit. Reason: ", cudaGetErrorString( err ) );
+        return false;
+    }
     REX_DEBUG_LOG( "  Max thread stack:    ", stackSize );
 
     // attempt to increase the limit
@@ -92,6 +164,47 @@ void PrintCudaDeviceInfo( int32 device )
     else
     {
         REX_DEBUG_LOG( "  Failed to increase stack size to ", desiredStackSize );
+        return false;
+    }
+
+    return true;
+}
+
+/// <summary>
+/// Runs a scene that renders to an OpenGL window.
+/// </summary>
+void RunOpenGLScene( const LaunchParameters& params )
+{
+    Scene scene( SceneRenderMode::ToOpenGL );
+    if ( scene.Build( params.RenderWidth, params.RenderHeight ) )
+    {
+        scene.Render();
+    }
+}
+
+/// <summary>
+/// Runs a scene that renders to a series of images.
+/// </summary>
+/// <param name="frameCount">The total number of frames.</param>
+void RunImageScene( const LaunchParameters& params )
+{
+    Scene scene( SceneRenderMode::ToImage );
+    if ( scene.Build( params.RenderWidth, params.RenderHeight ) )
+    {
+        // create our output directory
+        mkdir( "render" );
+
+        // render all our frames
+        uint32 uFrameCount = static_cast<uint32>( params.FrameCount );
+        for ( uint32 i = 0; i < uFrameCount; ++i )
+        {
+            RenderFrame( scene, i, uFrameCount );
+        }
+
+#if defined( _WIN32 ) || defined( _WIN64 )
+        // open the first image
+        ShellExecuteA( 0, 0, "render\\img0.png", 0, 0, SW_SHOW );
+#endif
     }
 }
 
@@ -102,29 +215,29 @@ void PrintCudaDeviceInfo( int32 device )
 /// <param name="argv">The argument values.</param>
 int32 main( int32 argc, char** argv )
 {
-    PrintCudaDeviceInfo( 0 );
-
-    Scene scene( SceneRenderMode::ToOpenGL );
-    if ( scene.Build( 1024, 768 ) )
+    // ensure we can configure the CUDA device
+    if ( !PrintCudaDeviceInfo( 0 ) )
     {
-        scene.Render();
+        return -1;
+    }
 
-        /*
-        // create our output directory
-        mkdir( "render" );
+    // get the launch parameters and ensure the width and height are okay
+    LaunchParameters params = GetPaunchParameters( argc, argv );
+    if ( params.RenderHeight < 1 || params.RenderWidth < 1 )
+    {
+        REX_DEBUG_LOG( "ERROR: Cannot render with dimensions less than 1x1." );
+        REX_DEBUG_LOG( "Given dimensions: ", params.RenderWidth, "x", params.RenderHeight );
+        return -1;
+    }
 
-        // render all our frames
-        const uint32 totalFrameCount = 1;
-        for ( uint32 i = 0; i < totalFrameCount; ++i )
-        {
-            RenderFrame( scene, i, totalFrameCount );
-        }
-
-#if defined( _WIN32 ) || defined( _WIN64 )
-        // open the first image
-        ShellExecuteA( 0, 0, "render\\img0.png", 0, 0, SW_SHOW );
-#endif
-        */
+    // run the scene
+    if ( params.RenderMode == SceneRenderMode::ToOpenGL )
+    {
+        RunOpenGLScene( params );
+    }
+    else if ( params.RenderMode == SceneRenderMode::ToImage )
+    {
+        RunImageScene( params );
     }
 
     return 0;

@@ -152,11 +152,11 @@
     <CudaCompile Include="Scene.Dispose.cu">
       <Filter>Source Files\Graphics</Filter>
     </CudaCompile>
-    <CudaCompile Include="Scene.Render.cu">
-      <Filter>Source Files\Graphics</Filter>
-    </CudaCompile>
     <CudaCompile Include="GLTexture2D.cu">
       <Filter>Source Files\GL</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Scene.Render.cu">
+      <Filter>Source Files\Graphics</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +276,12 @@
     </ClInclude>
     <ClInclude Include="..\include\rex\Graphics\TextureRenderer.hxx">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Lights\AreaLight.hxx">
+      <Filter>Header Files\Graphics\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rex\Graphics\Materials\EmissiveMaterial.hxx">
+      <Filter>Header Files\Graphics\Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

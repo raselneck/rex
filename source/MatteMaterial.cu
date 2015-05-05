@@ -35,6 +35,38 @@ __device__ MatteMaterial::~MatteMaterial()
 {
 }
 
+// get area light shaded color
+__device__ Color MatteMaterial::AreaLightShade( ShadePoint& sp ) const
+{
+    // adapted from Suffern, 332
+    vec3  wo    = -sp.Ray.Direction;
+    Color color = _ambient.GetBHR( sp, wo ) * sp.AmbientLight->GetRadiance( sp );
+
+    for ( uint32 i = 0; i < sp.LightCount; ++i )
+    {
+        const Light* light  = sp.Lights[ i ];
+        vec3         wi     = light->GetLightDirection( sp );
+        real32       angle  = glm::dot( sp.Normal, wi );
+        
+        if ( angle > 0.0f )
+        {
+            // calculate shadow information
+            Ray   shadowRay   = Ray( sp.HitPoint, wi );
+            bool  isInShadow  = light->CastsShadows() && light->IsInShadow( shadowRay, sp );
+            Color diffuse     = _diffuse.GetBRDF( sp, wo, wi );
+            Color shadowColor = diffuse * light->GetRadiance( sp ) * angle
+                              * light->GetGeometricFactor( sp ) * light->GetGeometricArea( sp );
+
+            // calculate the color with a branchless conditional
+            color += Color::Lerp( shadowColor,
+                                  Color::Black(),
+                                  static_cast<real32>( isInShadow ) );
+        }
+    }
+
+    return color;
+}
+
 // copy this material
 __device__ Material* MatteMaterial::Copy() const
 {
@@ -64,6 +96,39 @@ __device__ real32 MatteMaterial::GetDiffuseCoefficient() const
     return _diffuse.GetDiffuseCoefficient();
 }
 
+// get shaded color
+__device__ Color MatteMaterial::Shade( ShadePoint& sp ) const
+{
+    // from Suffern, 271
+    vec3  wo    = -sp.Ray.Direction;
+    Color color = _ambient.GetBHR( sp, wo ) * sp.AmbientLight->GetRadiance( sp );
+
+    // go through all of the lights in the scene
+    for ( uint32 i = 0; i < sp.LightCount; ++i )
+    {
+        const Light*  light = sp.Lights[ i ];
+        vec3          wi    = light->GetLightDirection( sp );
+        real32        angle = glm::dot( sp.Normal, wi );
+
+
+        if ( angle > 0.0f )
+        {
+            // calculate shadow information
+            Ray   shadowRay   = Ray( sp.HitPoint, wi );
+            bool  isInShadow  = light->CastsShadows() && light->IsInShadow( shadowRay, sp );
+            Color diffuse     = _diffuse.GetBRDF( sp, wo, wi );
+            Color shadowColor = diffuse * light->GetRadiance( sp ) * angle;
+
+            // calculate the color with a branchless conditional
+            color += Color::Lerp( shadowColor,
+                                  Color::Black(),
+                                  static_cast<real32>( isInShadow ) );
+        }
+    }
+
+    return color;
+}
+
 // set ka
 __device__ void MatteMaterial::SetAmbientCoefficient( real32 ka )
 {
@@ -88,60 +153,6 @@ __device__ void MatteMaterial::SetColor( real32 r, real32 g, real32 b )
 __device__ void MatteMaterial::SetDiffuseCoefficient( real32 kd )
 {
     _diffuse.SetDiffuseCoefficient( kd );
-}
-
-// get shaded color
-__device__ Color MatteMaterial::Shade( ShadePoint& sp, const DeviceList<Light*>* lights, const Octree* octree ) const
-{
-    // from Suffern, 271
-    vec3 wo    = -sp.Ray.Direction;
-    Color   color = _ambient.GetBHR( sp, wo );
-
-    // go through all of the lights in the scene
-    for ( uint32 i = 0; i < lights->GetSize(); ++i )
-    {
-        const Light*  light = lights->Get( i );
-        vec3          wi    = light->GetLightDirection( sp );
-        real32        angle = glm::dot( sp.Normal, wi );
-
-
-        if ( angle > 0.0f )
-        {
-            // calculate shadow information
-            Ray   shadowRay   = Ray( sp.HitPoint, wi );
-            bool  isInShadow  = light->CastsShadows() && light->IsInShadow( shadowRay, octree, sp );
-            Color diffuse     = _diffuse.GetBRDF( sp, wo, wi );
-            Color shadowColor = diffuse * light->GetRadiance( sp ) * angle;
-
-            // calculate the color with a branchless conditional
-            color += Color::Lerp( Color::Black(),
-                                  shadowColor,
-                                  !isInShadow );
-        }
-
-
-        /*
-        if ( angle > 0.0f )
-        {
-            // check if we need to perform shadow calculations
-            bool isInShadow = false;
-            if ( light->CastsShadows() )
-            {
-                Ray shadowRay = Ray( sp.HitPoint, wi );
-                isInShadow = light->IsInShadow( shadowRay, octree, sp );
-            }
-
-            // add the shadow-inclusive light information
-            if ( !isInShadow )
-            {
-                Color diffuse  = _diffuse.GetBRDF( sp, wo, wi );
-                color         += diffuse * light->GetRadiance( sp ) * angle;
-            }
-        }
-        */
-    }
-
-    return color;
 }
 
 REX_NS_END

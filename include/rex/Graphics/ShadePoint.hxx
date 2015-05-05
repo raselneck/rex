@@ -3,6 +3,8 @@
 #include "../Config.hxx"
 #include "../Math/Ray.hxx"
 #include "../Math/Math.hxx"
+#include "Lights/AmbientLight.hxx"
+#include "Geometry/Octree.hxx"
 #include "Color.hxx"
 
 REX_NS_BEGIN
@@ -15,11 +17,15 @@ class Material;
 /// </summary>
 struct ShadePoint
 {
-    Ray                  Ray;
-    vec3              HitPoint;
-    vec3              Normal;
-    real32               T;
-    const rex::Material* Material;
+    Ray                 Ray;
+    vec3                HitPoint;
+    vec3                Normal;
+    real32              T;
+    const Material*     Material;
+    const AmbientLight* AmbientLight;
+    const Octree*       Octree;
+    const Light* const* Lights;
+    uint32              LightCount;
 
     /// <summary>
     /// Creates a new shade point.
